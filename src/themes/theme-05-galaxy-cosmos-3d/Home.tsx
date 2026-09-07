@@ -1,174 +1,248 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ThemePageProps } from '@/themes/_contracts/PageRenderer';
-import * as THREE from 'three';
-import { Orbit, Sparkles, Compass, Radio, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, Compass, MapPin, Ruler, Building2, Calendar, Mail, ArrowDown } from 'lucide-react';
 
-export const Home: React.FC<ThemePageProps> = ({ identity, projects, onNavigate }) => {
-  const mountRef = useRef<HTMLDivElement | null>(null);
-  const [selectedProject, setSelectedProject] = useState(projects[0]);
-
-  // Three.js 3D WebGL Galaxy Scene with 2D Fallback
-  useEffect(() => {
-    const container = mountRef.current;
-    if (!container) return;
-
-    let scene: THREE.Scene, camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer;
-    let stars: THREE.Points;
-    let animId: number;
-
-    try {
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-      camera.position.z = 40;
-
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      container.appendChild(renderer.domElement);
-
-      // Starfield Particle Geometry
-      const starGeo = new THREE.BufferGeometry();
-      const starCount = 1200;
-      const positions = new Float32Array(starCount * 3);
-      for (let i = 0; i < starCount * 3; i++) {
-        positions[i] = (Math.random() - 0.5) * 120;
-      }
-      starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-      const starMat = new THREE.PointsMaterial({
-        color: 0xc084fc,
-        size: 0.8,
-        transparent: true,
-        opacity: 0.8
-      });
-
-      stars = new THREE.Points(starGeo, starMat);
-      scene.add(stars);
-
-      const animate = () => {
-        stars.rotation.y += 0.0012;
-        stars.rotation.x += 0.0006;
-        renderer.render(scene, camera);
-        animId = requestAnimationFrame(animate);
-      };
-      animate();
-
-      const handleResize = () => {
-        if (!container) return;
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
-      };
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-        cancelAnimationFrame(animId);
-        window.removeEventListener('resize', handleResize);
-        renderer.dispose();
-        if (container.contains(renderer.domElement)) {
-          container.removeChild(renderer.domElement);
-        }
-      };
-    } catch (e) {
-      console.warn('WebGL initialization failed, falling back to CSS galaxy gradient.', e);
-    }
-  }, []);
+export const Home: React.FC<ThemePageProps> = ({ 
+  identity, 
+  projects, 
+  onNavigate 
+}) => {
+  const [selectedFilter, setSelectedFilter] = useState('All');
+  const filters = ['All', 'Residential', 'Commercial', 'Cultural', 'Urban'];
 
   return (
-    <div className="relative min-h-screen bg-[#050510] text-[#f3e8ff] font-sans overflow-hidden select-none">
-      {/* 3D WebGL Canvas Layer */}
-      <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none" />
-
-      {/* Orbital Navigation Ring */}
-      <header className="relative z-10 p-6 flex items-center justify-between border-b border-purple-950/40 bg-[#050510]/50 backdrop-blur-md max-w-7xl mx-auto">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-purple-600/30 border border-purple-400/50 flex items-center justify-center">
-            <Orbit className="w-5 h-5 text-purple-300 animate-spin-slow" />
+    <div className="min-h-screen bg-[#fcfcfc] text-[#1a1a1a] font-sans antialiased selection:bg-black selection:text-white">
+      {/* Precision Architectural Header */}
+      <header className="sticky top-0 z-40 bg-[#fcfcfc]/90 backdrop-blur-md border-b border-black/[0.08]">
+        <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="font-serif text-lg font-bold tracking-tight">{identity.name}</span>
+            <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest pl-2 border-l border-gray-300">
+              ARCHITECTURE & SPATIAL DESIGN
+            </span>
           </div>
-          <div>
-            <h1 className="font-black text-sm tracking-wider uppercase text-white">{identity.name}</h1>
-            <p className="text-[10px] font-mono text-purple-400">COSMIC CARTOGRAPHY · {identity.alias}</p>
+
+          <nav className="hidden md:flex items-center gap-10 text-xs font-mono tracking-wider text-gray-500 uppercase">
+            <a href="#projects" className="hover:text-black transition-colors">Works</a>
+            <a href="#philosophy" className="hover:text-black transition-colors">Philosophy</a>
+            <a href="#services" className="hover:text-black transition-colors">Practice</a>
+            <a href="#contact" className="hover:text-black transition-colors">Contact</a>
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <a
+              href="#contact"
+              className="text-xs font-mono uppercase tracking-wider px-4 py-2 border border-black hover:bg-black hover:text-white transition-colors"
+            >
+              Inquire
+            </a>
+            <button
+              onClick={() => onNavigate('/admin')}
+              className="text-xs font-mono text-gray-400 hover:text-black"
+            >
+              Admin
+            </button>
           </div>
         </div>
-
-        <nav className="flex items-center gap-6 text-xs font-mono text-purple-300">
-          <a href="#celestial-index" className="hover:text-white transition-colors">CELESTIAL INDEX</a>
-          <a href={`mailto:${identity.socialLinks.email}`} className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-full text-xs font-bold transition-colors">
-            TRANSMIT
-          </a>
-        </nav>
       </header>
 
-      {/* Main Radial Content */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
-        {/* Core Solar Hero */}
-        <section className="lg:col-span-6 space-y-6">
-          <div className="p-8 rounded-3xl bg-purple-950/20 border border-purple-500/20 backdrop-blur-lg space-y-4">
-            <span className="text-xs font-mono text-purple-400 tracking-widest uppercase">STELLAR COORDINATES</span>
-            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-              {identity.tagline}
-            </h2>
-            <p className="text-xs sm:text-sm text-purple-200/80 leading-relaxed font-mono">
-              {identity.bio}
+      {/* Main Content */}
+      <main className="space-y-36 pb-32">
+        
+        {/* ============================================================
+            HERO SECTION
+            - Full-bleed architectural photography
+            - Architect name & firm philosophy
+            - Tagline: "Architecture for human experience"
+           ============================================================ */}
+        <section className="max-w-7xl mx-auto px-8 pt-12 space-y-12">
+          <div className="space-y-4 max-w-3xl">
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-400 block">
+              ESTABLISHED 2018 · BENGALURU & SAN FRANCISCO
+            </span>
+            <h1 className="font-serif text-4xl sm:text-7xl font-light text-black tracking-tight leading-[1.06]">
+              Architecture for human experience and timeless light.
+            </h1>
+            <p className="text-gray-500 font-light text-lg max-w-2xl leading-relaxed">
+              We design spaces shaped by tectonic clarity, raw materials, environmental stewardship,
+              and disciplined structural logic.
             </p>
           </div>
 
-          {/* Planetary Nodes Carousel */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-mono text-purple-400 uppercase tracking-widest">Planetary Project Nodes</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {projects.map((proj, idx) => (
-                <div
-                  key={proj.id}
-                  onClick={() => setSelectedProject(proj)}
-                  className={`p-4 rounded-2xl border transition-all cursor-pointer ${
-                    selectedProject.id === proj.id 
-                      ? 'bg-purple-600/30 border-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.3)]' 
-                      : 'bg-white/5 border-white/5 hover:border-purple-500/40'
+          {/* Full-bleed Hero Visual */}
+          <div className="aspect-[21/9] w-full bg-stone-200 overflow-hidden relative shadow-sm">
+            <img
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600"
+              alt="Architectural monograph"
+              className="w-full h-full object-cover grayscale contrast-105"
+            />
+            <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 text-xs font-mono text-gray-800">
+              MONOLITH HOUSE · COMPLETED 2024 · 8,400 SQ FT
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================
+            PROJECTS GRID
+            - Large thumbnails (architecture needs big images)
+            - Location, year, sq footage, status
+           ============================================================ */}
+        <section id="projects" className="max-w-7xl mx-auto px-8 space-y-12 scroll-mt-24">
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 border-b border-black/[0.08] pb-6">
+            <div>
+              <h2 className="font-serif text-3xl sm:text-4xl font-light text-black">
+                Selected Works
+              </h2>
+              <p className="text-xs font-mono text-gray-400 mt-1">12 BUILT PROJECTS & ADVANCED CONCEPTS</p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 text-xs font-mono">
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setSelectedFilter(f)}
+                  className={`px-3 py-1 uppercase tracking-wider transition-colors ${
+                    selectedFilter === f ? 'border-b-2 border-black font-bold text-black' : 'text-gray-400 hover:text-black'
                   }`}
                 >
-                  <p className="text-[10px] font-mono text-purple-400">ORBIT 0{idx + 1}</p>
-                  <p className="font-bold text-white text-sm mt-1">{proj.title}</p>
-                </div>
+                  {f}
+                </button>
               ))}
             </div>
           </div>
-        </section>
 
-        {/* Selected Planet Detail Inspector */}
-        <section className="lg:col-span-6 flex flex-col justify-center">
-          <div className="p-8 rounded-3xl bg-[#0d0d26]/80 border border-purple-500/30 backdrop-blur-xl shadow-2xl space-y-6">
-            <div className="flex items-center justify-between border-b border-purple-500/20 pb-4">
-              <div>
-                <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">TARGET CELESTIAL BODY</span>
-                <h3 className="text-2xl font-black text-white mt-1">{selectedProject.title}</h3>
-              </div>
-              <button
-                onClick={() => onNavigate(`/projects/${selectedProject.slug}`)}
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            {projects.map((proj, idx) => (
+              <article
+                key={proj.id}
+                onClick={() => onNavigate(`/projects/${proj.slug}`)}
+                className="group cursor-pointer space-y-4"
               >
-                Inspect Case Study <ExternalLink className="w-3.5 h-3.5" />
-              </button>
-            </div>
+                <div className="aspect-[16/11] w-full bg-stone-100 overflow-hidden relative">
+                  <img
+                    src={proj.coverImage}
+                    alt={proj.title}
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                  />
+                  <div className="absolute top-4 right-4 px-3 py-1 bg-white text-[10px] font-mono tracking-widest uppercase">
+                    COMPLETED {proj.date?.slice(0, 4) || '2024'}
+                  </div>
+                </div>
 
-            <div className="h-52 w-full rounded-2xl overflow-hidden border border-purple-500/20">
-              <img src={selectedProject.coverImage} alt={selectedProject.title} className="w-full h-full object-cover" />
-            </div>
+                <div className="space-y-1 pt-1">
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="font-serif text-2xl font-normal text-black group-hover:underline">
+                      {proj.title}
+                    </h3>
+                    <span className="text-xs font-mono text-gray-400">{identity.location}</span>
+                  </div>
+                  <p className="text-xs text-gray-500 font-light line-clamp-2 leading-relaxed">
+                    {proj.summary}
+                  </p>
+                  <div className="pt-2 flex items-center gap-4 text-[11px] font-mono text-gray-400">
+                    <span>{proj.role}</span>
+                    <span>·</span>
+                    <span>6,200 SQ FT</span>
+                    <span>·</span>
+                    <span className="text-black flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                      VIEW MONOGRAPH <ArrowUpRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
 
-            <p className="text-xs text-purple-200 leading-relaxed font-mono">
-              {selectedProject.caseStudyBody}
-            </p>
-
-            <div className="flex flex-wrap gap-1.5 pt-2">
-              {selectedProject.technologies.map((t, idx) => (
-                <span key={idx} className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                  {t}
-                </span>
-              ))}
+        {/* ============================================================
+            PRACTICE PHILOSOPHY
+           ============================================================ */}
+        <section id="philosophy" className="max-w-7xl mx-auto px-8 space-y-8 scroll-mt-24">
+          <div className="p-12 sm:p-20 bg-stone-100 border border-black/[0.06] space-y-8">
+            <span className="text-xs font-mono uppercase tracking-widest text-gray-400">PRACTICE MANIFESTO</span>
+            <blockquote className="font-serif text-2xl sm:text-4xl font-light text-black leading-snug max-w-4xl">
+              "We do not impose form upon context; we listen to the soil, orientation, light, and materiality until the structure reveals its inevitable geometry."
+            </blockquote>
+            <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-black/[0.08] text-xs font-mono">
+              <div>
+                <span className="text-gray-400 block mb-1">01. TECTONIC HONESTY</span>
+                <p className="text-gray-600 font-sans">Exposed cast concrete, sustainably milled timber, natural stone.</p>
+              </div>
+              <div>
+                <span className="text-gray-400 block mb-1">02. CLIMATIC RESPONSIVENESS</span>
+                <p className="text-gray-600 font-sans">Passive solar orientation, natural cross-ventilation corridors.</p>
+              </div>
+              <div>
+                <span className="text-gray-400 block mb-1">03. HUMAN PROPORTION</span>
+                <p className="text-gray-600 font-sans">Measured ceiling heights and light wells calibrated to biological rhythms.</p>
+              </div>
             </div>
           </div>
         </section>
+
+        {/* ============================================================
+            SERVICES & INQUIRY
+           ============================================================ */}
+        <section id="contact" className="max-w-7xl mx-auto px-8 scroll-mt-24 space-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+            <div className="md:col-span-6 space-y-6">
+              <span className="text-xs font-mono uppercase tracking-widest text-gray-400">COMMISSIONS & COLLABORATIONS</span>
+              <h2 className="font-serif text-3xl sm:text-5xl font-light text-black">
+                Initiate a project dialogue.
+              </h2>
+              <p className="text-gray-500 font-light text-sm leading-relaxed max-w-md">
+                We accept a limited number of residential and cultural architectural commissions
+                per calendar year to ensure uncompromised partner attention.
+              </p>
+              <div className="font-mono text-xs text-gray-600 space-y-1">
+                <p>STUDIO: Indiranagar, 12th Main, Bengaluru 560038</p>
+                <p>CORRESPONDENCE: {identity.socialLinks.email}</p>
+              </div>
+            </div>
+
+            <div className="md:col-span-6 p-8 bg-white border border-black/[0.08] space-y-4">
+              <h3 className="font-mono text-xs uppercase tracking-wider font-bold">PROJECT INQUIRY</h3>
+              <form onSubmit={(e) => { e.preventDefault(); alert('Inquiry logged. Our studio will contact you.'); }} className="space-y-4 font-mono text-xs">
+                <input
+                  type="text"
+                  required
+                  placeholder="Client / Organization Name"
+                  className="w-full p-3 border border-gray-200 text-black focus:outline-none focus:border-black"
+                />
+                <input
+                  type="email"
+                  required
+                  placeholder="Contact Email"
+                  className="w-full p-3 border border-gray-200 text-black focus:outline-none focus:border-black"
+                />
+                <select className="w-full p-3 border border-gray-200 text-black focus:outline-none focus:border-black bg-white">
+                  <option>Residential Architecture</option>
+                  <option>Commercial / Hospitality</option>
+                  <option>Cultural Space / Pavilion</option>
+                  <option>Master Planning & Urban</option>
+                </select>
+                <textarea
+                  rows={3}
+                  placeholder="Site location, projected timeline, and scale..."
+                  className="w-full p-3 border border-gray-200 text-black focus:outline-none focus:border-black resize-none"
+                />
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-black text-white font-mono uppercase tracking-widest text-xs hover:bg-stone-800 transition-colors"
+                >
+                  Submit Architectural Brief
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-black/[0.08] py-12 text-xs font-mono text-gray-400 text-center">
+        © 2026 {identity.name} ARCHITECTURAL PRACTICE. ALL RIGHTS RESERVED.
+      </footer>
     </div>
   );
 };

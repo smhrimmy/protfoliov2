@@ -294,64 +294,63 @@ export function App() {
           config={themeConfig}
         />
 
-        {/* Floating Quick Theme Switcher Pill (for exploration across all 19 themes) */}
-        <div className="fixed bottom-4 right-4 z-50">
-          <div className="bg-gray-950/90 backdrop-blur-xl border border-gray-800 text-gray-100 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300">
-            {/* Collapsed Bar */}
-            <div className="flex items-center space-x-3 px-4 py-2.5">
-              <button
-                onClick={() => setSwitcherOpen(!switcherOpen)}
-                className="flex items-center space-x-2 text-xs font-medium hover:text-blue-400 transition-colors"
-              >
-                <div className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" />
-                <span className="font-mono text-gray-400">THEME {currentManifest.number}:</span>
-                <span className="font-semibold text-white">{currentManifest.name}</span>
-                {switcherOpen ? <ChevronDown className="w-3.5 h-3.5 text-gray-400" /> : <ChevronUp className="w-3.5 h-3.5 text-gray-400" />}
-              </button>
-
-              <div className="h-4 w-[1px] bg-gray-800" />
-
-              <button
-                onClick={() => navigate('/admin')}
-                className="text-xs font-semibold px-2.5 py-1 bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 rounded-lg transition-colors flex items-center space-x-1"
-              >
-                <span>Admin OS</span>
-                <ExternalLink className="w-3 h-3" />
-              </button>
-            </div>
-
-            {/* Expanded 19 Theme Gallery Grid */}
-            {switcherOpen && (
-              <div className="p-3 border-t border-gray-800/80 max-h-80 overflow-y-auto w-80 space-y-1.5 no-scrollbar">
-                <div className="text-[10px] uppercase font-mono tracking-wider text-gray-400 px-2 py-1 flex justify-between">
-                  <span>19 Distinct Architectural Themes</span>
-                  <span className="text-blue-400">Zero Duplication</span>
-                </div>
-                {THEME_MANIFESTS.map((t) => {
-                  const isCurrent = t.id === activeThemeId;
-                  return (
-                    <button
-                      key={t.id}
-                      onClick={() => {
-                        handleSelectTheme(t.id);
-                        setSwitcherOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-colors ${
-                        isCurrent
-                          ? 'bg-blue-600/20 border border-blue-500/40 text-white font-bold'
-                          : 'hover:bg-gray-900 text-gray-300 border border-transparent'
-                      }`}
-                    >
-                      <div className="flex items-center space-x-2 truncate pr-2">
-                        <span className="font-mono text-[10px] text-gray-500">#{t.number}</span>
-                        <span className="truncate">{t.name}</span>
-                      </div>
-                      {isCurrent && <Check className="w-3.5 h-3.5 text-blue-400 shrink-0" />}
-                    </button>
-                  );
-                })}
+        {/* Sleek Minimalist Quick Theme Switcher Pill */}
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end">
+          {/* Expanded 19 Theme Gallery Popover */}
+          {switcherOpen && (
+            <div className="mb-2 p-2.5 bg-[#0c1017]/95 backdrop-blur-xl border border-white/[0.1] rounded-2xl shadow-2xl w-72 max-h-72 overflow-y-auto space-y-1 font-mono text-xs animate-in fade-in slide-in-from-bottom-2 duration-200">
+              <div className="text-[10px] uppercase tracking-wider text-gray-500 px-2 py-1 flex justify-between border-b border-white/[0.06] mb-1">
+                <span>Theme Engine</span>
+                <span className="text-emerald-400">19 Architectures</span>
               </div>
-            )}
+              {THEME_MANIFESTS.map((t) => {
+                const isCurrent = t.id === activeThemeId;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => {
+                      handleSelectTheme(t.id);
+                      setSwitcherOpen(false);
+                    }}
+                    className={`w-full text-left px-2.5 py-1.5 rounded-lg text-[11px] flex items-center justify-between transition-colors ${
+                      isCurrent
+                        ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold'
+                        : 'hover:bg-white/[0.05] text-gray-300 border border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span className="text-[10px] text-gray-500">#{t.number}</span>
+                      <span className="truncate">{t.name}</span>
+                    </div>
+                    {isCurrent && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Floating Pill Trigger */}
+          <div className="flex items-center gap-2 bg-[#0c1017]/90 backdrop-blur-md border border-white/[0.12] text-gray-200 rounded-full px-3.5 py-1.5 shadow-xl hover:border-white/[0.2] transition-colors">
+            <button
+              onClick={() => setSwitcherOpen(!switcherOpen)}
+              className="flex items-center gap-2 text-xs font-mono hover:text-white transition-colors"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-gray-400 text-[11px]">THEME {currentManifest.number}:</span>
+              <span className="text-white font-semibold text-[11px] max-w-[120px] truncate">{currentManifest.name}</span>
+              {switcherOpen ? <ChevronDown className="w-3 h-3 text-gray-400" /> : <ChevronUp className="w-3 h-3 text-gray-400" />}
+            </button>
+
+            <span className="h-3 w-[1px] bg-white/[0.12]" />
+
+            <button
+              onClick={() => navigate('/admin')}
+              className="text-[11px] font-mono text-gray-300 hover:text-white flex items-center gap-1 transition-colors"
+              title="Open Admin OS"
+            >
+              <span>Admin</span>
+              <ExternalLink className="w-2.5 h-2.5 text-gray-400" />
+            </button>
           </div>
         </div>
       </div>

@@ -2,19 +2,19 @@ import { ThemeConfig } from '@/types/theme';
 
 export const config: ThemeConfig = {
   id: 'theme-03-cyberpunk-hud',
-  layoutArchitecture: 'Layered Telemetry Viewport',
-  navigationPattern: 'Side-Docked Vertical Icon Rail',
-  gridSystem: 'Freeform Overlapping HUD Panels',
-  typographyPairing: 'Monospace Sci-Fi Telemetry & Matrix Glitch',
-  motionLanguage: 'Neon pulse and glitch displacement',
-  capabilities: ['Motion-Rich', 'High Contrast'],
+  layoutArchitecture: 'UX/UI Designer Portfolio',
+  navigationPattern: 'Indigo Pill Accent + Sticky Backdrop Header',
+  gridSystem: 'Alternating Case Study Stack + 4-Step Process Flow',
+  typographyPairing: 'DM Sans + Inter',
+  motionLanguage: 'Soft shadow elevations and crisp layout shifts',
+  capabilities: ['Motion-Rich'],
   fallback: 'standard',
   colorTokens: {
-    bgPrimary: '#030712',
-    bgSecondary: '#0b1329',
-    accent: '#00f0ff',
-    textPrimary: '#e0f2fe',
-    textMuted: '#38bdf8',
-    borderColor: '#0284c7'
+    bgPrimary: '#fafafa',
+    bgSecondary: '#ffffff',
+    accent: '#6366f1',
+    textPrimary: '#1f2937',
+    textMuted: '#6b7280',
+    borderColor: '#e5e7eb'
   }
 };

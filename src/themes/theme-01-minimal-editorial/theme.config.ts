@@ -2,19 +2,19 @@ import { ThemeConfig } from '@/types/theme';
 
 export const config: ThemeConfig = {
   id: 'theme-01-minimal-editorial',
-  layoutArchitecture: 'Asymmetric Two-Column Magazine',
-  navigationPattern: 'Static Top-Left Wordmark + Inline Rail',
-  gridSystem: 'Strict 680px Text Column & Asymmetric Right Rail',
-  typographyPairing: 'Playfair Display Serif + Inter Sans',
-  motionLanguage: 'Pure opacity cross-fades',
+  layoutArchitecture: 'Developer Portfolio (Claude Code)',
+  navigationPattern: 'Sticky Monospace Chrome + Section Anchor Bar',
+  gridSystem: 'Categorized Stack & Terminal Impact Matrix',
+  typographyPairing: 'Geist Sans + JetBrains Monospace',
+  motionLanguage: 'Smooth typing animation and subtle hover lift',
   capabilities: ['High Contrast'],
   fallback: 'standard',
   colorTokens: {
-    bgPrimary: '#0f1115',
-    bgSecondary: '#161920',
-    accent: '#d4af37',
-    textPrimary: '#f4f4f5',
+    bgPrimary: '#0a0c10',
+    bgSecondary: '#0e121a',
+    accent: '#10b981',
+    textPrimary: '#e6edf3',
     textMuted: '#9ca3af',
-    borderColor: '#27272a'
+    borderColor: '#ffffff14'
   }
 };

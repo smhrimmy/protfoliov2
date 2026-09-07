@@ -2,19 +2,19 @@ import { ThemeConfig } from '@/types/theme';
 
 export const config: ThemeConfig = {
   id: 'theme-04-terminal-cli',
-  layoutArchitecture: 'Full-Screen Monospace Shell',
-  navigationPattern: 'Interactive Command-Line Prompt',
-  gridSystem: '80-Column Terminal Character Matrix',
-  typographyPairing: 'Pure Monospace Courier / JetBrains',
-  motionLanguage: 'Typewriter ticker and blinking caret',
-  capabilities: ['High Contrast'],
+  layoutArchitecture: '3D Artist Portfolio',
+  navigationPattern: 'Cinematic Overlay + Showreel Modal Header',
+  gridSystem: 'Full-Screen Render Hero + Pass Breakdown Matrix',
+  typographyPairing: 'Space Grotesk + JetBrains Monospace',
+  motionLanguage: 'Pass switcher dissolve and slow cinematic scale',
+  capabilities: ['High Contrast', 'Heavy Assets'],
   fallback: 'standard',
   colorTokens: {
-    bgPrimary: '#0c1017',
-    bgSecondary: '#161b22',
-    accent: '#22c55e',
-    textPrimary: '#4ade80',
-    textMuted: '#86efac',
-    borderColor: '#1e293b'
+    bgPrimary: '#07080b',
+    bgSecondary: '#111319',
+    accent: '#f59e0b',
+    textPrimary: '#f3f4f6',
+    textMuted: '#9ca3af',
+    borderColor: '#ffffff14'
   }
 };

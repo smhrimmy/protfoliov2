@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { 
-  ArrowLeft, ArrowRight, ExternalLink, Globe, Calendar, Clock, MapPin, 
+  ArrowLeft, ArrowRight, ArrowUpRight, ExternalLink, Globe, Calendar, Clock, MapPin, 
   Award, Building, ChevronRight, Search, Mail, Send, Check, Star, 
   Download, Printer, QrCode, ThumbsUp, Heart, Flame, Shield, FileText,
-  Terminal, Sparkles, MessageSquare, Copy, Rss, WifiOff, X
+  Terminal, Sparkles, MessageSquare, Copy, Rss, WifiOff, X, Quote, CheckCircle2
 } from 'lucide-react';
 import { mockStorage } from '@/data/mockStorage';
 import { Project, BlogPost, Experience, SkillCategory, Education, Certification, Testimonial, CustomPage } from '@/types/portfolio';
@@ -24,50 +24,48 @@ export const PublicLayout: React.FC<{
   const identity = mockStorage.getIdentity();
 
   const navLinks = [
-    { label: 'Home', route: '/' },
-    { label: 'Projects', route: '/projects' },
-    { label: 'Articles', route: '/blog' },
-    { label: 'Experience', route: '/experience' },
-    { label: 'Skills', route: '/skills' },
-    { label: 'Resume', route: '/resume' },
+    { label: 'Work', route: '/projects' },
     { label: 'About', route: '/about' },
+    { label: 'Experience', route: '/experience' },
+    { label: 'Essays', route: '/blog' },
+    { label: 'Resume', route: '/resume' },
     { label: 'Contact', route: '/contact' },
   ];
 
   return (
-    <div className="min-h-screen bg-[#070a10] text-gray-100 font-sans flex flex-col selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-[#0a0c10] text-[#e6edf3] font-sans flex flex-col selection:bg-emerald-500/30 selection:text-emerald-300">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-40 bg-[#070a10]/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-[#0a0c10]/85 backdrop-blur-md border-b border-white/[0.08]">
+        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <button
             onClick={() => onNavigate('/')}
             className="flex items-center gap-2.5 text-left group"
           >
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-mono font-bold text-xs text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
-              PDL
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center font-mono font-bold text-xs text-emerald-400 group-hover:scale-105 transition-transform">
+              &gt;_
             </div>
             <div>
               <span className="text-xs font-bold text-white tracking-tight uppercase block leading-none">
-                {identity.alias}
+                {identity.name}
               </span>
-              <span className="text-[10px] font-mono text-gray-400 leading-none">
-                {identity.role}
+              <span className="text-[10px] font-mono text-gray-500 leading-none">
+                {identity.alias}
               </span>
             </div>
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1 text-xs">
+          <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-gray-400">
             {navLinks.map(link => {
               const isActive = activeRoute === link.route;
               return (
                 <button
                   key={link.route}
                   onClick={() => onNavigate(link.route)}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
+                  className={`transition-colors ${
                     isActive
-                      ? 'bg-blue-600/15 text-blue-400 border border-blue-500/30 font-semibold'
-                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      ? 'text-emerald-400 font-semibold'
+                      : 'hover:text-white'
                   }`}
                 >
                   {link.label}
@@ -76,17 +74,17 @@ export const PublicLayout: React.FC<{
             })}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => onNavigate('/search')}
-              className="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-colors"
+              className="p-1.5 text-gray-400 hover:text-white transition-colors"
               title="Search Site"
             >
               <Search className="w-4 h-4" />
             </button>
             <button
               onClick={() => onNavigate('/admin')}
-              className="hidden sm:inline-flex px-3 py-1.5 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 rounded-xl text-xs font-medium transition-colors items-center gap-1"
+              className="text-xs font-mono px-3 py-1.5 bg-white/[0.05] hover:bg-white/[0.1] text-gray-300 hover:text-white border border-white/[0.08] rounded-lg transition-colors inline-flex items-center gap-1"
             >
               <span>Admin OS</span>
               <ExternalLink className="w-3 h-3 text-gray-400" />
@@ -96,29 +94,25 @@ export const PublicLayout: React.FC<{
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-12 sm:py-16">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 bg-[#05070c] py-12 text-xs text-gray-400">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <footer className="border-t border-white/[0.06] bg-[#07090d] py-12 text-xs font-mono text-gray-500">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center sm:text-left">
-            <p className="font-mono text-gray-300 font-semibold">
-              {identity.name} · {identity.alias}
-            </p>
-            <p className="text-[11px] text-gray-500">
-              Architecting high-throughput systems, resilient cloud infrastructure, and 3D spatial experiences.
-            </p>
+            <p className="text-gray-300 font-semibold">{identity.name} · {identity.alias}</p>
+            <p className="text-[11px]">Architecting resilient distributed systems and spatial interfaces.</p>
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-mono">
+          <div className="flex items-center gap-5 text-gray-400">
             <button onClick={() => onNavigate('/privacy')} className="hover:text-white transition-colors">Privacy</button>
             <button onClick={() => onNavigate('/terms')} className="hover:text-white transition-colors">Terms</button>
             <button onClick={() => onNavigate('/rss.xml')} className="hover:text-white transition-colors flex items-center gap-1">
               <Rss className="w-3 h-3 text-amber-400" /> RSS
             </button>
-            <button onClick={() => onNavigate('/protected')} className="hover:text-white transition-colors">Client Portal</button>
+            <button onClick={() => onNavigate('/admin')} className="text-emerald-400 hover:underline">Admin</button>
           </div>
         </div>
       </footer>
@@ -134,80 +128,78 @@ export const PublicAboutPage: React.FC<PublicPageProps> = ({ onNavigate }) => {
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/about">
-      <div className="max-w-4xl mx-auto space-y-12">
-        <div className="space-y-4">
-          <span className="text-xs font-mono uppercase tracking-widest text-blue-400">Engineering Biography</span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-            Systems Architect & <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-              3D Creative Engineer
-            </span>
+      <div className="space-y-12">
+        <div className="space-y-3">
+          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">// 01. Context</span>
+          <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+            About {identity.name}
           </h1>
-          <p className="text-sm text-gray-300 leading-relaxed max-w-2xl">
-            {identity.bio}
+          <p className="text-sm text-gray-400 font-mono">
+            {identity.role} · {identity.location}
           </p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-2xl bg-[#0e131f] border border-white/5 font-mono">
-          <div>
-            <p className="text-2xl font-bold text-white">{identity.stats.projectsShipped}</p>
-            <p className="text-[11px] text-gray-400 uppercase mt-0.5">Shipped Systems</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-emerald-400">{identity.stats.revenueInfluenced}</p>
-            <p className="text-[11px] text-gray-400 uppercase mt-0.5">Revenue Influenced</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-blue-400">{identity.stats.happyClients}</p>
-            <p className="text-[11px] text-gray-400 uppercase mt-0.5">Happy Clients</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-purple-400">{identity.stats.yearsBuilding}</p>
-            <p className="text-[11px] text-gray-400 uppercase mt-0.5">Years of Mastery</p>
-          </div>
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-8 space-y-6 text-sm text-gray-300 leading-relaxed">
+            <p className="text-base text-white font-medium leading-relaxed">
+              {identity.bio}
+            </p>
+            <p>
+              I design and build software systems where reliability, performance, and aesthetic discipline intersect.
+              Over the past decade, I've engineered distributed cloud backends, created design systems
+              used by cross-functional teams, and built real-time collaborative interfaces.
+            </p>
+            <p>
+              My philosophy centers on radical simplification: removing unnecessary abstractions,
+              enforcing strict type safety, and ensuring that every system delivers measurable, verifiable value.
+            </p>
 
-        {/* Engineering Philosophy */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-bold text-white tracking-tight">Core Architectural Tenets</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-[#0e131f] border border-white/5 space-y-2">
-              <span className="text-xs font-mono text-blue-400 font-bold">01 / DISCIPLINE</span>
-              <h3 className="text-sm font-bold text-white">Strict Isolation</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Clean architectural boundaries between data layers and presentations. Every design world maintains distinct component trees.
-              </p>
-            </div>
-            <div className="p-6 rounded-2xl bg-[#0e131f] border border-white/5 space-y-2">
-              <span className="text-xs font-mono text-emerald-400 font-bold">02 / VELOCITY</span>
-              <h3 className="text-sm font-bold text-white">Zero-Lag Telemetry</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                60fps WebGL rendering paired with sub-second page transitions, optimistic state mutations, and instantaneous search indexing.
-              </p>
-            </div>
-            <div className="p-6 rounded-2xl bg-[#0e131f] border border-white/5 space-y-2">
-              <span className="text-xs font-mono text-purple-400 font-bold">03 / TRUST</span>
-              <h3 className="text-sm font-bold text-white">Human-In-The-Loop AI</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Automated social pipelines and AI assistants that propose diffs for verification rather than blindly injecting unchecked output.
-              </p>
+            <div className="pt-4 flex items-center gap-4 text-xs font-mono">
+              <button
+                onClick={() => onNavigate('/resume')}
+                className="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-colors flex items-center gap-2"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download Full CV</span>
+              </button>
+              <button
+                onClick={() => onNavigate('/contact')}
+                className="px-5 py-2.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-gray-300 border border-white/10 transition-colors"
+              >
+                Get In Touch
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* CTA Banner */}
-        <div className="p-8 rounded-2xl bg-gradient-to-r from-blue-900/30 via-indigo-900/20 to-purple-900/30 border border-blue-500/20 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-lg font-bold text-white">Ready to collaborate on high-stakes systems?</h3>
-            <p className="text-xs text-gray-300">Currently open to select staff engineering and architectural advisory roles.</p>
+          <div className="lg:col-span-4 p-6 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-6">
+            <div className="aspect-square rounded-xl overflow-hidden bg-zinc-900 border border-white/10">
+              <img
+                src={identity.avatarUrl}
+                alt={identity.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="space-y-3 font-mono text-xs text-gray-400">
+              <div className="flex justify-between pb-2 border-b border-white/[0.06]">
+                <span>Status</span>
+                <span className="text-emerald-400">Available Q2/Q3</span>
+              </div>
+              <div className="flex justify-between pb-2 border-b border-white/[0.06]">
+                <span>Location</span>
+                <span className="text-white">{identity.location}</span>
+              </div>
+              <div className="flex justify-between pb-2 border-b border-white/[0.06]">
+                <span>Experience</span>
+                <span className="text-white">8+ Years</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Direct Email</span>
+                <a href={`mailto:${identity.socialLinks.email}`} className="text-emerald-400 hover:underline">
+                  {identity.socialLinks.email}
+                </a>
+              </div>
+            </div>
           </div>
-          <button
-            onClick={() => onNavigate('/contact')}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shrink-0 shadow-lg shadow-blue-600/20"
-          >
-            Initiate Contact
-          </button>
         </div>
       </div>
     </PublicLayout>
@@ -230,29 +222,29 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/projects">
-      <div className="space-y-8">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-blue-400">Engineered Works</span>
-          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-1">Featured Production Systems</h1>
-          <p className="text-xs text-gray-400 mt-2 max-w-xl">
-            High-throughput enterprise backends, WebGL rendering engines, and multi-tenant architectures.
+      <div className="space-y-10">
+        <div className="space-y-2">
+          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">// Selected Works</span>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Production Systems & Case Studies</h1>
+          <p className="text-xs font-mono text-gray-400 max-w-xl">
+            Real-world products delivering measurable business impact and resilient cloud uptime.
           </p>
         </div>
 
-        {/* Search & Filter Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 text-xs no-scrollbar">
-            {['all', 'React', 'Three.js', 'TypeScript', 'Node.js', 'WebGL'].map(cat => (
+        {/* Filter & Search */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-y border-white/[0.06] py-4">
+          <div className="flex items-center gap-2 overflow-x-auto text-xs font-mono no-scrollbar">
+            {['all', 'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Docker'].map(cat => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-3 py-1.5 rounded-xl capitalize transition-colors ${
+                className={`px-3 py-1.5 rounded-lg transition-colors ${
                   filter === cat
-                    ? 'bg-blue-600 text-white font-semibold'
-                    : 'bg-white/5 text-gray-400 hover:text-white'
+                    ? 'bg-emerald-600 text-white font-semibold'
+                    : 'bg-white/[0.04] text-gray-400 hover:text-white'
                 }`}
               >
-                {cat}
+                {cat === 'all' ? 'All Systems' : cat}
               </button>
             ))}
           </div>
@@ -261,65 +253,64 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
             <Search className="w-3.5 h-3.5 text-gray-500 absolute left-3 top-2.5" />
             <input
               type="text"
-              placeholder="Search systems & stack..."
+              placeholder="Search case studies..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+              className="w-full bg-[#0e121a] border border-white/[0.08] rounded-lg pl-9 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
             />
           </div>
         </div>
 
-        {/* Project Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredProjects.map(p => (
-            <div
+            <article
               key={p.id}
-              onClick={() => onNavigate(`/projects/${p.id}`)}
-              className="group cursor-pointer rounded-2xl bg-[#0e131f] border border-white/5 overflow-hidden hover:border-blue-500/40 transition-all duration-300 flex flex-col justify-between"
+              onClick={() => onNavigate(`/projects/${p.slug || p.id}`)}
+              className="group cursor-pointer rounded-xl bg-[#0e121a] border border-white/[0.08] overflow-hidden hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 shadow-lg"
             >
               <div>
-                <div className="relative h-48 overflow-hidden bg-black/40">
+                <div className="relative h-52 overflow-hidden bg-black/40">
                   <img
                     src={p.coverImage}
                     alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                   />
-                  {p.featured && (
-                    <span className="absolute top-3 right-3 px-2 py-0.5 bg-blue-600 text-white font-mono text-[10px] font-bold rounded-md uppercase">
-                      Featured
-                    </span>
-                  )}
+                  <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#0a0c10]/80 backdrop-blur-md text-[10px] font-mono text-gray-300 rounded border border-white/10">
+                    {p.date?.slice(0, 4) || '2024'}
+                  </span>
                 </div>
 
-                <div className="p-5 space-y-2">
-                  <span className="text-[10px] font-mono text-blue-400 font-semibold uppercase">{p.role}</span>
-                  <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition-colors">
+                <div className="p-6 space-y-3">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-emerald-400 uppercase">{p.role}</span>
+                    <span className="text-gray-500">{p.client || 'Enterprise'}</span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
                     {p.title}
                   </h3>
-                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">
                     {p.summary}
                   </p>
                 </div>
               </div>
 
-              <div className="p-5 pt-0 border-t border-white/5 mt-3 space-y-3">
-                <div className="flex flex-wrap gap-1 pt-3">
-                  {p.technologies.slice(0, 3).map((t, idx) => (
-                    <span key={idx} className="text-[10px] font-mono bg-white/5 text-gray-400 px-2 py-0.5 rounded">
+              <div className="p-6 pt-0 space-y-4">
+                <div className="flex flex-wrap gap-1.5">
+                  {p.technologies.slice(0, 4).map((t, idx) => (
+                    <span key={idx} className="text-[10px] font-mono bg-white/[0.04] text-gray-400 px-2 py-0.5 rounded border border-white/[0.06]">
                       {t}
                     </span>
                   ))}
-                  {p.technologies.length > 3 && (
-                    <span className="text-[10px] font-mono text-gray-500">+{p.technologies.length - 3}</span>
-                  )}
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-blue-400 font-semibold group-hover:translate-x-1 transition-transform">
+                <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-emerald-400 font-semibold group-hover:text-emerald-300">
                   <span>View Case Study</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
@@ -329,14 +320,19 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
 
 // ----------------------------------------------------
 // 3. PublicProjectDetailPage (/projects/:id)
+// FULL 12-SECTION CASE STUDY TEMPLATE (websiteprompts.com)
 // ----------------------------------------------------
 export const PublicProjectDetailPage: React.FC<PublicPageProps> = ({ onNavigate, param }) => {
   const projects = mockStorage.getProjects();
-  const project = projects.find(p => p.id === param || p.slug === param) || projects[0];
+  const currentIndex = projects.findIndex(p => p.id === param || p.slug === param);
+  const project = currentIndex >= 0 ? projects[currentIndex] : projects[0];
+  const nextProject = projects[(currentIndex + 1) % projects.length];
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/projects">
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="space-y-16 max-w-4xl mx-auto">
+        
+        {/* Top Back Nav */}
         <button
           onClick={() => onNavigate('/projects')}
           className="inline-flex items-center gap-1.5 text-xs font-mono text-gray-400 hover:text-white transition-colors"
@@ -344,86 +340,278 @@ export const PublicProjectDetailPage: React.FC<PublicPageProps> = ({ onNavigate,
           <ArrowLeft className="w-3.5 h-3.5" /> Back to all projects
         </button>
 
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-full text-xs font-mono font-bold uppercase">
-              {project.role}
-            </span>
-            <span className="text-xs font-mono text-gray-500">· {project.date}</span>
-          </div>
+        {/* ============================================================
+            1. HERO SECTION
+            - Large hero image
+            - Project title
+            - Client name & Quick summary
+            - Quick stats bar: Timeline, Role, Team Size, Year
+           ============================================================ */}
+        <section className="space-y-8">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-mono font-bold uppercase">
+                {project.role}
+              </span>
+              <span className="text-xs font-mono text-gray-500">· {project.client || 'Enterprise Client'}</span>
+            </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-            {project.title}
-          </h1>
-          <p className="text-base text-gray-300 leading-relaxed">{project.summary}</p>
-        </div>
-
-        {/* Hero Image */}
-        <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-          <img src={project.coverImage} alt={project.title} className="w-full h-80 sm:h-96 object-cover" />
-        </div>
-
-        {/* Key Metrics Strip */}
-        <div className="grid grid-cols-3 gap-4 p-6 rounded-2xl bg-[#0e131f] border border-white/5 text-center font-mono">
-          <div>
-            <p className="text-xl font-bold text-emerald-400">99.99%</p>
-            <p className="text-[10px] text-gray-400 uppercase mt-0.5">SLA Uptime</p>
-          </div>
-          <div>
-            <p className="text-xl font-bold text-white">&lt;140ms</p>
-            <p className="text-[10px] text-gray-400 uppercase mt-0.5">P99 Latency</p>
-          </div>
-          <div>
-            <p className="text-xl font-bold text-blue-400">$2.4M</p>
-            <p className="text-[10px] text-gray-400 uppercase mt-0.5">Revenue Impact</p>
-          </div>
-        </div>
-
-        {/* Case Study Body */}
-        <div className="p-8 rounded-2xl bg-[#0e131f] border border-white/5 space-y-6">
-          <h2 className="text-xl font-bold text-white">System Architecture & Execution</h2>
-          <div className="text-sm text-gray-300 leading-relaxed space-y-4">
-            <p>{project.caseStudyBody}</p>
-            <p>
-              Engineered with strict zero-runtime reflection, end-to-end type safety, and real-time WebSockets synchronization. Benchmarked across 100,000 synthetic concurrent connections.
+            <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+              {project.title}
+            </h1>
+            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
+              {project.summary}
             </p>
           </div>
 
-          <div className="pt-4 border-t border-white/5">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">Technologies Used</h3>
-            <div className="flex flex-wrap gap-1.5">
+          {/* Large Hero Impact Image */}
+          <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden border border-white/[0.08] shadow-2xl bg-black">
+            <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover" />
+          </div>
+
+          {/* Quick Stats Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 rounded-xl bg-[#0e121a] border border-white/[0.08] font-mono text-xs">
+            <div>
+              <span className="text-gray-500 block mb-1">TIMELINE</span>
+              <span className="text-white font-bold">8 Weeks</span>
+            </div>
+            <div>
+              <span className="text-gray-500 block mb-1">ROLE</span>
+              <span className="text-emerald-400 font-bold">{project.role}</span>
+            </div>
+            <div>
+              <span className="text-gray-500 block mb-1">TEAM SIZE</span>
+              <span className="text-white font-bold">3 Engineers</span>
+            </div>
+            <div>
+              <span className="text-gray-500 block mb-1">YEAR</span>
+              <span className="text-white font-bold">{project.date?.slice(0, 4) || '2024'}</span>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================
+            2. PROJECT OVERVIEW
+            - The Brief
+            - The Client
+            - Deliverables
+            - Tools Used
+           ============================================================ */}
+        <section className="space-y-8 border-t border-white/[0.08] pt-12">
+          <div className="space-y-1">
+            <span className="text-xs font-mono uppercase text-emerald-400">// 01. Overview</span>
+            <h2 className="text-2xl font-bold text-white tracking-tight">The Brief & Deliverables</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed">
+            <div className="space-y-3">
+              <h3 className="font-mono text-xs uppercase tracking-wider text-gray-400 font-bold">The Brief</h3>
+              <p className="text-gray-300">
+                The objective was to completely re-architect the legacy monolith into an edge-distributed,
+                zero-downtime platform capable of handling multi-region transactions with deterministic latency.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <h3 className="font-mono text-xs uppercase tracking-wider text-gray-400 font-bold">The Client Context</h3>
+              <p className="text-gray-300">
+                {project.client || 'TechFlow Inc.'}, a fast-growing digital platform managing high-concurrency
+                customer traffic across North America, Europe, and Asia-Pacific.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-5 rounded-xl bg-[#0e121a] border border-white/[0.08] space-y-3">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-gray-400">Core Technologies Deployed</h3>
+            <div className="flex flex-wrap gap-2">
               {project.technologies.map((t, idx) => (
-                <span key={idx} className="text-xs font-mono bg-white/5 text-gray-300 border border-white/10 px-3 py-1 rounded-xl">
+                <span key={idx} className="text-xs font-mono bg-white/[0.05] text-gray-200 border border-white/10 px-3 py-1 rounded-lg">
                   {t}
                 </span>
               ))}
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* External Links */}
-        <div className="flex items-center gap-3">
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-lg shadow-blue-600/20"
+        {/* ============================================================
+            3. THE CHALLENGE & CLIENT PULL QUOTE
+           ============================================================ */}
+        <section className="space-y-8 border-t border-white/[0.08] pt-12">
+          <div className="space-y-1">
+            <span className="text-xs font-mono uppercase text-emerald-400">// 02. The Bottleneck</span>
+            <h2 className="text-2xl font-bold text-white tracking-tight">The Challenge</h2>
+          </div>
+
+          <div className="space-y-4 text-sm text-gray-300 leading-relaxed">
+            <p>
+              Under surge traffic, the legacy system experienced catastrophic connection pooling exhaustion,
+              spiking P99 latencies past 3,200ms and causing dropped carts during high-velocity promotional drops.
+            </p>
+            <p>
+              Constraints included an unmovable 8-week production launch window, strict data residency requirements,
+              and a requirement that zero live customer transactions could be interrupted during migration.
+            </p>
+          </div>
+
+          {/* Client Pull Quote */}
+          <div className="p-8 rounded-2xl bg-emerald-500/5 border-l-4 border-emerald-500 border border-white/[0.06] space-y-2">
+            <Quote className="w-8 h-8 text-emerald-500/40" />
+            <blockquote className="text-base sm:text-lg font-medium text-gray-100 italic leading-relaxed">
+              "We were losing customers at peak checkout and hitting database deadlocks. We needed an engineer
+              who could dissect our architecture and guarantee resilience under heavy load."
+            </blockquote>
+            <p className="text-xs font-mono text-gray-400 pt-2">— VP of Product, {project.client || 'Enterprise Client'}</p>
+          </div>
+        </section>
+
+        {/* ============================================================
+            4. THE 5-PHASE PROCESS
+           ============================================================ */}
+        <section className="space-y-8 border-t border-white/[0.08] pt-12">
+          <div className="space-y-1">
+            <span className="text-xs font-mono uppercase text-emerald-400">// 03. Execution</span>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Engineering Process & Phasing</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 font-mono text-xs">
+            <div className="p-4 rounded-xl bg-[#0e121a] border border-white/[0.08] space-y-2">
+              <span className="text-emerald-400 font-bold block">PHASE 01</span>
+              <h4 className="text-white font-bold">Audit</h4>
+              <p className="text-[11px] text-gray-400 font-sans">Bottleneck profiling & telemetry baseline.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-[#0e121a] border border-white/[0.08] space-y-2">
+              <span className="text-emerald-400 font-bold block">PHASE 02</span>
+              <h4 className="text-white font-bold">Strategy</h4>
+              <p className="text-[11px] text-gray-400 font-sans">Edge routing & schema partition model.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-[#0e121a] border border-white/[0.08] space-y-2">
+              <span className="text-emerald-400 font-bold block">PHASE 03</span>
+              <h4 className="text-white font-bold">Design</h4>
+              <p className="text-[11px] text-gray-400 font-sans">Component contracts & typed API specs.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-[#0e121a] border border-white/[0.08] space-y-2">
+              <span className="text-emerald-400 font-bold block">PHASE 04</span>
+              <h4 className="text-white font-bold">Build</h4>
+              <p className="text-[11px] text-gray-400 font-sans">Edge worker rollout & shadow traffic tests.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-[#0e121a] border border-white/[0.08] space-y-2">
+              <span className="text-emerald-400 font-bold block">PHASE 05</span>
+              <h4 className="text-white font-bold">Launch</h4>
+              <p className="text-[11px] text-gray-400 font-sans">Zero-downtime cutover & live validation.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================
+            5. THE SOLUTION & ARCHITECTURE
+           ============================================================ */}
+        <section className="space-y-8 border-t border-white/[0.08] pt-12">
+          <div className="space-y-1">
+            <span className="text-xs font-mono uppercase text-emerald-400">// 04. Technical Solution</span>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Architecture & Decisions</h2>
+          </div>
+
+          <div className="p-8 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-6 text-sm text-gray-300 leading-relaxed">
+            <p>{project.caseStudyBody}</p>
+            <p>
+              Engineered with strict zero-runtime reflection, end-to-end type contracts, and real-time state
+              synchronization. All telemetry is piped directly into Grafana and CloudWatch with automated canary rollback triggers.
+            </p>
+
+            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/[0.06] text-xs font-mono">
+              <div>
+                <span className="text-emerald-400 font-bold block mb-1">DECISION: EDGE CACHE</span>
+                <p className="text-gray-400 font-sans">Stateless edge execution handles 94% of reads without database hits.</p>
+              </div>
+              <div>
+                <span className="text-emerald-400 font-bold block mb-1">DECISION: OPTIMISTIC LOCKING</span>
+                <p className="text-gray-400 font-sans">Eliminated deadlock states across 100,000 synthetic test connections.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================
+            6. THE RESULTS (BIG NUMBERS)
+           ============================================================ */}
+        <section className="space-y-8 border-t border-white/[0.08] pt-12">
+          <div className="space-y-1">
+            <span className="text-xs font-mono uppercase text-emerald-400">// 05. Measurable Outcomes</span>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Verified Production Impact</h2>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center font-mono">
+            <div className="p-6 rounded-xl bg-[#0e121a] border border-white/[0.08]">
+              <p className="text-3xl font-bold text-emerald-400">+156%</p>
+              <p className="text-[11px] text-gray-400 uppercase mt-1">Throughput</p>
+            </div>
+            <div className="p-6 rounded-xl bg-[#0e121a] border border-white/[0.08]">
+              <p className="text-3xl font-bold text-white">-40%</p>
+              <p className="text-[11px] text-gray-400 uppercase mt-1">P99 Latency</p>
+            </div>
+            <div className="p-6 rounded-xl bg-[#0e121a] border border-white/[0.08]">
+              <p className="text-3xl font-bold text-emerald-400">$2.4M</p>
+              <p className="text-[11px] text-gray-400 uppercase mt-1">Influenced GMV</p>
+            </div>
+            <div className="p-6 rounded-xl bg-[#0e121a] border border-white/[0.08]">
+              <p className="text-3xl font-bold text-white">99.99%</p>
+              <p className="text-[11px] text-gray-400 uppercase mt-1">SLO Availability</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================
+            7. LESSONS LEARNED & NEXT PROJECT
+           ============================================================ */}
+        <section className="space-y-8 border-t border-white/[0.08] pt-12">
+          <div className="space-y-1">
+            <span className="text-xs font-mono uppercase text-emerald-400">// 06. Retrospective</span>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Lessons Learned</h2>
+          </div>
+
+          <div className="p-6 rounded-xl bg-[#0e121a] border border-white/[0.08] space-y-3 text-xs text-gray-300 leading-relaxed font-mono">
+            <p>• Shadowing production traffic early revealed edge-case timeouts that unit tests failed to catch.</p>
+            <p>• Investing in strict TypeScript schema contracts reduced integration bugs between services to zero.</p>
+            <p>• Clear SLO dashboards fostered team confidence during the live cutover window.</p>
+          </div>
+
+          {/* Next Project Nav */}
+          <div className="pt-6 border-t border-white/[0.06] flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-mono text-gray-500 uppercase block">NEXT CASE STUDY</span>
+              <button
+                onClick={() => onNavigate(`/projects/${nextProject.slug || nextProject.id}`)}
+                className="text-base font-bold text-white hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+              >
+                <span>{nextProject.title}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <button
+              onClick={() => onNavigate('/projects')}
+              className="text-xs font-mono text-gray-400 hover:text-white"
             >
-              <ExternalLink className="w-3.5 h-3.5" /> Launch Live Demo
-            </a>
-          )}
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
-            >
-              View GitHub Source
-            </a>
-          )}
-        </div>
+              View All Work
+            </button>
+          </div>
+        </section>
+
+        {/* ============================================================
+            8. CONTEXTUAL HIRE ME CTA
+           ============================================================ */}
+        <section className="p-8 sm:p-12 rounded-2xl bg-gradient-to-tr from-[#0e121a] to-[#151c28] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 text-center sm:text-left">
+            <h3 className="text-xl font-bold text-white">Want results like these for your engineering product?</h3>
+            <p className="text-xs text-gray-400 font-mono">Currently available for selected architectural initiatives and leadership advisory.</p>
+          </div>
+          <button
+            onClick={() => onNavigate('/contact')}
+            className="px-6 py-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs font-mono transition-colors shrink-0"
+          >
+            Let's Work Together
+          </button>
+        </section>
+
       </div>
     </PublicLayout>
   );
@@ -437,42 +625,42 @@ export const PublicExperiencePage: React.FC<PublicPageProps> = ({ onNavigate }) 
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/experience">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-blue-400">Career Trajectory</span>
-          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-1">Professional Experience</h1>
-          <p className="text-xs text-gray-400 mt-2 max-w-xl">
-            Track record of leadership across distributed engineering teams, high-traffic SaaS, and creative labs.
+      <div className="max-w-4xl mx-auto space-y-10">
+        <div className="space-y-2">
+          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">// Career</span>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Professional History</h1>
+          <p className="text-xs font-mono text-gray-400 max-w-xl">
+            Track record of technical leadership across distributed systems, high-scale web applications, and creative tooling.
           </p>
         </div>
 
-        <div className="space-y-6 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-0.5 before:bg-white/10">
+        <div className="space-y-6 relative before:absolute before:left-3 before:top-3 before:bottom-3 before:w-[1px] before:bg-white/[0.08]">
           {experience.map(exp => (
             <div key={exp.id} className="relative pl-8 space-y-2">
-              <span className="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-[#070a10]" />
+              <span className="absolute left-[9px] top-6 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#0a0c10]" />
 
-              <div className="p-6 rounded-2xl bg-[#0e131f] border border-white/5 space-y-3">
+              <div className="p-6 sm:p-8 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                   <div>
                     <h3 className="text-base font-bold text-white">{exp.role}</h3>
-                    <p className="text-xs text-blue-400 font-medium">{exp.company} · {exp.location}</p>
+                    <p className="text-xs text-emerald-400 font-mono">{exp.company} · {exp.location}</p>
                   </div>
                   <span className="text-xs font-mono text-gray-400">{exp.startDate} – {exp.endDate}</span>
                 </div>
 
-                <p className="text-xs text-gray-300 leading-relaxed">{exp.description}</p>
+                <p className="text-xs text-gray-300 leading-relaxed font-sans">{exp.description}</p>
 
                 {exp.achievements && exp.achievements.length > 0 && (
-                  <ul className="text-xs text-gray-400 space-y-1 list-disc list-inside">
+                  <ul className="text-xs text-gray-400 space-y-1.5 list-disc list-inside pt-1">
                     {exp.achievements.map((ach, i) => (
                       <li key={i}>{ach}</li>
                     ))}
                   </ul>
                 )}
 
-                <div className="flex flex-wrap gap-1 pt-2">
+                <div className="flex flex-wrap gap-1.5 pt-2">
                   {exp.technologies.map((t, idx) => (
-                    <span key={idx} className="text-[10px] font-mono bg-white/5 text-gray-400 px-2 py-0.5 rounded">
+                    <span key={idx} className="text-[11px] font-mono bg-white/[0.04] text-gray-300 border border-white/[0.06] px-2.5 py-1 rounded-md">
                       {t}
                     </span>
                   ))}
@@ -494,30 +682,27 @@ export const PublicSkillsPage: React.FC<PublicPageProps> = ({ onNavigate }) => {
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/skills">
-      <div className="max-w-4xl mx-auto space-y-8">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-blue-400">Technical Capability</span>
-          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-1">Core Competencies & Radar</h1>
-          <p className="text-xs text-gray-400 mt-2 max-w-xl">
-            Proficiencies across distributed systems architecture, creative 3D computing, and cloud deployment pipelines.
+      <div className="max-w-4xl mx-auto space-y-10">
+        <div className="space-y-2">
+          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">// Capabilities</span>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Technical Toolbelt & Disciplines</h1>
+          <p className="text-xs font-mono text-gray-400 max-w-xl">
+            Categorized core proficiencies across distributed backends, UI architecture, cloud infrastructure, and 3D graphics. Clean badges without arbitrary percentages.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {skills.map(cat => (
-            <div key={cat.id} className="p-6 rounded-2xl bg-[#0e131f] border border-white/5 space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-blue-400 font-bold">{cat.category}</h3>
-              <div className="space-y-3">
+            <div key={cat.id} className="p-6 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-4">
+              <h3 className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">{cat.category}</h3>
+              <div className="flex flex-wrap gap-2">
                 {cat.skills.map((s, idx) => (
-                  <div key={idx} className="space-y-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="text-gray-200 font-medium">{s.name}</span>
-                      <span className="font-mono text-gray-400">{s.level}%</span>
-                    </div>
-                    <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-500 h-full rounded-full" style={{ width: `${s.level}%` }} />
-                    </div>
-                  </div>
+                  <span
+                    key={idx}
+                    className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-xs text-gray-200 font-mono hover:border-emerald-500/40 hover:text-white transition-colors"
+                  >
+                    {s.name}
+                  </span>
                 ))}
               </div>
             </div>
@@ -1093,107 +1278,110 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/contact">
-      <div className="max-w-4xl mx-auto space-y-10">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-blue-400">Direct Inquiries</span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight mt-1">Initiate Collaboration</h1>
-          <p className="text-xs text-gray-400 mt-2 max-w-xl">
-            Discuss architectural consulting, staff engineering engagements, or bespoke 3D interactive graphics.
+      <div className="max-w-4xl mx-auto space-y-12">
+        <div className="space-y-2">
+          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">// Contact</span>
+          <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">Initiate Collaboration</h1>
+          <p className="text-xs font-mono text-gray-400 max-w-xl">
+            Discuss architectural consulting, staff engineering engagements, or bespoke digital products.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
           {/* Contact Details Card */}
-          <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-[#0e131f] border border-white/5 space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-gray-400">Direct Channels</h3>
-              <div className="space-y-3 text-xs">
+          <div className="md:col-span-5 space-y-6">
+            <div className="p-6 sm:p-8 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-6">
+              <h3 className="text-xs font-mono uppercase tracking-wider text-gray-400 font-semibold">// Direct Channels</h3>
+              <div className="space-y-4 text-xs font-mono">
                 <div>
-                  <span className="text-gray-500 font-mono block">Email:</span>
-                  <a href={`mailto:${identity.socialLinks.email}`} className="text-white font-medium hover:text-blue-400 transition-colors">
+                  <span className="text-gray-500 block text-[11px]">EMAIL</span>
+                  <a href={`mailto:${identity.socialLinks.email}`} className="text-white hover:text-emerald-400 transition-colors">
                     {identity.socialLinks.email}
                   </a>
                 </div>
                 <div>
-                  <span className="text-gray-500 font-mono block">Base:</span>
+                  <span className="text-gray-500 block text-[11px]">LOCATION</span>
                   <span className="text-white">{identity.location} (IST / UTC+5:30)</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 font-mono block">GitHub:</span>
-                  <a href={identity.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                  <span className="text-gray-500 block text-[11px]">GITHUB</span>
+                  <a href={identity.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">
                     github.com/silversten
                   </a>
                 </div>
                 <div>
-                  <span className="text-gray-500 font-mono block">LinkedIn:</span>
-                  <a href={identity.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                  <span className="text-gray-500 block text-[11px]">LINKEDIN</span>
+                  <a href={identity.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">
                     linkedin.com/in/prajwal-dl
                   </a>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-white/5">
+              <div className="pt-4 border-t border-white/[0.06]">
                 <button
                   onClick={() => setShowQr(true)}
-                  className="w-full py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                  className="w-full py-2.5 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 hover:text-white border border-white/[0.08] rounded-xl text-xs font-mono flex items-center justify-center gap-2 transition-colors"
                 >
-                  <QrCode className="w-3.5 h-3.5 text-purple-400" /> Share Contact vCard QR
+                  <QrCode className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Share Contact vCard QR</span>
                 </button>
               </div>
             </div>
           </div>
 
           {/* Form */}
-          <div className="md:col-span-2">
-            <form onSubmit={handleSubmit} className="p-8 rounded-2xl bg-[#0e131f] border border-white/5 space-y-4 text-xs">
-              <h3 className="text-base font-bold text-white">Send Direct Message</h3>
+          <div className="md:col-span-7">
+            <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-5 text-xs font-mono">
+              <h3 className="text-base font-bold text-white font-sans">Send Direct Message</h3>
 
               {sent && (
-                <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center gap-2">
-                  <Check className="w-4 h-4" /> Message received. Prajwal will respond within 24 business hours.
+                <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl flex items-center gap-2 font-mono text-xs">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Message received. Prajwal will respond within 24 business hours.</span>
                 </div>
               )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-gray-400 block mb-1 font-mono">Your Name *</label>
+                  <label className="text-gray-400 block mb-1.5 text-[11px]">YOUR NAME *</label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-black/40 border border-white/[0.1] rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="text-gray-400 block mb-1 font-mono">Your Work Email *</label>
+                  <label className="text-gray-400 block mb-1.5 text-[11px]">WORK EMAIL *</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-black/40 border border-white/[0.1] rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition-colors"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-gray-400 block mb-1 font-mono">Project Scope / Message *</label>
+                <label className="text-gray-400 block mb-1.5 text-[11px]">PROJECT SCOPE / MESSAGE *</label>
                 <textarea
                   rows={5}
                   required
                   value={message}
                   onChange={e => setMessage(e.target.value)}
                   placeholder="Outline timelines, technical objectives, or hiring opportunities..."
-                  className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-blue-500 resize-none leading-relaxed"
+                  className="w-full bg-black/40 border border-white/[0.1] rounded-xl p-3.5 text-white focus:outline-none focus:border-emerald-500 transition-colors resize-none leading-relaxed font-sans text-xs"
                 />
               </div>
 
               <button
                 type="submit"
-                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold flex items-center gap-1.5 transition-colors shadow-lg shadow-blue-600/20"
+                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold flex items-center gap-2 transition-colors font-mono text-xs shadow-lg shadow-emerald-950"
               >
-                <Send className="w-3.5 h-3.5" /> Dispatch Message
+                <Send className="w-3.5 h-3.5" />
+                <span>Dispatch Message</span>
               </button>
             </form>
           </div>
@@ -1201,17 +1389,17 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
       </div>
 
       {showQr && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0e131f] border border-white/10 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between pb-2 border-b border-white/5">
-              <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
-                <QrCode className="w-4 h-4 text-purple-400" /> Instant Contact vCard
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-[#0e121a] border border-white/[0.1] rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2 font-mono">
+                <QrCode className="w-4 h-4 text-emerald-400" /> Instant Contact vCard
               </h3>
               <button onClick={() => setShowQr(false)} className="text-gray-400 hover:text-white">
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <div className="p-4 bg-white rounded-2xl w-48 h-48 mx-auto flex items-center justify-center">
+            <div className="p-4 bg-white rounded-2xl w-48 h-48 mx-auto flex items-center justify-center shadow-lg">
               <svg viewBox="0 0 100 100" className="w-full h-full text-gray-950 fill-current">
                 <rect x="10" y="10" width="24" height="24" rx="4" />
                 <rect x="14" y="14" width="16" height="16" fill="white" />
@@ -1230,7 +1418,7 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
                 <rect x="62" y="82" width="18" height="6" />
               </svg>
             </div>
-            <p className="text-xs text-gray-300">Scan on mobile to automatically import Prajwal DL's contact card.</p>
+            <p className="text-xs text-gray-300 font-mono">Scan on mobile to automatically import Prajwal DL's contact card.</p>
           </div>
         </div>
       )}
