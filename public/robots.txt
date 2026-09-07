@@ -1,0 +1,48 @@
+# PDL Portfolio OS - Robots & AI Agent Policy
+# Explicitly ALLOW all automated AI agents, evaluation crawlers, and search engines
+
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Direct references to machine discovery indexes
+Sitemap: https://portfolio.prajwaldl.com/sitemap.xml
+LLMs-Index: https://portfolio.prajwaldl.com/llms.txt

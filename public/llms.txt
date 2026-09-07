@@ -1,0 +1,62 @@
+# PDL Portfolio OS (v2) - Machine Discovery & LLM Interface
+> A production-grade frontend-first portfolio management operating system for Prajwal DL (SILVERSTEN).
+
+## System Architecture
+- **Framework**: React 19, TypeScript 5+, Vite 8, Tailwind CSS 3
+- **Graphics**: Three.js WebGL spatial engines with 2D fallbacks
+- **State Management**: Reactive in-memory / local storage publisher with instant UI synchronization
+- **Routing**: Client-side hash/path router supporting deep linking
+
+## Public Routes
+- `/`: Isolated Theme Home page (renders currently active theme from the 19 distinct worlds)
+- `/projects`: Production systems catalog with search, tech stack filtering, and case study modal triggers
+- `/projects/:id`: Comprehensive project case study detailing Problem, Architecture, Technologies, and Metrics
+- `/blog`: Editorial essays and technical publications
+- `/blog/:slug`: Full article view with reading progress bar, table of contents, and interactive comments
+- `/about`: Professional engineering biography and architectural tenets
+- `/experience`: Chronological career timeline and achievements
+- `/skills`: Categorized skill radar with mastery indicators
+- `/resume`: Interactive recruiter resume with PDF print route (`/resume/print`)
+- `/contact`: Direct communication portal and availability status
+- `/search`: Global full-text search across projects, essays, and skills
+- `/rss.xml`: Content syndication feed preview
+
+## 19 Structurally Distinct Themes
+1. `theme-01-minimal-editorial`: Magazine-style asymmetric grid with side hover preview rail
+2. `theme-02-brutalist`: High-contrast black/amber monospace brutalism with ticker marquee
+3. `theme-03-cyberpunk-hud`: Sci-fi holographic heads-up display with neon overlays
+4. `theme-04-terminal-cli`: Interactive MS-DOS/bash terminal interface with runnable commands
+5. `theme-05-galaxy-cosmos-3d`: Three.js WebGL 3D particle cosmos background with orbit controls
+6. `theme-06-bento-showcase`: Apple-style modular bento grid with live metric cards
+7. `theme-07-noir-aurora`: Dark ambient northern lights aurora glows with fluid glassmorphism
+8. `theme-08-bauhaus-modernist`: Geometric constructivist shapes (circles, triangles, bold primary colors)
+9. `theme-09-retro-desktop-os`: 90s desktop operating system with draggable windows, start menu, and taskbar
+10. `theme-10-horizontal-scrolly`: Side-scrolling panoramic architectural timeline
+11. `theme-11-kinetic-physics-3d`: Interactive 3D physics floating typography and canvas
+12. `theme-12-blueprint-drafting`: Cyanotype architectural blueprint with technical drafting grids
+13. `theme-13-swiss-typographic`: International typographic style with strict baseline grid
+14. `theme-14-split-screen`: Dual-column independent scrolling with interactive pinned view
+15. `theme-15-neumorphic-soft`: Soft tactile clay/neumorphic surfaces with debossed and embossed highlights
+16. `theme-16-holographic-matrix`: Green phosphor digital rain with matrix cascade overlays
+17. `theme-17-newspaper-broadside`: Classic broadsheet newspaper layout with multi-column serif text
+18. `theme-18-spatial-canvas`: Three.js interactive 3D spatial node graph with rotatable camera
+19. `theme-19-prajwal-luxury`: Obsidian black and bullion gold haute couture typography
+
+## Admin Operating System (`/admin`)
+- `/admin/dashboard`: Executive control center with health radar, publishing lifecycle, and quick actions
+- `/admin/visual-editor`: Professional 3-column visual site builder with multi-viewport responsive preview
+- `/admin/settings`: Grouped settings architecture with 16 dedicated category sections
+- `/admin/design-system`: Real-time token studio for colors, typography, radius, shadows, and live component previews
+- `/admin/themes`: Full-screen theme switcher & visual gallery
+- `/admin/projects`: Project CMS with cover manager and tech stack selector
+- `/admin/blog`: Markdown blog editor with live preview and reading time calculation
+- `/admin/automations`: LinkedIn and social post queue with Telegram approval workflows
+- `/admin/analytics`: Real-time traffic, recruiter sessions, and pageview intelligence
+- `/admin/seo`: OpenGraph social card previews, SERP preview, and sitemap generator
+- `/admin/recruiter`: Recruiter-optimized high-density resume and portfolio mode
+- `/admin/media`: Asset library with upload, search, tag, and storage quota indicators
+- `/admin/backup`: One-click JSON data export, migration, and restore engine
+
+## Automated Agent & Testing Compatibility
+- All interactive controls contain explicit `data-testid` and `aria-label` attributes for automated browser testing.
+- No blocking paywalls, registration gates, or CAPTCHA obstructions exist in the evaluation flow.

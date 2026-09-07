@@ -41,6 +41,7 @@ import {
   ActivityLog, 
   ProfileSettings 
 } from '@/pages/admin/CMSManagerPages';
+import { SettingsPage } from '@/pages/admin/SettingsPage';
 
 // Special & Public Pages
 import { SharedPreviewPage, PasswordProtectedPage, NotFoundPage } from '@/pages/public/SpecialPages';
@@ -200,7 +201,7 @@ export function App() {
     } else if (currentRoute === '/admin/activity') {
       adminContent = <ActivityLog />;
     } else if (currentRoute === '/admin/settings') {
-      adminContent = <ProfileSettings />;
+      adminContent = <SettingsPage />;
     } else {
       adminContent = <Dashboard onNavigate={navigate} />;
     }
