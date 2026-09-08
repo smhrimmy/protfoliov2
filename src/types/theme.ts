@@ -1,4 +1,4 @@
-export type ThemeCapability = '3D' | 'Heavy Assets' | 'High Contrast' | 'Motion-Rich';
+export type ThemeCapability = '3D' | 'Heavy Assets' | 'High Contrast' | 'Motion-Rich' | 'Pointer-Intensive' | 'Camera';
 export type ThemeCategory = 'Editorial' | 'Brutalist' | 'Cyber' | 'OS / Retro' | '3D / Spatial' | 'Minimalist' | 'Experimental';
 export type PerformanceImpact = 'Light' | 'Moderate' | 'Heavy';
 

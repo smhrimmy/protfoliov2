@@ -456,5 +456,101 @@ export const THEME_MANIFESTS: ThemeManifest[] = [
       textMuted: '#a1a1aa',
       borderColor: '#27272a'
     }
+  },
+  {
+    id: 'theme-20-layered-paper-collage',
+    number: '20',
+    name: 'Layered Paper Collage',
+    category: 'Experimental',
+    concept: 'Tactile desk and corkboard portfolio with sliced paper-cutout headline fragments, sticky notes, and multi-plane cursor parallax.',
+    capabilities: ['Pointer-Intensive'],
+    performance: 'Light',
+    layoutArchitecture: 'collage-canvas',
+    navigationPattern: 'sticky-note-tabs',
+    gridSystem: 'none-collage',
+    typographyPairing: 'Playfair Display + Courier Monospace',
+    signatureInteraction: 'Multi-plane cursor parallax separating layered paper cutouts with physical shadow gaps',
+    motionModel: 'Paper settling overshoot and depth translation',
+    uses3D: false,
+    defaultTokens: {
+      bgPrimary: '#eae6dd',
+      bgSecondary: '#dfdacd',
+      accent: '#d9534f',
+      textPrimary: '#2c2927',
+      textMuted: '#6d6861',
+      borderColor: '#c6bfb2'
+    }
+  },
+  {
+    id: 'theme-21-secret-reveal-ai',
+    number: '21',
+    name: 'Secret-Reveal AI Persona',
+    category: 'Cyber',
+    concept: 'Single dramatic full-bleed portrait that activates into an AI persona with a staged HUD helmet assembly sequence and telemetry hotspots.',
+    capabilities: ['Heavy Assets', 'Motion-Rich'],
+    performance: 'Moderate',
+    layoutArchitecture: 'single-focal-reveal',
+    navigationPattern: 'overlay-topbar-minimal',
+    gridSystem: 'none-centered',
+    typographyPairing: 'Orbitron + Space Grotesk',
+    signatureInteraction: 'Staged multi-piece cybernetic HUD assembly reveal with telemetry hover readouts',
+    motionModel: 'Staggered entrance transforms with spring settle',
+    uses3D: false,
+    defaultTokens: {
+      bgPrimary: '#05070a',
+      bgSecondary: '#0c1017',
+      accent: '#00e5ff',
+      textPrimary: '#e6edf3',
+      textMuted: '#7d8590',
+      borderColor: '#00e5ff30'
+    }
+  },
+  {
+    id: 'theme-22-animated-mascot',
+    number: '22',
+    name: 'Animated Mascot',
+    category: 'Experimental',
+    concept: 'Saturated flat-color brand world built around an original vector mascot with cursor-tracking eyes, idle blinking, and dynamic section poses.',
+    capabilities: ['Pointer-Intensive', 'Motion-Rich'],
+    performance: 'Light',
+    layoutArchitecture: 'character-anchored-sections',
+    navigationPattern: 'chunky-playful-buttons',
+    gridSystem: 'color-block-panels',
+    typographyPairing: 'Plus Jakarta Sans + Space Grotesk Bold',
+    signatureInteraction: 'Live cursor-tracking pupils, idle blink timer, and dynamic mascot pose shifts per section',
+    motionModel: 'Bouncy spring easing, squash and stretch',
+    uses3D: false,
+    defaultTokens: {
+      bgPrimary: '#ffefd5',
+      bgSecondary: '#ffe4b5',
+      accent: '#ff4757',
+      textPrimary: '#1e272e',
+      textMuted: '#57606f',
+      borderColor: '#ffa502'
+    }
+  },
+  {
+    id: 'theme-23-handtracked-lowpoly',
+    number: '23',
+    name: 'Hand-Tracked Low-Poly',
+    category: '3D / Spatial',
+    concept: 'Low-poly faceted 3D portrait mesh paired with opt-in client-side webcam hand tracking inside a live phone device frame with full 3-tier fallback.',
+    capabilities: ['3D', 'Heavy Assets', 'Camera'],
+    performance: 'Heavy',
+    layoutArchitecture: 'dark-canvas-with-device-frame',
+    navigationPattern: 'minimal-corner-actions',
+    gridSystem: 'none-spatial-hero',
+    typographyPairing: 'Syne + Space Mono',
+    signatureInteraction: 'In-browser camera hand gesture tracking to fold and rotate 3D low-poly mesh',
+    motionModel: 'Faceted 3D rotation, ambient breathing, and gesture responses',
+    uses3D: true,
+    defaultTokens: {
+      bgPrimary: '#08080c',
+      bgSecondary: '#101018',
+      accent: '#7952ff',
+      textPrimary: '#f0f0f5',
+      textMuted: '#808098',
+      borderColor: '#7952ff30'
+    }
   }
 ];

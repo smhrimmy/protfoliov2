@@ -78,6 +78,22 @@ import { Home as T18Home } from './theme-18-spatial-canvas/Home';
 import { config as t19Config } from './theme-19-prajwal-luxury/theme.config';
 import { Home as T19Home } from './theme-19-prajwal-luxury/Home';
 
+// Theme 20
+import { config as t20Config } from './theme-20-layered-paper-collage/theme.config';
+import { Home as T20Home } from './theme-20-layered-paper-collage/Home';
+
+// Theme 21
+import { config as t21Config } from './theme-21-secret-reveal-ai/theme.config';
+import { Home as T21Home } from './theme-21-secret-reveal-ai/Home';
+
+// Theme 22
+import { config as t22Config } from './theme-22-animated-mascot/theme.config';
+import { Home as T22Home } from './theme-22-animated-mascot/Home';
+
+// Theme 23
+import { config as t23Config } from './theme-23-handtracked-lowpoly/theme.config';
+import { Home as T23Home } from './theme-23-handtracked-lowpoly/Home';
+
 export interface ThemeBundle {
   config: ThemeConfig;
   Home: React.ComponentType<ThemePageProps>;
@@ -102,7 +118,11 @@ export const themeRegistry: Record<string, ThemeBundle> = {
   'theme-16-holographic-matrix': { config: t16Config, Home: T16Home },
   'theme-17-newspaper-broadside': { config: t17Config, Home: T17Home },
   'theme-18-spatial-canvas': { config: t18Config, Home: T18Home },
-  'theme-19-prajwal-luxury': { config: t19Config, Home: T19Home }
+  'theme-19-prajwal-luxury': { config: t19Config, Home: T19Home },
+  'theme-20-layered-paper-collage': { config: t20Config, Home: T20Home },
+  'theme-21-secret-reveal-ai': { config: t21Config, Home: T21Home },
+  'theme-22-animated-mascot': { config: t22Config, Home: T22Home },
+  'theme-23-handtracked-lowpoly': { config: t23Config, Home: T23Home }
 };
 
 // ============================================================================

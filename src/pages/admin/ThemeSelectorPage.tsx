@@ -42,7 +42,7 @@ export const ThemeSelectorPage: React.FC<ThemeSelectorPageProps> = ({ onNavigate
   });
 
   const categories = ['All', 'Editorial', 'Brutalist', 'Cyber', 'OS / Retro', '3D / Spatial', 'Minimalist', 'Experimental'];
-  const capabilities = ['All', '3D', 'High Contrast', 'Motion-Rich', 'Heavy Assets'];
+  const capabilities = ['All', '3D', 'High Contrast', 'Motion-Rich', 'Heavy Assets', 'Pointer-Intensive', 'Camera'];
 
   const toggleFavorite = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
