@@ -63,14 +63,16 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
 
   const breadcrumbs = getBreadcrumbs();
 
+  const isDashboard = currentRoute === '/admin' || currentRoute === '/admin/dashboard';
+
   return (
-    <header className="h-16 bg-[#0a0e17]/80 backdrop-blur-md border-b border-white/5 px-4 sm:px-6 flex items-center justify-between shrink-0 select-none z-30">
+    <header className={`h-16 ${isDashboard ? 'bg-[#ececeb]/90 border-b border-black/8 text-[#222222]' : 'bg-[#0a0e17]/80 border-b border-white/5 text-gray-100'} backdrop-blur-md px-4 sm:px-6 flex items-center justify-between shrink-0 select-none z-30`}>
       {/* Left: Breadcrumbs & Autosave */}
       <div className="flex items-center gap-3 min-w-0">
         <nav className="flex items-center gap-1.5 text-xs truncate" aria-label="Breadcrumb">
           <button 
             onClick={() => onNavigate('/admin/dashboard')}
-            className="text-gray-500 hover:text-white font-mono transition-colors"
+            className={`${isDashboard ? 'text-gray-600 hover:text-black' : 'text-gray-500 hover:text-white'} font-mono transition-colors`}
           >
             ADMIN
           </button>
@@ -82,8 +84,8 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
                 onClick={() => onNavigate(b.path)}
                 className={`truncate transition-colors ${
                   idx === breadcrumbs.length - 1 
-                    ? 'font-semibold text-white' 
-                    : 'text-gray-400 hover:text-white'
+                    ? (isDashboard ? 'font-semibold text-black' : 'font-semibold text-white')
+                    : (isDashboard ? 'text-gray-500 hover:text-black' : 'text-gray-400 hover:text-white')
                 }`}
               >
                 {b.label}
@@ -93,8 +95,8 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
         </nav>
 
         {/* Autosave Status */}
-        <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/5 text-[11px] font-mono text-gray-400 shrink-0">
-          <span className={`w-1.5 h-1.5 rounded-full ${autosaveState === 'Saved' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'}`} />
+        <div className={`hidden lg:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full ${isDashboard ? 'bg-black/5 border border-black/10 text-gray-600' : 'bg-white/5 border border-white/5 text-gray-400'} text-[11px] font-mono shrink-0`}>
+          <span className={`w-1.5 h-1.5 rounded-full ${autosaveState === 'Saved' ? 'bg-emerald-500' : 'bg-amber-500 animate-pulse'}`} />
           <span>{autosaveState}</span>
         </div>
       </div>
@@ -103,18 +105,18 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
       <div className="flex items-center gap-2">
         <button
           onClick={onOpenCommandPalette}
-          className="hidden md:flex items-center gap-3 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-400 transition-colors"
+          className={`hidden md:flex items-center gap-3 px-3 py-1.5 rounded-xl ${isDashboard ? 'bg-white/80 hover:bg-white border border-black/10 text-gray-700 shadow-sm' : 'bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400'} text-xs transition-colors`}
           data-testid="admin-command-palette-trigger"
         >
           <Search className="w-3.5 h-3.5" />
           <span>Quick actions & jump...</span>
-          <kbd className="text-[10px] font-mono bg-white/10 px-1.5 py-0.5 rounded text-gray-300">⌘K</kbd>
+          <kbd className={`text-[10px] font-mono ${isDashboard ? 'bg-black/10 text-gray-700' : 'bg-white/10 text-gray-300'} px-1.5 py-0.5 rounded`}>⌘K</kbd>
         </button>
 
         <button
           onClick={onOpenContentSearch}
           title="Full-text content search (/)"
-          className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+          className={`p-2 rounded-xl ${isDashboard ? 'bg-white/80 hover:bg-white border border-black/10 text-gray-700 shadow-sm' : 'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'} transition-colors`}
           data-testid="admin-content-search-trigger"
         >
           <Search className="w-4 h-4" />
@@ -128,16 +130,16 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
           onClick={() => onNavigate('/admin/themes')}
           title="Switch or customize active theme"
           data-testid="admin-active-theme-badge"
-          className="hidden xl:flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 text-xs text-gray-300 transition-colors"
+          className={`hidden xl:flex items-center gap-2 px-2.5 py-1.5 rounded-xl ${isDashboard ? 'bg-white/80 hover:bg-white border border-black/10 text-gray-800 shadow-sm' : 'bg-white/5 hover:bg-white/10 border border-white/5 text-gray-300'} text-xs transition-colors`}
         >
           <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-          <span className="font-mono text-[11px] text-gray-400 truncate max-w-[130px]">{activeManifest.name}</span>
+          <span className={`font-mono text-[11px] ${isDashboard ? 'text-gray-700' : 'text-gray-400'} truncate max-w-[130px]`}>{activeManifest.name}</span>
         </button>
 
         {/* Draft / Live Lifecycle Indicator */}
-        <div className="flex items-center gap-1 sm:gap-2 bg-white/5 p-1 rounded-xl border border-white/5 text-xs">
+        <div className={`flex items-center gap-1 sm:gap-2 ${isDashboard ? 'bg-black/5 border border-black/10' : 'bg-white/5 border border-white/5'} p-1 rounded-xl text-xs`}>
           <span className={`px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-mono uppercase font-bold ${
-            siteMode === 'live' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'
+            siteMode === 'live' ? 'bg-emerald-500/20 text-emerald-600' : 'bg-amber-500/20 text-amber-700'
           }`}>
             {siteMode}
           </span>
@@ -145,7 +147,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
             <button
               onClick={handlePublishLive}
               data-testid="admin-publish-live-btn"
-              className="px-2 sm:px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors shadow-sm"
+              className="px-2 sm:px-2.5 py-1 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors shadow-sm"
             >
               <CheckCircle2 className="w-3.5 h-3.5" /> 
               <span className="hidden sm:inline">Publish Live</span>
@@ -158,7 +160,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
           onClick={onOpenNotifications}
           title="Notification Center"
           data-testid="admin-notifications-trigger"
-          className="relative p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+          className={`relative p-2 rounded-xl ${isDashboard ? 'bg-white/80 hover:bg-white border border-black/10 text-gray-700 shadow-sm' : 'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'} transition-colors`}
         >
           <Bell className="w-4 h-4" />
           {unreadCount > 0 && (
@@ -171,7 +173,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
           onClick={onOpenShortcuts}
           title="Keyboard shortcuts (?)"
           data-testid="admin-shortcuts-trigger"
-          className="hidden sm:flex p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+          className={`hidden sm:flex p-2 rounded-xl ${isDashboard ? 'bg-white/80 hover:bg-white border border-black/10 text-gray-700 shadow-sm' : 'bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white'} transition-colors`}
         >
           <HelpCircle className="w-4 h-4" />
         </button>
@@ -180,11 +182,11 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
         <button
           onClick={() => onNavigate('/')}
           data-testid="admin-view-site-btn"
-          className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-medium text-white flex items-center gap-1.5 transition-colors"
+          className={`px-2.5 sm:px-3 py-1.5 rounded-xl ${isDashboard ? 'bg-[#202020] hover:bg-[#111111] text-white shadow-sm' : 'bg-white/10 hover:bg-white/15 text-white'} text-xs font-medium flex items-center gap-1.5 transition-colors`}
         >
           <Globe className="w-3.5 h-3.5 text-blue-400" />
           <span className="hidden sm:inline">View Site</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-gray-400" />
+          <ArrowUpRight className={`w-3.5 h-3.5 ${isDashboard ? 'text-gray-300' : 'text-gray-400'}`} />
         </button>
       </div>
     </header>

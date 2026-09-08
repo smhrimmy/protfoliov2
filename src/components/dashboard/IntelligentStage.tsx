@@ -107,14 +107,16 @@ interface IntelligentStageProps {
   dotWord?: string;
   headlineSuffix?: string;
   introText?: string;
+  children?: React.ReactNode;
 }
 
 export const IntelligentStage: React.FC<IntelligentStageProps> = ({
   onNavigate,
-  headlinePrefix = 'Operating at ',
+  headlinePrefix = 'Built for ',
   dotWord = 'Intelligent',
   headlineSuffix = 'Performance',
-  introText = 'Every capability is engineered for speed, scale and contextual understanding, giving your AI the foundation to reason, adapt and perform in production.'
+  introText = 'Every capability is engineered for speed, scale and contextual understanding, giving your portfolio the foundation to reason, adapt and perform in production.',
+  children
 }) => {
   const [ambientMotion, setAmbientMotion] = useState<boolean>(() => {
     return localStorage.getItem('pdl_ambient_motion') !== 'false';
@@ -168,7 +170,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
   }, []);
 
   return (
-    <div className="intelligent-stage-root relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl mb-8">
+    <div className="intelligent-stage-root relative w-full min-h-full">
       {/* LOCKED SVG FILTERS */}
       <div className="filter-defs" aria-hidden="true">
         <svg width="0" height="0">
@@ -285,9 +287,77 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           .stage-motion { display: none !important; }
         }
 
-        .masthead-wrap, .cards-wrap {
+        .masthead-wrap, .cards-wrap, .stage-dashboard-body {
           width: min(100%, var(--content-max));
           margin-inline: auto;
+        }
+
+        .stage-glass-panel {
+          position: relative;
+          background: rgba(255, 255, 255, 0.72);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.85);
+          box-shadow: 0 4px 20px -2px rgba(50, 28, 39, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+          border-radius: 24px;
+          color: var(--ink);
+          overflow: hidden;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .stage-glass-panel:hover {
+          border-color: rgba(255, 255, 255, 1);
+          box-shadow: 0 8px 30px -4px rgba(50, 28, 39, 0.09), 0 2px 6px -1px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        .stage-glass-inset {
+          background: rgba(255, 255, 255, 0.55);
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          border-radius: 16px;
+        }
+
+        .stage-pill-action {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          border-radius: 9999px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+          padding: 0.55rem 1.15rem;
+          transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+          cursor: pointer;
+        }
+        .stage-pill-action:hover {
+          transform: translateY(-1.5px);
+        }
+        .stage-pill-action-dark {
+          background: #1e2024;
+          color: #ffffff;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        .stage-pill-action-dark:hover {
+          background: #0d0e10;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        .stage-pill-action-crimson {
+          background: #ad314d;
+          color: #ffffff;
+          box-shadow: 0 2px 6px rgba(173, 49, 77, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        .stage-pill-action-crimson:hover {
+          background: #8e253d;
+          box-shadow: 0 4px 12px rgba(173, 49, 77, 0.35);
+        }
+        .stage-pill-action-glass {
+          background: rgba(255, 255, 255, 0.85);
+          color: #2d2d2d;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 1px 3px rgba(58, 25, 39, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+        .stage-pill-action-glass:hover {
+          background: rgba(255, 255, 255, 1);
+          box-shadow: 0 4px 12px rgba(58, 25, 39, 0.1);
         }
 
         .masthead-wrap {
@@ -1161,6 +1231,13 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             </button>
           </article>
         </section>
+
+        {/* COMPLETE DASHBOARD BODY IN STAGE DESIGN SYSTEM */}
+        {children && (
+          <div className="stage-dashboard-body mt-12 space-y-8 z-10 relative">
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );
