@@ -40,25 +40,25 @@ export const AutomationsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8 text-gray-100 font-sans pb-28">
+    <div className="p-6 max-w-7xl mx-auto space-y-8 text-[#222222] font-sans pb-28">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-[#ad314d] animate-pulse" />
+            <span className="text-[10px] font-mono text-[#ad314d] uppercase tracking-wider font-bold">
               HONEST SIMULATION ENGINE · TELEGRAM APPROVALS
             </span>
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Social Automation & Syndication Hub</h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight">Social Automation & Syndication Hub</h1>
+          <p className="text-xs text-[#55555e] mt-1">
             Human-in-the-loop social pipelines for LinkedIn, X/Twitter, and Dev.to cross-posting.
           </p>
         </div>
 
         <button
           onClick={handleTriggerTestDraft}
-          className="px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-purple-600/20"
+          className="px-4 py-2.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-2 shadow-sm transition-all"
         >
           <Sparkles className="w-4 h-4" /> Generate Test LinkedIn Draft
         </button>

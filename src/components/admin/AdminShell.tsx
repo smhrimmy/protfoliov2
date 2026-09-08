@@ -41,10 +41,8 @@ export const AdminShell: React.FC<AdminShellProps> = ({ currentRoute, onNavigate
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
-  const isDashboard = currentRoute === '/admin' || currentRoute === '/admin/dashboard';
-
   return (
-    <div className={`flex h-screen ${isDashboard ? 'bg-[#ececeb] text-[#222222]' : 'bg-[#070a10] text-gray-100'} overflow-hidden font-sans`}>
+    <div className="stage-admin-scope flex h-screen bg-[#ececeb] text-[#222222] overflow-hidden font-sans">
       {/* Desktop Sidebar */}
       <div className="hidden md:flex">
         <AdminSidebar currentRoute={currentRoute} onNavigate={onNavigate} />
@@ -61,7 +59,7 @@ export const AdminShell: React.FC<AdminShellProps> = ({ currentRoute, onNavigate
           onOpenNotifications={() => setNotificationsOpen(true)}
         />
 
-        <main className={`flex-1 overflow-y-auto pb-20 md:pb-6 ${isDashboard ? 'bg-[#ececeb]' : 'bg-[#070a10]'}`}>
+        <main className="stage-admin-scope flex-1 overflow-y-auto pb-20 md:pb-6 bg-[#ececeb] text-[#222222]">
           {children}
         </main>
       </div>

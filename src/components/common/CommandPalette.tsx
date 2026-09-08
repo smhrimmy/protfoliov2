@@ -44,24 +44,24 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
   const filtered = items.filter(item => item.label.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start justify-center pt-24 p-4 animate-in fade-in duration-100">
-      <div className="bg-[#111827] border border-white/10 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden text-white">
-        <div className="flex items-center px-4 py-3 border-b border-white/10">
-          <Search className="w-5 h-5 text-gray-400 mr-3" />
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center pt-24 p-4 animate-in fade-in duration-100">
+      <div className="bg-white/95 border border-black/10 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden text-[#1a1a1a]">
+        <div className="flex items-center px-4 py-3 border-b border-black/8">
+          <Search className="w-5 h-5 text-[#ad314d] mr-3" />
           <input
             autoFocus
             type="text"
             placeholder="Type a command, route, or search..."
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="w-full bg-transparent text-sm focus:outline-none placeholder-gray-500 text-white"
+            className="w-full bg-transparent text-sm focus:outline-none placeholder-gray-400 text-[#1a1a1a]"
           />
-          <kbd className="text-[10px] font-mono bg-white/10 px-2 py-1 rounded text-gray-400">ESC</kbd>
+          <kbd className="text-[10px] font-mono bg-black/5 px-2 py-1 rounded text-gray-500">ESC</kbd>
         </div>
 
         <div className="max-h-80 overflow-y-auto p-2">
           {filtered.length === 0 ? (
-            <div className="p-6 text-center text-sm text-gray-400">No matching commands found.</div>
+            <div className="p-6 text-center text-sm text-gray-500">No matching commands found.</div>
           ) : (
             filtered.map((item, idx) => {
               const Icon = item.icon;
@@ -72,18 +72,18 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
                     onNavigate(item.route);
                     onClose();
                   }}
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-left group transition-colors"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-black/5 text-left group transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-blue-400">
+                    <div className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-gray-600 group-hover:bg-[#ad314d]/10 group-hover:text-[#ad314d] transition-colors">
                       <Icon className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-200 group-hover:text-white">{item.label}</p>
+                      <p className="text-sm font-medium text-[#1a1a1a] group-hover:text-[#ad314d] transition-colors">{item.label}</p>
                       <p className="text-[11px] text-gray-500">{item.category}</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                 </button>
               );
             })

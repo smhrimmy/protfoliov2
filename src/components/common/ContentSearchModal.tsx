@@ -27,19 +27,19 @@ export const ContentSearchModal: React.FC<ContentSearchModalProps> = ({ isOpen, 
   ) : [];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-start justify-center pt-20 p-4">
-      <div className="bg-[#111827] border border-white/10 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden text-white">
-        <div className="flex items-center px-4 py-3 border-b border-white/10">
-          <Search className="w-5 h-5 text-gray-400 mr-3" />
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center pt-20 p-4">
+      <div className="bg-white/95 border border-black/10 rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden text-[#1a1a1a]">
+        <div className="flex items-center px-4 py-3 border-b border-black/8">
+          <Search className="w-5 h-5 text-[#ad314d] mr-3" />
           <input
             autoFocus
             type="text"
             placeholder="Full-text search across projects, case studies, and blog articles..."
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="w-full bg-transparent text-sm focus:outline-none placeholder-gray-500 text-white"
+            className="w-full bg-transparent text-sm focus:outline-none placeholder-gray-400 text-[#1a1a1a]"
           />
-          <button onClick={onClose} className="text-gray-400 hover:text-white p-1">
+          <button onClick={onClose} className="text-gray-400 hover:text-black p-1 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -53,7 +53,7 @@ export const ContentSearchModal: React.FC<ContentSearchModalProps> = ({ isOpen, 
 
           {matchingProjects.length > 0 && (
             <div>
-              <h4 className="text-[11px] font-mono uppercase tracking-wider text-gray-400 mb-2">Projects ({matchingProjects.length})</h4>
+              <h4 className="text-[11px] font-mono uppercase tracking-wider text-gray-500 mb-2">Projects ({matchingProjects.length})</h4>
               <div className="space-y-2">
                 {matchingProjects.map(p => (
                   <button
@@ -62,12 +62,12 @@ export const ContentSearchModal: React.FC<ContentSearchModalProps> = ({ isOpen, 
                       onNavigate(`/admin/projects/${p.id}/edit`);
                       onClose();
                     }}
-                    className="w-full p-3 rounded-xl bg-white/5 hover:bg-white/10 text-left flex items-center justify-between group transition-colors"
+                    className="w-full p-3 rounded-xl bg-black/5 hover:bg-black/10 text-left flex items-center justify-between group transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <FolderGit2 className="w-4 h-4 text-blue-400 shrink-0" />
+                      <FolderGit2 className="w-4 h-4 text-[#ad314d] shrink-0" />
                       <div>
-                        <p className="text-sm font-medium text-white">{p.title}</p>
+                        <p className="text-sm font-medium text-[#1a1a1a] group-hover:text-[#ad314d] transition-colors">{p.title}</p>
                         <p className="text-xs text-gray-400 line-clamp-1">{p.summary}</p>
                       </div>
                     </div>

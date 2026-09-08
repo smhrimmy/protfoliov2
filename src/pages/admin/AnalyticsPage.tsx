@@ -69,26 +69,29 @@ export const AnalyticsPage: React.FC = () => {
   ];
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8 text-gray-100 font-sans pb-28">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8 text-[#222222] font-sans pb-28">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <BarChart3 className="w-6 h-6 text-blue-400" /> Analytics & Recruiter Telemetry
+          <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+            TELEMETRY & ATTRIBUTION · STAGE ENGINE
+          </div>
+          <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight flex items-center gap-2">
+            <BarChart3 className="w-6 h-6 text-[#ad314d]" /> Analytics & Recruiter Telemetry
           </h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-[#55555e] mt-1">
             Real-time recruiter sessions, traffic attribution, session duration, and case study engagement.
           </p>
         </div>
 
         {/* Timeframe selector */}
-        <div className="flex items-center gap-1.5 bg-[#0a0e17] p-1 rounded-xl border border-white/5 text-xs">
+        <div className="flex items-center gap-1.5 bg-black/5 p-1 rounded-full border border-black/10 text-xs">
           {(['24h', '7d', '30d', '90d', 'all'] as const).map(t => (
             <button
               key={t}
               onClick={() => setTimeRange(t)}
-              className={`px-3 py-1.5 rounded-lg font-medium uppercase text-[11px] transition-colors ${
-                timeRange === t ? 'bg-blue-600 text-white font-bold' : 'text-gray-400 hover:text-white'
+              className={`px-3 py-1.5 rounded-full font-medium uppercase text-[11px] transition-colors ${
+                timeRange === t ? 'bg-[#ad314d] text-white font-bold shadow-sm' : 'text-gray-600 hover:text-black'
               }`}
             >
               {t}

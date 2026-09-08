@@ -9,7 +9,7 @@ export const SiteHealthPage: React.FC = () => {
       id: 'h-1',
       category: 'seo',
       title: 'Broken Internal & External Links Audit',
-      description: 'Crawled all 19 themes and markdown links for 404 or dead endpoints.',
+      description: 'Crawled all 23 themes and markdown links for 404 or dead endpoints.',
       severity: 'good',
       passed: true,
       recommendation: '0 broken links detected across 40+ case studies.'
@@ -21,7 +21,7 @@ export const SiteHealthPage: React.FC = () => {
       description: 'Tested tab ordering, visible focus rings, and screen-reader contrast ratios.',
       severity: 'good',
       passed: true,
-      recommendation: 'WCAG AAA color contrast maintained across all 19 palettes.'
+      recommendation: 'WCAG AAA color contrast maintained across all 23 palettes.'
     },
     {
       id: 'h-3',
@@ -51,15 +51,20 @@ export const SiteHealthPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8 text-gray-100 font-sans pb-24">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="p-6 max-w-7xl mx-auto space-y-8 text-[#222222] font-sans pb-24">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Site Health & Integrity Scanner</h1>
-          <p className="text-xs text-gray-400 mt-1">Automated rollup of SEO, accessibility flags, broken links, and performance.</p>
+          <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+            STAGE INTEGRITY AUDIT · PDL OS v2.4
+          </div>
+          <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight flex items-center gap-2">
+            <ShieldCheck className="w-6 h-6 text-[#ad314d]" /> Site Health & Integrity Scanner
+          </h1>
+          <p className="text-xs text-[#55555e] mt-1">Automated rollup of SEO, accessibility flags, broken links, and performance.</p>
         </div>
         <button
           onClick={handleRescan}
-          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-emerald-600/20"
+          className="px-4 py-2.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isScanning ? 'animate-spin' : ''}`} /> Run Diagnostics Scan
         </button>

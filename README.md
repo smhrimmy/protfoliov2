@@ -49,9 +49,9 @@
 
 ## 🎛️ The Intelligent Stage Admin OS
 
-Accessed via `/admin`, the portfolio operating system provides an executive control room equipped with deep site telemetry and 6 live glass Bento metric cards:
+Accessed via `/admin`, the portfolio operating system provides an executive control room equipped with deep site telemetry, 6 live glass Bento metric cards, and a unified paper-gray (`#ececeb`) stage design language across all 27 admin routes:
 
-![Intelligent Stage Desktop Live](docs/images/admin_perfect_desktop.png)
+![Intelligent Stage Dashboard Desktop](docs/images/admin_stage_dashboard_desktop.png)
 
 ### The 6 Live System Cards:
 1. **Site Performance Metric (118ms / 98% Health / 0.8s LCP / 42ms TTFB)**: Live SVG radial gauge tracking response latency, Core Web Vitals, and server health with interactive multi-metric switching pills.
@@ -61,7 +61,24 @@ Accessed via `/admin`, the portfolio operating system provides an executive cont
 5. **Theme Ecosystem (23 Isolated Architectures / 6 Layout Paradigms / 100% Style Isolation / Active Theme #01)**: Isometric 3D architectural prism monitoring theme runtime sandboxing and DOM rendering health.
 6. **Autonomous Social Pipeline (1 Review Queue / 14 Sent Broadcasts / 1.2s AI Velocity / 4 Distribution Hubs)**: Human-in-the-loop social syndication engine with neural dispatch constellation for LinkedIn, Telegram, and RSS feeds.
 
-![Intelligent Stage Scrolled View](docs/images/admin_perfect_scrolled.png)
+### 🏛️ Unified Intelligent Stage Across All Subpages
+
+The Intelligent Stage aesthetic is universally applied across every subpage, module, and modal dialog with zero abrupt dark-mode flipping:
+
+| **Telemetry & Analytics Suite (`/admin/analytics`)** | **Stage Integrity Audit (`/admin/site-health`)** |
+|:---:|:---:|
+| ![Analytics Suite](docs/images/admin_stage_analytics_desktop.png) | ![Site Health Audit](docs/images/admin_stage_site_health_desktop.png) |
+| *Real-time traffic telemetry, crimson timeframe pills (24H, 7D, 30D, 90D), and live telemetry graphs.* | *System diagnostics, 23-theme integrity audits, asset load speeds, and real-time health scoring.* |
+
+| **Content Repository CMS (`/admin/projects`)** | **Theme Architecture Engine (`/admin/themes`)** |
+|:---:|:---:|
+| ![Projects CMS](docs/images/admin_stage_projects_desktop.png) | ![Themes Architecture](docs/images/admin_stage_themes_desktop.png) |
+| *Structured case study manager, featured project badges, live GitHub links, and stage search.* | *Interactive gallery for all 23 themes with category tabs, live previews, and one-click activation.* |
+
+| **Configuration & Metadata (`/admin/settings`)** | **Global Command & Quick Search Palette** |
+|:---:|:---:|
+| ![System Settings](docs/images/admin_stage_settings_desktop.png) | ![Visual Editor](docs/images/admin_visual_editor_rebuilt.png) |
+| *Frosted glass settings panels, portfolio coordinates, API keys, and notification toggles.* | *Instant command palette (`⌘K`) and visual WYSIWYG editor with live device toggle.* |
 
 ---
 
@@ -154,15 +171,15 @@ Monitor portfolio traffic, optimize discoverability, and verify system integrity
  
 The entire Portfolio OS—both the public portfolio and the admin management suite—is engineered with touch-first ergonomics, fluid responsiveness, and full mobile multi-data access:
  
-| **Mobile Executive Command Stage** | **Mobile Card Swipe & Multi-Metric Access** |
-|:---:|:---:|
-| ![Mobile Command Stage](docs/images/admin_perfect_mobile_top.png) | ![Mobile Card View](docs/images/admin_perfect_mobile_card.png) |
-| *Refined executive masthead, quick action cluster, and categorized filter controls.* | *Smooth touch-snap carousel with direct interactive pills to toggle 4 live metrics per card.* |
+| **Mobile Stage Dashboard** | **Frosted Navigation Drawer** | **Mobile Telemetry & Analytics** |
+|:---:|:---:|:---:|
+| ![Mobile Stage Dashboard](docs/images/admin_stage_dashboard_mobile.png) | ![Frosted Drawer Navigation](docs/images/admin_stage_drawer_mobile.png) | ![Mobile Telemetry](docs/images/admin_stage_analytics_mobile.png) |
+| *Refined LED-dot masthead, quick action cluster, and touch-snap cards.* | *Frosted glass full-screen drawer with quick access to all 27 admin routes and 23 themes.* | *Compact mobile telemetry charts, timeframe pills, and device attribution.* |
 
 ### Mobile Enhancements:
 - **Swipe vs Stack Toggle**: Instantly switch between single-card horizontal swipe carousel and vertical stacked layout.
 - **Dynamic Category Filtering**: Quick filter pills (`All 6 Cards`, `Core Triad`, `Intelligence Suite`) to focus on specific operational areas.
-- **Fixed Mobile Dock**: Persistent bottom navigation bar (`Dash`, `Projects`, `Editor`, `Themes`, `More`) for effortless one-handed thumb navigation.
+- **Fixed Mobile Dock & Drawer**: Persistent frosted glass bottom navigation bar (`Dash`, `Projects`, `Editor`, `Themes`, `More`) with instant full-screen drawer sheet.
 - **Rigid Responsive Scaling**: Rigid 429×554 ratio maintained across all phone viewports with zero text truncation or SVG clipping.
 
 ---

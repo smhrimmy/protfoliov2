@@ -133,3 +133,158 @@
   background-size: 100% 3px, 6px 100%;
   pointer-events: none;
 }
+
+/* ==========================================================================
+   PORTFOLIO OS — UNIVERSAL STAGE DESIGN SYSTEM SCOPE
+   ========================================================================== */
+
+.stage-admin-scope {
+  --stage-paper: #ececeb;
+  --stage-ink: #1a1a1a;
+  --stage-copy: #55555e;
+  --stage-muted: #888890;
+  --stage-border: rgba(0, 0, 0, 0.08);
+  --stage-crimson: #ad314d;
+  background-color: var(--stage-paper);
+  color: var(--stage-ink);
+}
+
+/* Transform legacy dark container backgrounds to Stage frosted glass */
+.stage-admin-scope .bg-\[\#0e131f\],
+.stage-admin-scope .bg-\[\#0a0e17\],
+.stage-admin-scope .bg-\[\#111827\],
+.stage-admin-scope .bg-\[\#1e293b\],
+.stage-admin-scope .bg-\[\#070a10\],
+.stage-admin-scope .bg-\[\#0d1117\],
+.stage-admin-scope .bg-\[\#05070a\],
+.stage-admin-scope .bg-gray-900,
+.stage-admin-scope .bg-gray-950,
+.stage-admin-scope .bg-slate-900,
+.stage-admin-scope .bg-slate-950 {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  color: var(--stage-ink) !important;
+}
+
+/* Inset / sub-containers */
+.stage-admin-scope .bg-white\/5,
+.stage-admin-scope .bg-white\/2,
+.stage-admin-scope .bg-white\/10,
+.stage-admin-scope .bg-black\/40,
+.stage-admin-scope .bg-black\/50,
+.stage-admin-scope .bg-black\/60,
+.stage-admin-scope .bg-black\/70,
+.stage-admin-scope .bg-black\/80 {
+  background: rgba(0, 0, 0, 0.035) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Text color transformations for stage canvas */
+.stage-admin-scope .text-white {
+  color: #1a1a1a !important;
+}
+.stage-admin-scope .text-gray-100,
+.stage-admin-scope .text-gray-200,
+.stage-admin-scope .text-gray-300 {
+  color: #222228 !important;
+}
+.stage-admin-scope .text-gray-400 {
+  color: #55555e !important;
+}
+.stage-admin-scope .text-gray-500 {
+  color: #71717a !important;
+}
+
+/* CRITICAL: Preserve White text for colored badges, primary action buttons, & dark pills */
+.stage-admin-scope button.bg-blue-600,
+.stage-admin-scope button[class*="bg-blue"],
+.stage-admin-scope button[class*="bg-emerald"],
+.stage-admin-scope button[class*="bg-red"],
+.stage-admin-scope .bg-\[\#ad314d\],
+.stage-admin-scope .bg-\[\#ad314d\] *,
+.stage-admin-scope .bg-\[\#202020\],
+.stage-admin-scope .bg-\[\#202020\] *,
+.stage-admin-scope .bg-\[\#1a1a1a\],
+.stage-admin-scope .bg-\[\#1a1a1a\] *,
+.stage-admin-scope .bg-\[\#1e2025\],
+.stage-admin-scope .bg-\[\#1e2025\] *,
+.stage-admin-scope .stage-pill-action,
+.stage-admin-scope .bg-blue-600,
+.stage-admin-scope .bg-blue-600 *,
+.stage-admin-scope .bg-emerald-600,
+.stage-admin-scope .bg-emerald-600 *,
+.stage-admin-scope .bg-red-600,
+.stage-admin-scope .bg-red-600 * {
+  color: #ffffff !important;
+}
+
+/* Explicit ink and crimson text classes */
+.stage-admin-scope .text-\[\#1a1a1a\],
+.stage-admin-scope .text-\[\#1a1a1a\] * {
+  color: #1a1a1a !important;
+}
+.stage-admin-scope .text-\[\#ad314d\],
+.stage-admin-scope .text-\[\#ad314d\] * {
+  color: #ad314d !important;
+}
+
+/* Borders and dividers */
+.stage-admin-scope .border-white\/5,
+.stage-admin-scope .border-white\/10,
+.stage-admin-scope .border-white\/15,
+.stage-admin-scope .border-white\/20,
+.stage-admin-scope .border-gray-800,
+.stage-admin-scope .border-gray-700 {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+.stage-admin-scope .divide-white\/5,
+.stage-admin-scope .divide-white\/10,
+.stage-admin-scope .divide-gray-800 {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+.stage-admin-scope .hover\:bg-white\/5:hover,
+.stage-admin-scope .hover\:bg-white\/10:hover,
+.stage-admin-scope .hover\:bg-white\/2:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Inputs, Textareas, Selects */
+.stage-admin-scope input,
+.stage-admin-scope textarea,
+.stage-admin-scope select {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #1a1a1a;
+  border-radius: 12px;
+}
+.stage-admin-scope input:focus,
+.stage-admin-scope textarea:focus,
+.stage-admin-scope select:focus {
+  border-color: #ad314d;
+  box-shadow: 0 0 0 3px rgba(173, 49, 77, 0.15);
+  outline: none;
+}
+.stage-admin-scope input::placeholder,
+.stage-admin-scope textarea::placeholder {
+  color: #888890;
+}
+
+/* Primary Action Buttons (Blue -> Signature Crimson) */
+.stage-admin-scope .bg-blue-600 {
+  background-color: #ad314d !important;
+}
+.stage-admin-scope .bg-blue-600:hover,
+.stage-admin-scope .bg-blue-500:hover {
+  background-color: #8e253d !important;
+}
+.stage-admin-scope .text-blue-400,
+.stage-admin-scope .text-blue-500 {
+  color: #ad314d !important;
+}
+.stage-admin-scope .border-blue-500,
+.stage-admin-scope .border-blue-500\/30 {
+  border-color: rgba(173, 49, 77, 0.3) !important;
+}

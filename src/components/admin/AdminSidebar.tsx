@@ -82,22 +82,22 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentRoute, onNavi
     <aside 
       className={`${
         collapsed ? 'w-20' : 'w-64'
-      } bg-[#0a0e17] border-r border-white/5 flex flex-col h-screen shrink-0 select-none transition-all duration-300 relative z-20`}
+      } bg-[#e8e8e7]/95 border-r border-black/8 flex flex-col h-screen shrink-0 select-none transition-all duration-300 relative z-20 text-[#222222]`}
     >
       {/* Brand Header */}
-      <div className="p-4 border-b border-white/5 flex items-center justify-between">
+      <div className="p-4 border-b border-black/8 flex items-center justify-between">
         <div 
           onClick={() => onNavigate('/admin/dashboard')}
           className="flex items-center gap-3 cursor-pointer group"
           title="Return to Dashboard"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#ad314d] via-[#1a1a1a] to-[#222222] flex items-center justify-center shadow-md shadow-black/10 group-hover:scale-105 transition-transform shrink-0">
             <span className="font-mono text-sm font-bold text-white">PDL</span>
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <h2 className="text-sm font-bold tracking-tight text-white leading-tight">PORTFOLIO OS</h2>
-              <p className="text-[10px] font-mono text-gray-500 truncate">v2.0 · SILVERSTEN</p>
+              <h2 className="text-sm font-bold tracking-tight text-[#1a1a1a] leading-tight">PORTFOLIO OS</h2>
+              <p className="text-[10px] font-mono text-gray-500 truncate">v2.4 · STAGE ENGINE</p>
             </div>
           )}
         </div>
@@ -105,7 +105,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentRoute, onNavi
         {/* Collapse Toggle */}
         <button
           onClick={toggleCollapsed}
-          className="hidden md:flex p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+          className="hidden md:flex p-1.5 rounded-lg bg-black/5 hover:bg-black/10 text-gray-600 hover:text-black transition-colors"
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           data-testid="admin-sidebar-toggle"
         >
@@ -122,7 +122,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentRoute, onNavi
                 {sec.label}
               </p>
             ) : (
-              <div className="w-full border-t border-white/5 my-2" />
+              <div className="w-full border-t border-black/8 my-2" />
             )}
             <div className="space-y-0.5">
               {sec.items.map((item, iIdx) => {
@@ -138,11 +138,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentRoute, onNavi
                       collapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2'
                     } rounded-xl text-xs font-medium transition-all ${
                       isActive 
-                        ? 'bg-blue-600/15 text-blue-400 border border-blue-500/30 font-semibold' 
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        ? 'bg-white text-[#ad314d] border border-black/10 font-bold shadow-sm' 
+                        : 'text-gray-600 hover:text-black hover:bg-black/5'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-blue-400' : 'text-gray-400'}`} />
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#ad314d]' : 'text-gray-500'}`} />
                     {!collapsed && <span className="truncate">{item.label}</span>}
                   </button>
                 );
@@ -153,19 +153,19 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentRoute, onNavi
       </div>
 
       {/* User Footer */}
-      <div className="p-3 border-t border-white/5 bg-[#070a10]">
+      <div className="p-3 border-t border-black/8 bg-[#dfdfde]">
         <div 
           onClick={() => onNavigate('/admin/profile')}
-          className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'} p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer`}
+          className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'} p-2 rounded-xl bg-white/70 hover:bg-white border border-black/5 shadow-sm transition-colors cursor-pointer`}
           title="Owner Profile & Credentials"
         >
-          <div className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-[#ad314d]/15 text-[#ad314d] flex items-center justify-center font-bold text-xs shrink-0">
             P
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">Prajwal DL</p>
-              <p className="text-[10px] text-gray-400 truncate">Systems Architect</p>
+              <p className="text-xs font-semibold text-[#1a1a1a] truncate">Prajwal DL</p>
+              <p className="text-[10px] text-gray-500 truncate">Systems Architect</p>
             </div>
           )}
         </div>

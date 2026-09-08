@@ -26,12 +26,15 @@ export const AIWorkspace: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8 text-gray-100 font-sans pb-24">
-      <div>
-        <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-purple-400" /> AI Workspace & Editorial Assistant
+    <div className="p-6 max-w-7xl mx-auto space-y-8 text-[#222222] font-sans pb-28">
+      <div className="pb-4 border-b border-black/8">
+        <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+          INTELLIGENCE STUDIO · GENERATIVE ENGINE
+        </div>
+        <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight flex items-center gap-2">
+          <Sparkles className="w-6 h-6 text-[#ad314d]" /> AI Workspace & Editorial Assistant
         </h1>
-        <p className="text-xs text-gray-400 mt-1">Prompt playground, tone rewriting, case study summarizer, and content ideation.</p>
+        <p className="text-xs text-[#55555e] mt-1">Prompt playground, tone rewriting, case study summarizer, and content ideation.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

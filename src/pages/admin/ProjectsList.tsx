@@ -60,16 +60,21 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 text-gray-100 font-sans">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 text-[#222222] font-sans pb-28">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Project Management</h1>
-          <p className="text-xs text-gray-400 mt-1">Manage case studies, live links, technologies, and draft revisions.</p>
+          <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+            CONTENT REPOSITORY · CASE STUDIES
+          </div>
+          <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight flex items-center gap-2">
+            <FolderGit2 className="w-6 h-6 text-[#ad314d]" /> Project Management
+          </h1>
+          <p className="text-xs text-[#55555e] mt-1">Manage case studies, live links, technologies, and draft revisions.</p>
         </div>
         <button
           onClick={() => onNavigate('/admin/projects/new')}
-          className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors shadow-lg shadow-blue-600/20"
+          className="px-4 py-2.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
         >
           <Plus className="w-4 h-4" /> Create New Project
         </button>

@@ -84,14 +84,17 @@ export const SEOSuite: React.FC = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8 text-gray-100 font-sans pb-28">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8 text-[#222222] font-sans pb-28">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <Search className="w-6 h-6 text-blue-400" /> SEO Suite & OpenGraph Studio
+          <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+            DISCOVERY ENGINE · METADATA & CRAWLER CLEARANCE
+          </div>
+          <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight flex items-center gap-2">
+            <Search className="w-6 h-6 text-[#ad314d]" /> SEO Suite & OpenGraph Studio
           </h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-[#55555e] mt-1">
             Per-route search optimization, social sharing card previews, and AI crawler permissions.
           </p>
         </div>
@@ -99,14 +102,14 @@ export const SEOSuite: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={downloadSitemap}
-            className="px-3.5 py-2 bg-white/5 hover:bg-white/10 text-gray-300 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border border-white/10"
+            className="px-3.5 py-2 bg-white/80 hover:bg-white text-gray-700 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all border border-black/10 shadow-sm"
           >
             <Download className="w-3.5 h-3.5" /> Download sitemap.xml
           </button>
 
           <button
             onClick={handleAudit}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-blue-600/20"
+            className="px-4 py-2 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isAuditing ? 'animate-spin' : ''}`} /> Run SEO Audit
           </button>

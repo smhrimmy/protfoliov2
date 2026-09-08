@@ -51,7 +51,7 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
       category: 'DESIGN & INTELLIGENCE',
       items: [
         { label: 'Visual Site Editor', route: '/admin/visual-editor', icon: Eye },
-        { label: '19 Themes Gallery', route: '/admin/themes', icon: Palette },
+        { label: '23 Themes Gallery', route: '/admin/themes', icon: Palette },
         { label: 'Design System', route: '/admin/design-system', icon: Layers },
         { label: 'AI Workspace', route: '/admin/ai', icon: Sparkles },
         { label: 'Automations & LinkedIn', route: '/admin/automations', icon: Send },
@@ -78,7 +78,7 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
     <>
       {/* Mobile Fixed Bottom Bar */}
       <nav 
-        className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0a0e17]/95 backdrop-blur-lg border-t border-white/10 flex items-center justify-around z-40 px-2 select-none"
+        className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#ececeb]/95 backdrop-blur-lg border-t border-black/10 flex items-center justify-around z-40 px-2 select-none"
         aria-label="Mobile Navigation"
       >
         {mainTabs.map((tab, idx) => {
@@ -90,10 +90,10 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
               onClick={() => handleSelectRoute(tab.route)}
               data-testid={`mobile-nav-${tab.label.toLowerCase()}`}
               className={`flex flex-col items-center justify-center w-14 py-1 rounded-xl transition-colors ${
-                isActive ? 'text-blue-400 font-semibold' : 'text-gray-400 hover:text-white'
+                isActive ? 'text-[#ad314d] font-bold' : 'text-gray-500 hover:text-black'
               }`}
             >
-              <Icon className="w-5 h-5 mb-0.5" />
+              <Icon className={`w-5 h-5 mb-0.5 ${isActive ? 'text-[#ad314d]' : 'text-gray-500'}`} />
               <span className="text-[10px]">{tab.label}</span>
             </button>
           );
@@ -104,27 +104,27 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
           onClick={() => setDrawerOpen(!drawerOpen)}
           data-testid="mobile-nav-more"
           className={`flex flex-col items-center justify-center w-14 py-1 rounded-xl transition-colors ${
-            drawerOpen ? 'text-purple-400 font-semibold' : 'text-gray-400 hover:text-white'
+            drawerOpen ? 'text-[#ad314d] font-bold' : 'text-gray-500 hover:text-black'
           }`}
         >
-          <Menu className="w-5 h-5 mb-0.5" />
+          <Menu className={`w-5 h-5 mb-0.5 ${drawerOpen ? 'text-[#ad314d]' : 'text-gray-500'}`} />
           <span className="text-[10px]">More</span>
         </button>
       </nav>
 
       {/* Mobile Full Screen Navigation Sheet */}
       {drawerOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-[#070a10]/95 backdrop-blur-xl flex flex-col p-6 overflow-y-auto animate-in fade-in duration-200">
-          <div className="flex items-center justify-between pb-4 border-b border-white/10">
+        <div className="md:hidden fixed inset-0 z-50 bg-[#ececeb]/98 backdrop-blur-xl flex flex-col p-6 overflow-y-auto animate-in fade-in duration-200 text-[#222222]">
+          <div className="flex items-center justify-between pb-4 border-b border-black/10">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center font-mono font-bold text-xs text-white">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#ad314d] to-[#1a1a1a] flex items-center justify-center font-mono font-bold text-xs text-white">
                 PDL
               </div>
-              <span className="font-bold text-sm text-white">All Admin OS Modules</span>
+              <span className="font-bold text-sm text-[#1a1a1a]">All Admin OS Modules</span>
             </div>
             <button
               onClick={() => setDrawerOpen(false)}
-              className="p-2 rounded-xl bg-white/5 text-gray-400 hover:text-white"
+              className="p-2 rounded-xl bg-black/5 text-gray-600 hover:text-black"
             >
               <X className="w-5 h-5" />
             </button>
@@ -144,11 +144,11 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
                         onClick={() => handleSelectRoute(item.route)}
                         className={`flex items-center gap-2.5 p-3 rounded-xl text-left text-xs transition-colors ${
                           isActive 
-                            ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30 font-bold' 
-                            : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                            ? 'bg-[#ad314d]/10 text-[#ad314d] border border-[#ad314d]/30 font-bold' 
+                            : 'bg-white/80 text-gray-700 hover:bg-white border border-black/8 shadow-sm'
                         }`}
                       >
-                        <Icon className="w-4 h-4 shrink-0 text-gray-400" />
+                        <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#ad314d]' : 'text-gray-500'}`} />
                         <span className="truncate">{item.label}</span>
                       </button>
                     );
@@ -158,13 +158,13 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
             ))}
           </div>
 
-          <div className="pt-4 border-t border-white/10 text-center">
+          <div className="pt-4 border-t border-black/10 text-center">
             <button
               onClick={() => {
                 onNavigate('/');
                 setDrawerOpen(false);
               }}
-              className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold"
+              className="w-full py-3 bg-[#1a1a1a] hover:bg-black text-white rounded-xl text-xs font-bold shadow-sm"
             >
               Exit to Public Site
             </button>

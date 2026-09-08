@@ -44,15 +44,20 @@ export const BlogList: React.FC<BlogListProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 text-gray-100 font-sans">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="p-6 max-w-7xl mx-auto space-y-6 text-[#222222] font-sans pb-28">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Blog & Articles</h1>
-          <p className="text-xs text-gray-400 mt-1">Block-based editorial publishing, revision history, and LinkedIn syndication.</p>
+          <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+            EDITORIAL ENGINE · ARTICLES & WRITING
+          </div>
+          <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight flex items-center gap-2">
+            <FileText className="w-6 h-6 text-[#ad314d]" /> Blog & Editorial CMS
+          </h1>
+          <p className="text-xs text-[#55555e] mt-1">Block-based editorial publishing, revision history, and LinkedIn syndication.</p>
         </div>
         <button
           onClick={() => onNavigate('/admin/blog/new')}
-          className="px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors shadow-lg shadow-purple-600/20"
+          className="px-4 py-2.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-2 transition-all shadow-sm"
         >
           <Plus className="w-4 h-4" /> New Article
         </button>
