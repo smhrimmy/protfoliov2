@@ -40,6 +40,15 @@
   }
 }
 
+/* Hide scrollbars utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Common utility classes */
 .glass-panel {
   background: rgba(17, 24, 39, 0.7);
@@ -57,6 +66,66 @@
 .hud-border {
   border: 1px solid rgba(6, 182, 212, 0.3);
   box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+}
+
+/* Portfolio OS Stage Design System */
+.stage-glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.stage-glass-inset {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+}
+
+.stage-pill-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.stage-pill-action-dark {
+  background: #1e2025;
+  color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.stage-pill-action-dark:hover {
+  background: #111215;
+  color: #ffffff;
+}
+
+.stage-pill-action-glass {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.stage-pill-action-glass:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.stage-pill-action-crimson {
+  background: #ad314d;
+  color: #ffffff;
+  border: 1px solid rgba(173, 49, 77, 0.3);
+  box-shadow: 0 1px 2px rgba(173, 49, 77, 0.2);
+}
+.stage-pill-action-crimson:hover {
+  background: #8e253d;
 }
 
 .scanlines {
