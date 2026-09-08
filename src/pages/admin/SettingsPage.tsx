@@ -40,6 +40,7 @@ export const SettingsPage: React.FC = () => {
     colorMode: 'dark',
     accentColor: '#3b82f6',
     reducedMotion: false,
+    ambientDashboardMotion: localStorage.getItem('pdl_ambient_motion') !== 'false',
     webglHardwareAccel: true,
     lowPowerFallback: true,
 
@@ -574,6 +575,23 @@ export const SettingsPage: React.FC = () => {
                     type="checkbox"
                     checked={settings.reducedMotion}
                     onChange={e => handleChange('reducedMotion', e.target.checked)}
+                    className="w-4 h-4 rounded text-blue-600"
+                  />
+                </div>
+
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold text-white">Ambient Dashboard Motion (Intelligent Stage)</p>
+                    <p className="text-[11px] text-gray-400">Controls looping CloudFront video backgrounds in the Dashboard Intelligent Stage. When off, renders high-fidelity poster gradients to reduce GPU usage.</p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={settings.ambientDashboardMotion}
+                    onChange={e => {
+                      handleChange('ambientDashboardMotion', e.target.checked);
+                      localStorage.setItem('pdl_ambient_motion', String(e.target.checked));
+                      window.dispatchEvent(new Event('storage'));
+                    }}
                     className="w-4 h-4 rounded text-blue-600"
                   />
                 </div>

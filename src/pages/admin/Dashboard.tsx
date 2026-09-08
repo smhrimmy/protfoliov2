@@ -10,6 +10,7 @@ import { THEME_MANIFESTS } from '@/data/initialThemes';
 import { Project, BlogPost } from '@/types/portfolio';
 import { SocialDraft } from '@/types/automation';
 import { NotificationItem } from '@/types/cms';
+import { IntelligentStage } from '@/components/dashboard/IntelligentStage';
 
 interface DashboardProps {
   onNavigate: (route: string) => void;
@@ -83,6 +84,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           <span>{actionFeedback}</span>
         </div>
       )}
+
+      {/* INTELLIGENT STAGE (Top Section) */}
+      <IntelligentStage
+        onNavigate={onNavigate}
+        headlinePrefix="Operating at "
+        dotWord="Intelligent"
+        headlineSuffix="Performance"
+        introText="Every capability is engineered for speed, scale and contextual understanding, giving your AI the foundation to reason, adapt and perform in production."
+      />
 
       {/* Hero Command Banner */}
       <div className="bg-gradient-to-r from-blue-950/50 via-[#0c121e] to-[#070a10] p-6 sm:p-8 rounded-3xl border border-white/5 relative overflow-hidden">
