@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
-import { Folder, Terminal as TermIcon, FileText, Monitor, Settings, ExternalLink, X, Minus, Square } from 'lucide-react';
+import { Folder, Terminal, FileText, Monitor, Settings, ExternalLink, X, Minus, Square } from 'lucide-react';
 
 interface WindowState {
   id: string;
@@ -232,7 +232,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
 
   return (
     <div
-      className="relative w-screen h-screen overflow-hidden select-none font-mono text-xs"
+      className="relative w-full h-screen overflow-hidden select-none font-mono text-xs"
       style={{ backgroundColor: config?.colorTokens.bgPrimary || '#008080' }}
     >
       {/* Desktop Icons */}
@@ -269,10 +269,10 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
           className="flex flex-col items-center w-20 p-2 cursor-pointer hover:bg-blue-600/30 active:bg-blue-800/50 rounded text-white group"
         >
           <div className="w-10 h-10 mb-1 bg-black border border-gray-400 flex items-center justify-center shadow-md">
-            <TermIcon className="w-6 h-6 text-green-400" />
+            <Terminal className="w-6 h-6 text-green-400" />
           </div>
           <span className="text-[11px] text-center drop-shadow px-1 bg-black/40 rounded group-hover:bg-blue-900 leading-tight">
-            MS-DOS.exe
+            Prompt.exe
           </span>
         </div>
 
@@ -319,6 +319,10 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
       {Object.values(windows).map((win) => {
         if (!win.isOpen || win.isMinimized) return null;
         const isActive = activeWindow === win.id;
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+        const winWidth = isMobile ? Math.min(win.width, window.innerWidth - 16) : win.width;
+        const winX = isMobile ? 8 : win.x;
+        const winY = isMobile ? Math.min(win.y, 40) : win.y;
 
         return (
           <div
@@ -327,8 +331,9 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
             style={{
               transform: win.isMaximized
                 ? 'translate(0, 0)'
-                : `translate(${win.x}px, ${win.y}px)`,
-              width: win.isMaximized ? '100vw' : `${win.width}px`,
+                : `translate(${winX}px, ${winY}px)`,
+              width: win.isMaximized ? '100vw' : `${winWidth}px`,
+              maxWidth: 'calc(100vw - 16px)',
               height: win.isMaximized ? 'calc(100vh - 36px)' : `${win.height}px`,
               zIndex: win.zIndex
             }}
@@ -532,7 +537,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
               onClick={() => { focusWindow('terminal'); setStartMenuOpen(false); }}
               className="w-full text-left px-2 py-1.5 hover:bg-[#000080] hover:text-white flex items-center space-x-2"
             >
-              <TermIcon className="w-4 h-4 text-gray-800" />
+              <Terminal className="w-4 h-4 text-gray-800" />
               <span>MS-DOS Command</span>
             </button>
             <button

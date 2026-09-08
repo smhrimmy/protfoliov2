@@ -32,8 +32,8 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, skillCatego
       }}
     >
       {/* Top CAD Metric Ruler */}
-      <div className="h-6 w-full border-b border-cyan-500/30 flex items-center justify-between px-4 text-[9px] text-cyan-400/60 sticky top-0 bg-[#0a192f]/90 backdrop-blur z-40">
-        <div className="flex space-x-6">
+      <div className="h-6 w-full border-b border-cyan-500/30 flex items-center justify-between px-4 text-[9px] text-cyan-400/60 sticky top-0 bg-[#0a192f]/90 backdrop-blur z-40 overflow-hidden">
+        <div className="hidden sm:flex space-x-6 overflow-hidden">
           <span>0.00mm</span>
           <span>100.00mm</span>
           <span>200.00mm</span>
@@ -43,14 +43,14 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, skillCatego
           <span>600.00mm</span>
           <span>700.00mm</span>
         </div>
-        <div className="flex items-center space-x-3 text-cyan-300 font-bold">
-          <Crosshair className="w-3 h-3 text-cyan-400 animate-spin" />
-          <span>X: {coords.x}.00mm | Y: {coords.y}.00mm</span>
+        <div className="flex items-center space-x-2 text-cyan-300 font-bold truncate">
+          <Crosshair className="w-3 h-3 text-cyan-400 shrink-0" />
+          <span className="truncate">X: {coords.x}mm | Y: {coords.y}mm</span>
           <button
             onClick={() => onNavigate && onNavigate('/admin')}
-            className="ml-4 px-2 py-0.5 border border-cyan-400 text-cyan-300 hover:bg-cyan-400/10 text-[9px]"
+            className="ml-2 px-2 py-0.5 border border-cyan-400 text-cyan-300 hover:bg-cyan-400/10 text-[9px] shrink-0"
           >
-            [ ADMIN_OS ]
+            [ ADMIN ]
           </button>
         </div>
       </div>

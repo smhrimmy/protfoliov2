@@ -140,7 +140,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, onNavigate,
 
   return (
     <div
-      className="relative w-screen h-screen overflow-hidden select-none font-mono text-emerald-400 flex flex-col justify-between"
+      className="relative w-full max-w-full h-screen overflow-hidden select-none font-mono text-emerald-400 flex flex-col justify-between"
       style={{ backgroundColor: config?.colorTokens.bgPrimary || '#021008' }}
     >
       {/* Background 3D Wireframe Canvas */}
@@ -244,8 +244,8 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, onNavigate,
       </main>
 
       {/* Projector Base Control Panel */}
-      <footer className="relative z-20 h-20 border-t-2 border-emerald-500/50 px-6 flex items-center justify-between bg-black/90 backdrop-blur-md">
-        <div className="flex items-center space-x-2 overflow-x-auto py-1">
+      <footer className="relative z-20 h-20 border-t-2 border-emerald-500/50 px-4 md:px-6 flex items-center justify-between bg-black/90 backdrop-blur-md w-full max-w-full overflow-hidden">
+        <div className="flex items-center space-x-2 overflow-x-auto py-1 max-w-full no-scrollbar">
           {projects.map((proj) => (
             <button
               key={proj.id}

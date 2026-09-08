@@ -1,191 +1,254 @@
 import React, { useState } from 'react';
 import { ThemePageProps } from '@/themes/_contracts/PageRenderer';
-import { ArrowUpRight, ArrowRight, Check, Sparkles, Layers, Eye } from 'lucide-react';
+import { ArrowUpRight, Sliders, Type, ArrowDown, Sparkles } from 'lucide-react';
 
 export const Home: React.FC<ThemePageProps> = ({ 
   identity, 
   projects, 
+  experience, 
   onNavigate 
 }) => {
+  // Live Type Specimen Sandbox State
+  const [specimenText, setSpecimenText] = useState('TYPOGRAPHIC ARCHITECTURE & POSTER MANIFESTO');
+  const [fontSize, setFontSize] = useState(48);
+  const [tracking, setTracking] = useState(0);
+  const [activeFontClass, setActiveFontClass] = useState<'font-sans' | 'font-serif' | 'font-mono'>('font-serif');
+
   return (
-    <div className="min-h-screen bg-[#111215] text-[#ededed] font-sans antialiased selection:bg-amber-400 selection:text-black">
-      {/* Editorial Header */}
-      <header className="sticky top-0 z-40 bg-[#111215]/90 backdrop-blur-md border-b border-white/[0.08]">
-        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-serif text-lg font-bold text-white">{identity.name}</span>
-            <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest pl-3 border-l border-white/10">
-              BRAND & GRAPHIC SYSTEMS
+    <div className="min-h-screen bg-[#09090b] text-[#f4f4f5] antialiased selection:bg-amber-400 selection:text-black w-full max-w-full overflow-x-hidden">
+      
+      {/* 1. ASYMMETRICAL POSTER STRIP HEADER */}
+      <header className="sticky top-0 z-40 bg-[#09090b]/90 backdrop-blur-md border-b border-white/[0.1] text-xs font-mono">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="text-amber-400 font-bold tracking-widest text-sm uppercase">
+              [ISSUE № 07]
+            </span>
+            <span className="text-zinc-600 hidden sm:inline">/</span>
+            <span className="text-zinc-400 hidden sm:inline uppercase">
+              {identity.name} · Typographic Biennial
             </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-xs font-mono text-gray-400 uppercase tracking-wider">
-            <a href="#work" className="hover:text-white transition-colors">Work</a>
-            <a href="#services" className="hover:text-white transition-colors">Disciplines</a>
-            <a href="#about" className="hover:text-white transition-colors">Studio</a>
-            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <a
-              href="#contact"
-              className="text-xs font-mono px-4 py-2 border border-white/20 text-white hover:bg-white hover:text-black transition-all rounded-full"
-            >
-              Start a Project
+          <div className="flex items-center gap-4">
+            <a href="#specimen" className="text-zinc-400 hover:text-white transition-colors hidden sm:inline">
+              Type Specimen
+            </a>
+            <a href="#exhibits" className="text-zinc-400 hover:text-white transition-colors hidden sm:inline">
+              Plates ({projects.length})
             </a>
             <button
               onClick={() => onNavigate('/admin')}
-              className="text-xs font-mono text-gray-500 hover:text-white px-2 py-1"
+              className="px-3 py-1 border border-white/20 hover:border-white rounded-full text-zinc-300 hover:text-white transition-colors text-[11px]"
             >
-              Admin
+              Admin OS
             </button>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 py-20 sm:py-32 space-y-36">
-        
-        {/* HERO SECTION */}
-        <section className="space-y-8 max-w-3xl">
-          <span className="text-xs font-mono uppercase tracking-widest text-amber-400 block">
-            SELECTED PORTFOLIO · 2024–2026
-          </span>
+      {/* 2. GIANT POSTER COVER SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 pt-16 pb-24 border-b border-white/[0.1]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Main Headline */}
+          <div className="lg:col-span-9 space-y-6">
+            <div className="flex items-center gap-2 text-xs font-mono text-amber-400 uppercase tracking-widest">
+              <span className="w-2 h-2 rounded-full bg-amber-400" />
+              <span>Manifesto & Exhibition · Zurich / Tokyo / New York</span>
+            </div>
 
-          <h1 className="font-serif text-4xl sm:text-7xl font-normal text-white tracking-tight leading-[1.05]">
-            Visual systems that define culture & elevate brands.
-          </h1>
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-normal tracking-tight text-white leading-[0.95]">
+              Form follows language.
+            </h1>
 
-          <p className="text-base sm:text-lg text-gray-400 font-light max-w-xl leading-relaxed">
-            {identity.tagline}. We craft comprehensive visual identities, editorial publications,
-            bespoke packaging, and high-impact digital experiences.
-          </p>
-
-          <div className="flex items-center gap-6 pt-4 text-xs font-mono">
-            <a
-              href="#work"
-              className="px-6 py-3.5 rounded-full bg-white text-black font-semibold uppercase tracking-wider hover:bg-gray-200 transition-colors"
-            >
-              View Selected Work
-            </a>
-            <a
-              href="#contact"
-              className="text-gray-400 hover:text-white transition-colors uppercase tracking-wider"
-            >
-              Start an Inquiry →
-            </a>
+            <div className="pt-6 grid grid-cols-1 sm:grid-cols-12 gap-6 text-sm text-zinc-400 leading-relaxed">
+              <p className="sm:col-span-8 text-base sm:text-lg font-light text-zinc-300">
+                {identity.bio}
+              </p>
+              <div className="sm:col-span-4 font-mono text-xs text-zinc-500 border-l border-white/[0.1] pl-4 space-y-2">
+                <div>FOLIO: VOL. 24</div>
+                <div>GRID: 12-COL ASYMMETRIC</div>
+                <div>CURATOR: {identity.name}</div>
+              </div>
+            </div>
           </div>
-        </section>
 
-        {/* SELECTED WORK (Image-Led Editorial Showcase) */}
-        <section id="work" className="space-y-16 scroll-mt-24">
-          <div className="flex items-baseline justify-between border-b border-white/[0.08] pb-6">
-            <h2 className="font-serif text-3xl sm:text-4xl font-normal text-white">
-              Selected Work
-            </h2>
-            <span className="text-xs font-mono text-gray-500 uppercase">
-              Brand Identity · Packaging · Editorial
+          {/* Right Rotated Margin Stamp */}
+          <div className="lg:col-span-3 hidden lg:flex flex-col items-end justify-between h-full text-right font-mono text-xs text-zinc-500 space-y-12">
+            <div className="border border-white/[0.1] p-4 rounded-xl space-y-1 w-full">
+              <div className="text-amber-400 font-bold uppercase text-[10px]">EDITION LIMIT</div>
+              <div className="text-white font-bold text-base">№ 042 / 100</div>
+              <div className="text-[10px] text-zinc-500">Letterpress Archival Print</div>
+            </div>
+            <div className="text-[11px] uppercase tracking-widest text-zinc-600">
+              EXPLORE EXHIBITION DOWNWARDS ↓
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. INTERACTIVE LIVE TYPE SPECIMEN SANDBOX */}
+      <section id="specimen" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 border-b border-white/[0.1] space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <span className="text-xs font-mono text-amber-400 uppercase tracking-widest block">
+              Tool 01 // Interactive Specimen
             </span>
+            <h2 className="text-3xl font-serif text-white mt-1">Live Typeface Sandbox</h2>
+          </div>
+          <span className="text-xs font-mono text-zinc-500">
+            Experiment with scale, tracking, and family rhythm
+          </span>
+        </div>
+
+        <div className="p-6 sm:p-8 rounded-3xl bg-zinc-950 border border-white/[0.1] space-y-6 shadow-2xl">
+          {/* Controls Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-4 text-xs font-mono">
+            {/* Font Family Selector */}
+            <div className="flex items-center gap-1 bg-white/[0.05] p-1 rounded-xl border border-white/[0.08]">
+              {(['font-serif', 'font-sans', 'font-mono'] as const).map(font => (
+                <button
+                  key={font}
+                  onClick={() => setActiveFontClass(font)}
+                  className={`px-3 py-1 rounded-lg transition-colors capitalize ${
+                    activeFontClass === font
+                      ? 'bg-amber-400 text-black font-bold'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {font.replace('font-', '')}
+                </button>
+              ))}
+            </div>
+
+            {/* Sliders */}
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 text-zinc-400">
+                <span className="text-[11px]">Size: {fontSize}px</span>
+                <input
+                  type="range"
+                  min="24"
+                  max="84"
+                  value={fontSize}
+                  onChange={e => setFontSize(Number(e.target.value))}
+                  className="w-24 accent-amber-400"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 text-zinc-400">
+                <span className="text-[11px]">Tracking: {tracking}px</span>
+                <input
+                  type="range"
+                  min="-3"
+                  max="12"
+                  value={tracking}
+                  onChange={e => setTracking(Number(e.target.value))}
+                  className="w-24 accent-amber-400"
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-24">
-            {projects.map((proj, idx) => (
+          {/* Editable Specimen Canvas */}
+          <div className="min-h-[160px] flex items-center">
+            <textarea
+              value={specimenText}
+              onChange={e => setSpecimenText(e.target.value)}
+              rows={2}
+              style={{ fontSize: `${fontSize}px`, letterSpacing: `${tracking}px` }}
+              className={`w-full bg-transparent text-white focus:outline-none resize-none leading-none ${activeFontClass}`}
+            />
+          </div>
+
+          <div className="text-[11px] font-mono text-zinc-500 border-t border-white/[0.06] pt-3 flex items-center justify-between">
+            <span>Click canvas above to type custom copy</span>
+            <span className="uppercase text-amber-400">{activeFontClass.replace('font-', '')} · {fontSize}PT</span>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. ASYMMETRICAL POSTER EXHIBITS */}
+      <section id="exhibits" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 space-y-16">
+        <div className="flex items-center justify-between border-b border-white/[0.1] pb-4">
+          <div>
+            <span className="text-xs font-mono text-amber-400 uppercase tracking-widest block">
+              Catalogue Plates
+            </span>
+            <h2 className="text-3xl font-serif text-white mt-1">Exhibition Works</h2>
+          </div>
+          <span className="text-xs font-mono text-zinc-500">{projects.length} Registered Works</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          {projects.map((proj, idx) => {
+            const isLarge = idx % 3 === 0;
+            return (
               <article
                 key={proj.id}
-                onClick={() => onNavigate(`/projects/${proj.slug}`)}
-                className="group cursor-pointer space-y-6"
+                onClick={() => onNavigate(`/projects/${proj.slug || proj.id}`)}
+                className={`group cursor-pointer space-y-4 p-6 rounded-2xl bg-zinc-950 border border-white/[0.08] hover:border-amber-400/50 transition-all ${
+                  isLarge ? 'md:col-span-8' : 'md:col-span-4'
+                }`}
               >
-                {/* Large Curated Imagery */}
-                <div className="aspect-[16/9] w-full rounded-2xl overflow-hidden bg-zinc-900 relative">
-                  <img
-                    src={proj.coverImage}
-                    alt={proj.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
-                  />
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-mono text-white">
-                    0{idx + 1} / 0{projects.length}
-                  </div>
+                <div className="flex items-center justify-between text-xs font-mono text-zinc-500">
+                  <span className="text-amber-400 font-bold">PLATE 0{idx + 1}</span>
+                  <span>{proj.date || '2024'}</span>
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                  <div>
-                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white group-hover:text-amber-400 transition-colors">
-                      {proj.title}
-                    </h3>
-                    <p className="text-sm text-gray-400 mt-1 max-w-xl">
-                      {proj.summary}
-                    </p>
+                {proj.coverImage && (
+                  <div className="aspect-[16/10] rounded-xl overflow-hidden bg-black/60">
+                    <img
+                      src={proj.coverImage}
+                      alt={proj.title}
+                      className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                    />
                   </div>
+                )}
 
-                  <div className="flex items-center gap-4 text-xs font-mono text-gray-400 shrink-0">
-                    <span className="uppercase">{proj.role}</span>
-                    <span className="text-white flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      Case Study <ArrowUpRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
+                <div>
+                  <span className="text-[11px] font-mono text-zinc-500 uppercase block">{proj.role}</span>
+                  <h3 className="text-xl sm:text-2xl font-serif text-white group-hover:text-amber-300 transition-colors mt-0.5">
+                    {proj.title}
+                  </h3>
+                  <p className="text-xs text-zinc-400 font-sans line-clamp-2 mt-1 leading-relaxed">
+                    {proj.summary}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono">
+                  <span className="text-zinc-500">{proj.technologies.slice(0, 2).join(' · ')}</span>
+                  <span className="text-amber-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                    <span>Inspect</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </span>
                 </div>
               </article>
-            ))}
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 5. FOOTER */}
+      <footer className="border-t border-white/[0.1] bg-black py-12 text-xs font-mono text-zinc-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <span>© {new Date().getFullYear()} {identity.name}</span>
+            <span className="mx-2">/</span>
+            <span>Typographic Atelier & Type Design</span>
           </div>
-        </section>
-
-        {/* SERVICES / DISCIPLINES */}
-        <section id="services" className="space-y-12 border-t border-white/[0.08] pt-20 scroll-mt-24">
-          <div className="max-w-xl space-y-2">
-            <span className="text-xs font-mono uppercase tracking-widest text-amber-400">Capabilities</span>
-            <h2 className="font-serif text-3xl font-bold text-white">Brand & Creative Disciplines</h2>
+          <div className="flex items-center gap-4">
+            <button onClick={() => onNavigate('/admin')} className="hover:text-white transition-colors">
+              Admin OS
+            </button>
+            <a href={`mailto:${identity.socialLinks.email}`} className="text-amber-400 hover:underline">
+              {identity.socialLinks.email}
+            </a>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
-            <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-3">
-              <h3 className="font-serif text-xl font-bold text-white">Brand Identity Systems</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Logomarks, dynamic token guidelines, typographic pairing, and art direction rules.
-              </p>
-            </div>
-            <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-3">
-              <h3 className="font-serif text-xl font-bold text-white">Packaging & Tangible Craft</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Structural packaging design, material specification, dielines, and print production.
-              </p>
-            </div>
-            <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] space-y-3">
-              <h3 className="font-serif text-xl font-bold text-white">Digital & Launch Systems</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Responsive web interfaces, campaign assets, interactive microsites, and launch decks.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* CONTACT STATION */}
-        <section id="contact" className="space-y-8 border-t border-white/[0.08] pt-20 scroll-mt-24">
-          <div className="max-w-2xl space-y-4">
-            <span className="text-xs font-mono uppercase tracking-widest text-amber-400">Collaborations</span>
-            <h2 className="font-serif text-3xl sm:text-5xl font-light text-white">
-              Let's create something enduring.
-            </h2>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Accepting commissions for comprehensive brand systems, editorial direction, and packaging initiatives.
-            </p>
-            <div className="pt-4">
-              <a
-                href={`mailto:${identity.socialLinks.email}`}
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-black font-semibold text-xs font-mono uppercase tracking-wider rounded-full transition-colors"
-              >
-                <span>Email {identity.socialLinks.email}</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-white/[0.08] py-12 text-xs font-mono text-gray-500 text-center">
-        © 2026 {identity.name}. All typography and identity systems protected under studio copyright.
+        </div>
       </footer>
+
     </div>
   );
 };

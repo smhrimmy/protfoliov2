@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ThemePageProps } from '@/themes/_contracts/PageRenderer';
-import { ArrowUpRight, Mail, Download, ArrowDown, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ArrowDown, Copy, Check, ExternalLink } from 'lucide-react';
 
 export const Home: React.FC<ThemePageProps> = ({ 
   identity, 
@@ -9,37 +9,46 @@ export const Home: React.FC<ThemePageProps> = ({
   skillCategories, 
   onNavigate 
 }) => {
-  const [formSent, setFormSent] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<string>('all');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormSent(true);
-    setTimeout(() => {
-      setFormSent(false);
-      setFormData({ name: '', email: '', message: '' });
-    }, 4000);
+  const copyEmail = () => {
+    navigator.clipboard.writeText(identity.socialLinks.email);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#ededed] font-sans antialiased selection:bg-white selection:text-black">
-      {/* Minimal Header */}
-      <header className="sticky top-0 z-40 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/[0.06]">
-        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <button 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="text-sm font-semibold tracking-tight text-white hover:opacity-80 transition-opacity"
-          >
-            {identity.name}
-          </button>
+  const filteredProjects = selectedFilter === 'all' 
+    ? projects 
+    : projects.filter(p => p.role.toLowerCase().includes(selectedFilter.toLowerCase()) || 
+                          p.technologies.some(t => t.toLowerCase().includes(selectedFilter.toLowerCase())));
 
-          <nav className="flex items-center gap-8 text-xs text-gray-400">
-            <a href="#work" className="hover:text-white transition-colors">Work</a>
-            <a href="#about" className="hover:text-white transition-colors">About</a>
-            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+  return (
+    <div className="min-h-screen bg-[#070707] text-[#dedede] font-serif antialiased selection:bg-white selection:text-black w-full max-w-full overflow-x-hidden">
+      
+      {/* 1. MINIMAL EDITORIAL MASTHEAD */}
+      <header className="sticky top-0 z-40 bg-[#070707]/90 backdrop-blur-md border-b border-white/[0.08]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between text-xs font-sans tracking-wide">
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-base font-serif font-bold text-white hover:opacity-75 transition-opacity"
+            >
+              {identity.name}
+            </button>
+            <span className="text-zinc-600 hidden sm:inline">/</span>
+            <span className="text-zinc-400 hidden sm:inline font-mono text-[11px]">
+              Archival Catalogue (2021 — {new Date().getFullYear()})
+            </span>
+          </div>
+
+          <nav className="flex items-center gap-6">
+            <a href="#plates" className="text-zinc-400 hover:text-white transition-colors">Plates</a>
+            <a href="#index" className="text-zinc-400 hover:text-white transition-colors">Index</a>
+            <a href="#colophon" className="text-zinc-400 hover:text-white transition-colors">Colophon</a>
             <button
               onClick={() => onNavigate('/admin')}
-              className="px-3 py-1.5 rounded-full border border-white/10 text-white hover:bg-white/10 transition-colors"
+              className="px-3 py-1.5 rounded-full border border-white/20 text-white hover:bg-white hover:text-black transition-all text-[11px] font-mono"
             >
               Admin OS
             </button>
@@ -47,282 +56,254 @@ export const Home: React.FC<ThemePageProps> = ({
         </div>
       </header>
 
-      {/* Main Content with Generous Whitespace */}
-      <main className="max-w-6xl mx-auto px-6 py-20 sm:py-32 space-y-40">
-        
-        {/* ============================================================
-            HERO SECTION
-            - Large name
-            - One-line tagline
-            - Generous height
-            - Subtle scroll indicator
-           ============================================================ */}
-        <section className="min-h-[65vh] flex flex-col justify-between pt-10">
-          <div className="space-y-8 max-w-3xl">
-            <div className="inline-block text-xs font-mono text-gray-500 uppercase tracking-widest">
-              {identity.location} · UTC+5:30
-            </div>
+      {/* 2. EDITORIAL HERO & STATEMENT */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 pt-20 sm:pt-32 pb-24 border-b border-white/[0.08]">
+        <div className="max-w-4xl space-y-8">
+          <div className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
+            {identity.location} · {identity.role}
+          </div>
 
-            <h1 className="text-4xl sm:text-7xl font-light tracking-tight text-white leading-[1.08]">
-              UI/UX Designer crafting purposeful digital experiences.
-            </h1>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-tight text-white leading-[1.05]">
+            Work that questions, refines, and persists.
+          </h1>
 
-            <p className="text-lg sm:text-xl text-gray-400 font-light max-w-2xl leading-relaxed">
-              {identity.tagline}. Focused on system architecture, design systems, and software interface craft.
+          <div className="pt-4 grid grid-cols-1 sm:grid-cols-12 gap-8 text-base sm:text-lg text-zinc-400 font-sans font-light leading-relaxed">
+            <p className="sm:col-span-8">
+              {identity.bio}
             </p>
-
-            <div className="pt-4 flex items-center gap-6 text-sm">
-              <a 
-                href="#work" 
-                className="px-6 py-3.5 bg-white text-black font-medium rounded-full hover:bg-gray-200 transition-colors inline-flex items-center gap-2"
-              >
-                <span>View Selected Work</span>
-                <ArrowDown className="w-4 h-4" />
-              </a>
-              <button 
-                onClick={() => onNavigate('/resume')}
-                className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5"
-              >
-                <span>Download Resume</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="pt-20 flex items-center justify-between text-xs text-gray-500 font-mono border-t border-white/[0.06]">
-            <span>SCROLL TO EXPLORE</span>
-            <span>01 / 04</span>
-          </div>
-        </section>
-
-        {/* ============================================================
-            ABOUT SECTION
-            - Photo with subtle hover effect
-            - 3-4 sentences bio
-            - Availability status
-            - Location + timezone
-           ============================================================ */}
-        <section id="about" className="space-y-12 scroll-mt-24">
-          <div className="text-xs font-mono uppercase text-gray-500 tracking-widest">
-            About & Ethos
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-            <div className="md:col-span-5 aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 relative group">
-              <img
-                src={identity.avatarUrl}
-                alt={identity.name}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
-                <span className="text-xs font-mono text-white">{identity.name}</span>
-                <span className="text-[11px] text-gray-400">{identity.role}</span>
+            <div className="sm:col-span-4 space-y-3 font-mono text-xs text-zinc-500 border-l border-white/[0.08] pl-4 sm:pl-6">
+              <div>
+                <span className="text-zinc-600 block">STATUS</span>
+                <span className="text-zinc-300">Available for Senior Directorship & Contracts</span>
               </div>
-            </div>
-
-            <div className="md:col-span-7 space-y-6">
-              <h2 className="text-2xl sm:text-4xl font-light text-white tracking-tight leading-tight">
-                Simplicity is the consequence of disciplined reduction.
-              </h2>
-              <p className="text-gray-400 text-base leading-relaxed font-light">
-                {identity.bio}
-              </p>
-              <p className="text-gray-400 text-base leading-relaxed font-light">
-                Currently available for selected freelance initiatives, design system consulting,
-                and high-fidelity product prototyping.
-              </p>
-
-              <div className="pt-6 grid grid-cols-2 gap-6 border-t border-white/[0.06] text-xs font-mono">
-                <div>
-                  <span className="text-gray-500 block mb-1">STATUS</span>
-                  <span className="text-emerald-400 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Available for Q2
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-500 block mb-1">LOCATION</span>
-                  <span className="text-white">{identity.location}</span>
-                </div>
+              <div>
+                <span className="text-zinc-600 block">SPECIFICATION</span>
+                <span className="text-zinc-300">Architecture · Systems · Interaction</span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* ============================================================
-            WORK / PROJECTS SECTION
-            - 2-column desktop grid with generous whitespace
-            - Large thumbnail image
-            - Project title & category tag
-            - Hover scale + "View Project"
-           ============================================================ */}
-        <section id="work" className="space-y-16 scroll-mt-24">
-          <div className="flex items-baseline justify-between border-b border-white/[0.06] pb-6">
-            <h2 className="text-3xl sm:text-4xl font-light text-white tracking-tight">
-              Selected Work
-            </h2>
-            <span className="text-xs font-mono text-gray-500">
-              {projects.length} Case Studies
+        <div className="pt-16 sm:pt-24 flex items-center justify-between text-xs font-mono text-zinc-600">
+          <a href="#plates" className="inline-flex items-center gap-2 hover:text-zinc-300 transition-colors">
+            <span>EXPLORE EXHIBITION</span>
+            <ArrowDown className="w-3.5 h-3.5" />
+          </a>
+          <span>FIG. 01 — {projects.length} EXHIBITS</span>
+        </div>
+      </section>
+
+      {/* 3. FULL-BLEED PLATE EXHIBITION */}
+      <section id="plates" className="max-w-7xl mx-auto px-4 sm:px-8 py-24 space-y-32">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
+          <div>
+            <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block">Section I</span>
+            <h2 className="text-2xl sm:text-3xl font-serif text-white mt-1">Exhibition Plates</h2>
+          </div>
+          <span className="text-xs font-mono text-zinc-500">
+            Curated Visual Portfolio · Full-Bleed Records
+          </span>
+        </div>
+
+        <div className="space-y-32">
+          {projects.slice(0, 4).map((project, idx) => (
+            <article key={project.id} className="space-y-6 group">
+              {/* Plate Header Note */}
+              <div className="flex items-center justify-between text-xs font-mono text-zinc-500 border-b border-white/[0.06] pb-3">
+                <span className="tracking-widest">PLATE 0{idx + 1} // {project.date || '2024'}</span>
+                <span className="text-zinc-400">{project.role}</span>
+              </div>
+
+              {/* Large Image Frame */}
+              <div 
+                onClick={() => onNavigate(`/projects/${project.slug || project.id}`)}
+                className="relative aspect-[16/9] sm:aspect-[21/9] w-full overflow-hidden bg-zinc-950 cursor-pointer border border-white/[0.06] group-hover:border-white/20 transition-all duration-500"
+              >
+                {project.coverImage ? (
+                  <img
+                    src={project.coverImage}
+                    alt={project.title}
+                    className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-[1.02] transition-all duration-700 ease-out"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center font-mono text-xs text-zinc-600">
+                    [NO_VISUAL_RECORD]
+                  </div>
+                )}
+              </div>
+
+              {/* Minimal Caption Footnote */}
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-baseline pt-2">
+                <div className="sm:col-span-5">
+                  <h3 
+                    onClick={() => onNavigate(`/projects/${project.slug || project.id}`)}
+                    className="text-2xl sm:text-3xl font-serif text-white hover:text-zinc-300 cursor-pointer transition-colors"
+                  >
+                    {project.title}
+                  </h3>
+                </div>
+
+                <div className="sm:col-span-4 text-xs font-sans text-zinc-400 leading-relaxed">
+                  <p>{project.summary}</p>
+                </div>
+
+                <div className="sm:col-span-3 sm:text-right">
+                  <button
+                    onClick={() => onNavigate(`/projects/${project.slug || project.id}`)}
+                    className="inline-flex items-center gap-1.5 text-xs font-mono text-white hover:text-zinc-400 transition-colors uppercase tracking-wider"
+                  >
+                    <span>Read Case Study</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. ARCHIVAL LEDGER INDEX TABLE */}
+      <section id="index" className="max-w-7xl mx-auto px-4 sm:px-8 py-24 border-t border-white/[0.08]">
+        <div className="space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest block">Section II</span>
+              <h2 className="text-2xl sm:text-3xl font-serif text-white mt-1">Complete Archival Index</h2>
+            </div>
+            <span className="text-xs font-mono text-zinc-500">
+              Total Catalogued Works: {projects.length}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-16">
-            {projects.map((proj, idx) => (
-              <article
-                key={proj.id}
-                onClick={() => onNavigate(`/projects/${proj.slug}`)}
-                className="group cursor-pointer space-y-4"
-              >
-                {/* Large Thumbnail Image */}
-                <div className="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 relative">
-                  <img
-                    src={proj.coverImage}
-                    alt={proj.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
-                  />
-                  {/* Subtle Hover Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="px-5 py-2.5 bg-white text-black font-medium text-xs rounded-full shadow-2xl flex items-center gap-1.5">
-                      <span>View Case Study</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                </div>
-
-                {/* Project Info */}
-                <div className="flex items-baseline justify-between pt-1">
-                  <div>
-                    <h3 className="text-lg font-medium text-white group-hover:text-gray-300 transition-colors">
-                      {proj.title}
-                    </h3>
-                    <p className="text-xs text-gray-400 font-light mt-0.5">
-                      {proj.summary}
-                    </p>
-                  </div>
-                  <span className="text-xs font-mono text-gray-500 uppercase tracking-wider shrink-0 ml-4">
-                    {proj.role}
-                  </span>
-                </div>
-              </article>
-            ))}
+          {/* Ledger Table */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse font-sans text-xs">
+              <thead>
+                <tr className="border-b border-white/20 text-zinc-500 font-mono text-[11px] tracking-wider uppercase">
+                  <th className="py-4 font-normal w-12">#</th>
+                  <th className="py-4 font-normal">Project & Client</th>
+                  <th className="py-4 font-normal hidden md:table-cell">Discipline / Role</th>
+                  <th className="py-4 font-normal hidden sm:table-cell">Stack & Medium</th>
+                  <th className="py-4 font-normal w-16">Year</th>
+                  <th className="py-4 font-normal text-right w-28">Study</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/[0.06]">
+                {projects.map((proj, idx) => (
+                  <tr 
+                    key={proj.id}
+                    onClick={() => onNavigate(`/projects/${proj.slug || proj.id}`)}
+                    className="hover:bg-white/[0.03] transition-colors cursor-pointer group"
+                  >
+                    <td className="py-4 font-mono text-zinc-600 group-hover:text-zinc-400">
+                      {String(idx + 1).padStart(2, '0')}
+                    </td>
+                    <td className="py-4 pr-4">
+                      <span className="font-serif text-base text-white group-hover:text-zinc-200 block">
+                        {proj.title}
+                      </span>
+                      <span className="text-zinc-500 text-[11px] font-sans block sm:hidden">
+                        {proj.role}
+                      </span>
+                    </td>
+                    <td className="py-4 text-zinc-400 hidden md:table-cell">
+                      {proj.role}
+                    </td>
+                    <td className="py-4 text-zinc-500 font-mono text-[11px] hidden sm:table-cell">
+                      {proj.technologies.slice(0, 3).join(', ')}
+                    </td>
+                    <td className="py-4 font-mono text-zinc-400">
+                      {proj.date || '2024'}
+                    </td>
+                    <td className="py-4 text-right">
+                      <span className="inline-flex items-center gap-1 text-zinc-400 group-hover:text-white font-mono text-[11px]">
+                        <span>View</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ============================================================
-            SKILLS SECTION
-            - Simple tag clouds by category (Design, Prototyping, Research)
-            - No progress bars
-           ============================================================ */}
-        <section className="space-y-10 border-t border-white/[0.06] pt-16">
-          <div className="text-xs font-mono uppercase text-gray-500 tracking-widest">
-            Disciplines & Tooling
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {skillCategories.slice(0, 3).map((cat) => (
-              <div key={cat.id} className="space-y-4">
-                <h3 className="text-sm font-medium text-white">{cat.category}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {cat.skills.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1.5 rounded-full bg-white/[0.04] text-xs text-gray-400 hover:text-white border border-white/[0.06] transition-colors"
-                    >
-                      {skill.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================
-            CONTACT SECTION
-            - "Let's work together"
-            - Email link (mailto:)
-            - Social links
-            - Simple contact form
-           ============================================================ */}
-        <section id="contact" className="space-y-12 border-t border-white/[0.06] pt-20 scroll-mt-24">
-          <div className="max-w-2xl space-y-6">
-            <h2 className="text-3xl sm:text-5xl font-light text-white tracking-tight leading-tight">
-              Let's work together.
-            </h2>
-            <p className="text-gray-400 font-light text-base leading-relaxed">
-              Have a project in mind or want to discuss design collaboration?
-              Reach out directly at{' '}
-              <a
-                href={`mailto:${identity.socialLinks.email}`}
-                className="text-white underline underline-offset-4 hover:opacity-80 transition-opacity"
-              >
-                {identity.socialLinks.email}
-              </a>.
+      {/* 5. COLOPHON & DIRECT INQUIRY */}
+      <footer id="colophon" className="max-w-7xl mx-auto px-4 sm:px-8 py-24 border-t border-white/[0.08] text-xs font-sans">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+          {/* Left Column: Ethos */}
+          <div className="md:col-span-6 space-y-4">
+            <span className="font-mono text-zinc-500 uppercase tracking-widest text-[11px] block">
+              Colophon & Philosophy
+            </span>
+            <p className="text-base text-zinc-300 font-serif leading-relaxed">
+              Designed as an austere, quiet space for rigorous design and software engineering. 
+              Typeset in classic serif and monospaced letterforms. Built on the PDL Portfolio Engine.
             </p>
+            <div className="pt-2 flex items-center gap-4 text-zinc-500 font-mono text-[11px]">
+              <span>© {new Date().getFullYear()} {identity.name}</span>
+              <span>·</span>
+              <span>All Rights Reserved</span>
+            </div>
           </div>
 
-          <div className="max-w-xl">
-            {formSent ? (
-              <div className="p-8 rounded-2xl bg-white/[0.03] border border-white/10 text-center space-y-2">
-                <p className="text-sm font-medium text-white">Thank you for your inquiry.</p>
-                <p className="text-xs text-gray-500">I will review and reply within 24 hours.</p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Right Column: Inquiries */}
+          <div className="md:col-span-6 space-y-6 md:pl-12 md:border-l border-white/[0.08]">
+            <span className="font-mono text-zinc-500 uppercase tracking-widest text-[11px] block">
+              Direct Transmission & Communication
+            </span>
+            
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
                 <div>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Your Name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full pb-3 bg-transparent border-b border-white/20 text-white placeholder-gray-600 focus:outline-none focus:border-white text-sm transition-colors"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="email"
-                    required
-                    placeholder="Your Email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full pb-3 bg-transparent border-b border-white/20 text-white placeholder-gray-600 focus:outline-none focus:border-white text-sm transition-colors"
-                  />
-                </div>
-                <div>
-                  <textarea
-                    required
-                    rows={3}
-                    placeholder="Brief description of the project"
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full pb-3 bg-transparent border-b border-white/20 text-white placeholder-gray-600 focus:outline-none focus:border-white text-sm transition-colors resize-none"
-                  />
+                  <span className="text-zinc-500 font-mono text-[11px] block">PRIMARY CONTACT</span>
+                  <span className="text-sm font-mono text-white select-all">{identity.socialLinks.email}</span>
                 </div>
                 <button
-                  type="submit"
-                  className="px-8 py-3 bg-white text-black font-medium text-xs rounded-full hover:bg-gray-200 transition-colors"
+                  onClick={copyEmail}
+                  className="px-3 py-1.5 rounded bg-white/[0.06] hover:bg-white text-white hover:text-black font-mono text-[11px] transition-all flex items-center gap-1.5"
                 >
-                  Send Inquiry
+                  {copiedEmail ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedEmail ? 'Copied' : 'Copy Email'}</span>
                 </button>
-              </form>
-            )}
-          </div>
-        </section>
+              </div>
 
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-white/[0.06] py-12 text-xs text-gray-500">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© 2026 {identity.name}. All rights reserved.</p>
-          <div className="flex items-center gap-6">
-            <a href={identity.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
-            <a href={identity.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
-            <a href={identity.socialLinks.github} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+              <div className="flex items-center gap-4 pt-2 font-mono text-[11px]">
+                {identity.socialLinks.github && (
+                  <a 
+                    href={identity.socialLinks.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+                  >
+                    <span>GitHub</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                )}
+                {identity.socialLinks.linkedin && (
+                  <a 
+                    href={identity.socialLinks.linkedin} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
+                  >
+                    <span>LinkedIn</span>
+                    <ArrowUpRight className="w-3 h-3" />
+                  </a>
+                )}
+                <button
+                  onClick={() => onNavigate('/admin')}
+                  className="text-zinc-400 hover:text-white transition-colors"
+                >
+                  Admin Console
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
+
     </div>
   );
 };

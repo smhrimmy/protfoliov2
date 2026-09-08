@@ -213,10 +213,62 @@ export const SettingsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Mobile Category Switcher & Quick Navigation (< md) */}
+      <div className="block md:hidden space-y-3">
+        <div className="p-3.5 bg-[#0a0e17] border border-white/10 rounded-2xl space-y-3 shadow-lg">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-gray-400 font-semibold">Settings Category</span>
+            <span className="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
+              {categories.findIndex(c => c.id === activeSection) + 1} of {categories.length}
+            </span>
+          </div>
+
+          {/* Quick Select Dropdown */}
+          <div className="relative">
+            <select
+              value={activeSection}
+              onChange={e => setActiveSection(e.target.value)}
+              className="w-full bg-[#151c2c] border border-white/15 text-white rounded-xl px-4 py-3 text-xs font-semibold appearance-none focus:outline-none focus:border-blue-500 shadow-inner"
+            >
+              {categories.map(c => (
+                <option key={c.id} value={c.id} className="bg-[#0f172a] text-white py-2">
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute right-3.5 top-3.5 text-gray-400 text-xs">
+              ▼
+            </div>
+          </div>
+
+          {/* Touch-Friendly Horizontal Category Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 no-scrollbar">
+            {categories.map(cat => {
+              const Icon = cat.icon;
+              const isActive = activeSection === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveSection(cat.id)}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs whitespace-nowrap shrink-0 transition-all ${
+                    isActive
+                      ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30'
+                      : 'bg-white/5 text-gray-300 hover:text-white border border-white/5'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {/* Main Grouped Layout */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-        {/* Left Settings Sidebar */}
-        <div className="md:col-span-4 lg:col-span-3 bg-[#0a0e17] border border-white/5 rounded-2xl p-4 space-y-4 shrink-0">
+        {/* Left Settings Sidebar (Hidden on mobile, clean 2-col on desktop) */}
+        <div className="hidden md:block md:col-span-4 lg:col-span-3 bg-[#0a0e17] border border-white/5 rounded-2xl p-4 space-y-4 shrink-0">
           {/* Search Settings Input */}
           <div className="relative">
             <Search className="w-3.5 h-3.5 text-gray-500 absolute left-3 top-2.5" />
@@ -254,7 +306,7 @@ export const SettingsPage: React.FC = () => {
         </div>
 
         {/* Right Settings Content Form Pane */}
-        <div className="md:col-span-8 lg:col-span-9 bg-[#0e131f] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-6">
+        <div className="md:col-span-8 lg:col-span-9 bg-[#0e131f] border border-white/5 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-6 w-full max-w-full overflow-hidden">
           {/* SECTION 1: GENERAL */}
           {activeSection === 'general' && (
             <div className="space-y-6">
@@ -865,9 +917,33 @@ export const SettingsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Sticky Mobile Quick Save Action Bar (< md) */}
+      <div className="md:hidden fixed bottom-16 left-0 right-0 z-40 p-3 bg-[#0a0e17]/95 backdrop-blur-lg border-t border-white/10 flex items-center justify-between shadow-2xl">
+        <div className="flex items-center gap-2 text-xs">
+          <div className={`w-2 h-2 rounded-full ${hasUnsavedChanges ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`} />
+          <span className="font-mono text-gray-300 text-[11px]">{hasUnsavedChanges ? 'Unsaved edits' : 'Up to date'}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => handleResetSection(activeSection)}
+            className="px-3 py-1.5 bg-white/5 text-gray-300 rounded-xl text-xs font-mono"
+          >
+            Reset
+          </button>
+          <button
+            onClick={() => handleSaveSection(activeSection)}
+            disabled={isSaving}
+            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-blue-600/30"
+          >
+            {isSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+            <span>Save</span>
+          </button>
+        </div>
+      </div>
+
       {/* Sticky Unsaved Changes Bar */}
       {hasUnsavedChanges && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#0e131f] border border-blue-500/40 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-4 animate-in slide-in-from-bottom-4">
+        <div className="hidden md:flex fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#0e131f] border border-blue-500/40 text-white px-6 py-3 rounded-2xl shadow-2xl items-center gap-4 animate-in slide-in-from-bottom-4">
           <div className="flex items-center gap-2 text-xs">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
             <span className="font-semibold">You have unsaved changes</span>

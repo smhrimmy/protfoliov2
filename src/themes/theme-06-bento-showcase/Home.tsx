@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { ThemePageProps } from '@/themes/_contracts/PageRenderer';
 import { 
-  ArrowRight, ArrowUpRight, Check, Star, Mail, Sparkles, 
-  Clock, Shield, DollarSign, Send, MessageSquare 
+  Check, ArrowUpRight, DollarSign, Calendar, Clock, 
+  ShieldCheck, Sparkles, HelpCircle, ChevronDown, ChevronUp, Send
 } from 'lucide-react';
 
 export const Home: React.FC<ThemePageProps> = ({ 
@@ -10,382 +10,393 @@ export const Home: React.FC<ThemePageProps> = ({
   projects, 
   onNavigate 
 }) => {
-  const [inquirySent, setInquirySent] = useState(false);
-  const [inquiry, setInquiry] = useState({
-    name: '',
-    email: '',
-    budget: '$5k - $10k',
-    timeline: '1-2 months',
-    description: ''
+  // Interactive Scope Calculator State
+  const [selectedServices, setSelectedServices] = useState<{ [key: string]: boolean }>({
+    webapp: true,
+    designSystem: false,
+    backend: true,
+    maintenance: false
   });
 
-  const services = [
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [inquirySent, setInquirySent] = useState(false);
+
+  // Deliverables pricing
+  const servicesConfig: { [key: string]: { label: string; price: number; weeks: number } } = {
+    webapp: { label: 'Web Application & Frontend', price: 4500, weeks: 3 },
+    designSystem: { label: 'Design System & Component Library', price: 2800, weeks: 2 },
+    backend: { label: 'Backend Architecture & Database APIs', price: 3200, weeks: 2 },
+    maintenance: { label: '3-Month Post-Launch SLA Support', price: 1800, weeks: 12 }
+  };
+
+  const calculateTotal = () => {
+    let total = 0;
+    let weeks = 0;
+    Object.keys(selectedServices).forEach(key => {
+      if (selectedServices[key]) {
+        total += servicesConfig[key].price;
+        weeks = Math.max(weeks, servicesConfig[key].weeks);
+      }
+    });
+    return { total, weeks };
+  };
+
+  const { total, weeks } = calculateTotal();
+
+  const toggleService = (key: string) => {
+    setSelectedServices(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const faqs = [
     {
-      title: 'Full-Stack Product Engineering',
-      desc: 'End-to-end web applications built with Next.js, React, Node, and PostgreSQL.',
-      deliverables: ['Custom Web App', 'Database Architecture', 'REST/GraphQL API', 'CI/CD Pipeline'],
-      price: 'From $4,500',
-      timeline: '3-5 weeks'
+      q: 'How are client engagements structured?',
+      a: 'Projects are structured on a 50/50 fixed-scope sprint model. 50% deposit upon kickoff, with the final 50% due upon delivery and sign-off. Zero surprise hourly overages.'
     },
     {
-      title: 'Design Systems & UI Architecture',
-      desc: 'Scalable token systems, accessible React components, and comprehensive Figma libraries.',
-      deliverables: ['Token Architecture', 'Storybook Documentation', 'WCAG 2.1 AA Audit', 'NPM Package'],
-      price: 'From $3,500',
-      timeline: '2-4 weeks'
+      q: 'What is your typical turnaround time?',
+      a: 'Most focused sprints complete in 2 to 4 weeks. Full-scale system redesigns take 4 to 8 weeks depending on backend complexity and third-party integrations.'
     },
     {
-      title: 'High-Throughput Cloud & DevOps',
-      desc: 'Zero-downtime infrastructure, Docker containerization, Kubernetes, and edge workers.',
-      deliverables: ['Terraform IaC', 'Autoscaling Clusters', 'Telemetry & Alerting', 'Security Hardening'],
-      price: 'From $5,000',
-      timeline: '2-3 weeks'
+      q: 'Do you offer ongoing retainer / fractional advisory?',
+      a: 'Yes. For teams requiring senior technical guidance, code audits, or ongoing feature roadmaps, monthly advisory retainers start at $3,000/month.'
     }
   ];
 
-  const clientLogos = [
-    'TechFlow', 'Nova Clinics', 'Alto Commerce', 'Aether Labs', 'Apex Mobility', 'Pulse AI'
-  ];
-
   return (
-    <div className="min-h-screen bg-[#0d0f14] text-[#e2e8f0] font-sans antialiased selection:bg-rose-500 selection:text-white">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-[#0d0f14]/85 backdrop-blur-md border-b border-white/[0.08]">
-        <div className="max-w-6xl mx-auto px-6 h-18 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-rose-500/20 border border-rose-500/30 flex items-center justify-center font-bold text-xs text-rose-400">
-              P
-            </div>
-            <span className="font-bold text-sm text-white tracking-tight">{identity.name}</span>
-          </div>
+    <div className="min-h-screen bg-[#0b0f17] text-[#e2e8f0] font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-300 w-full max-w-full overflow-x-hidden">
+      
+      {/* 1. TOP LIVE AVAILABILITY BANNER */}
+      <div className="bg-emerald-950/50 border-b border-emerald-500/20 py-2.5 px-4 text-center text-xs font-mono text-emerald-400">
+        <span className="inline-flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span className="font-bold">ACCEPTING Q3 COMMISSIONS</span>
+          <span className="text-emerald-500/70 hidden sm:inline">· 2 Client Slots Remaining for Venture Sprints</span>
+        </span>
+      </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-gray-400">
-            <a href="#work" className="hover:text-white transition-colors">Work</a>
-            <a href="#services" className="hover:text-white transition-colors">Services</a>
-            <a href="#clients" className="hover:text-white transition-colors">Clients</a>
-            <a href="#contact" className="hover:text-white transition-colors">Inquire</a>
-          </nav>
+      {/* 2. HEADER */}
+      <header className="sticky top-0 z-40 bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/[0.08] text-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-black flex items-center justify-center font-bold text-sm">
+              {identity.name.charAt(0)}
+            </div>
+            <div>
+              <span className="font-bold text-white tracking-tight text-sm block">{identity.name}</span>
+              <span className="text-gray-400 text-[11px]">{identity.role}</span>
+            </div>
+          </div>
 
           <div className="flex items-center gap-3">
             <a
-              href="#contact"
-              className="px-4 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-md shadow-rose-600/20 transition-all"
+              href="#calculator"
+              className="text-gray-300 hover:text-white transition-colors hidden sm:inline"
             >
-              Start a Project
+              Pricing Calculator
+            </a>
+            <a
+              href="#packages"
+              className="text-gray-300 hover:text-white transition-colors hidden sm:inline"
+            >
+              Fixed Tiers
             </a>
             <button
               onClick={() => onNavigate('/admin')}
-              className="text-xs text-gray-500 hover:text-white px-2 py-1"
+              className="px-3 py-1.5 rounded-lg border border-white/10 text-gray-300 hover:text-white font-mono"
             >
-              Admin
+              Admin OS
             </button>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 py-16 sm:py-24 space-y-36">
-        
-        {/* ============================================================
-            HERO SECTION
-            - Memorable headline
-            - Brief intro
-            - Selected preview & CTA
-           ============================================================ */}
-        <section className="space-y-8 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-medium">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Currently booking Q2/Q3 client engagements</span>
+      {/* 3. HERO & VALUE PROPOSITION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 pt-16 pb-20 space-y-8">
+        <div className="max-w-3xl space-y-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.1] text-xs text-gray-300">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <span>High-Velocity Engineering & Product Design Studio</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.08]">
-            I build digital systems that people actually remember.
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+            Senior execution without the agency overhead.
           </h1>
 
-          <p className="text-base sm:text-lg text-gray-400 leading-relaxed max-w-2xl font-normal">
-            {identity.tagline}. Partnering with founders and engineering leaders to turn ambitious ideas
-            into rock-solid, production-grade products.
+          <p className="text-base sm:text-lg text-gray-400 leading-relaxed font-light">
+            I partner directly with founders and product teams to design, architect, and ship 
+            production-ready web software. Transparent pricing, strict deadlines, and zero fluff.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+          <div className="pt-2 flex flex-wrap items-center gap-4">
             <a
-              href="#contact"
-              className="px-7 py-3.5 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs transition-all flex items-center gap-2 shadow-lg shadow-rose-600/25"
+              href="#calculator"
+              className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-sm"
             >
-              <span>Start a Project</span>
-              <ArrowRight className="w-4 h-4" />
+              Calculate Your Project Scope
             </a>
             <a
               href="#work"
-              className="px-6 py-3.5 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-gray-200 border border-white/10 text-xs font-medium transition-colors"
+              className="px-5 py-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:bg-white/[0.05] transition-colors text-sm"
             >
-              View Selected Work
+              Review Shipped Work ({projects.length})
             </a>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Client Logos Wall */}
-        <section id="clients" className="space-y-4 border-y border-white/[0.08] py-10">
-          <p className="text-center text-xs uppercase tracking-widest text-gray-500 font-mono">
-            Trusted by founders and high-growth engineering teams
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-16 pt-2">
-            {clientLogos.map((logo, idx) => (
-              <span key={idx} className="font-mono text-sm sm:text-base font-bold text-gray-500 hover:text-white transition-colors cursor-default">
-                {logo}
+      {/* 4. INTERACTIVE PROJECT BUDGET & SCOPE CALCULATOR */}
+      <section id="calculator" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 border-t border-white/[0.08]">
+        <div className="rounded-3xl bg-[#111722] border border-white/[0.1] p-6 sm:p-10 shadow-2xl space-y-8">
+          
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/[0.08] pb-6">
+            <div>
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest block">
+                Instant Scope Estimator
               </span>
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================
-            SELECTED WORK
-           ============================================================ */}
-        <section id="work" className="space-y-12 scroll-mt-24">
-          <div className="flex items-baseline justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-white tracking-tight">
-                Selected Client Work
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+                Customize Your Deliverables
               </h2>
-              <p className="text-xs text-gray-400 mt-1">Direct case studies with measurable production outcomes.</p>
             </div>
-            <button
-              onClick={() => onNavigate('/projects')}
-              className="text-xs font-semibold text-rose-400 hover:text-rose-300 flex items-center gap-1"
-            >
-              <span>View all projects</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </button>
+            <span className="text-xs text-gray-400">
+              Check all components your launch requires
+            </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.slice(0, 4).map((proj) => (
-              <article
-                key={proj.id}
-                onClick={() => onNavigate(`/projects/${proj.slug}`)}
-                className="group cursor-pointer rounded-2xl bg-[#141720] border border-white/[0.08] hover:border-rose-500/40 p-6 space-y-5 transition-all hover:-translate-y-1"
-              >
-                <div className="aspect-[16/10] w-full rounded-xl overflow-hidden bg-black relative">
-                  <img
-                    src={proj.coverImage}
-                    alt={proj.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono text-gray-300">
-                    {proj.role}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-white group-hover:text-rose-400 transition-colors">
-                      {proj.title}
-                    </h3>
-                    <span className="text-xs font-mono text-emerald-400 font-semibold">
-                      {proj.client || 'Verified Result'}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">
-                    {proj.summary}
-                  </p>
-                </div>
-
-                <div className="pt-2 flex items-center justify-between text-xs border-t border-white/[0.06] text-gray-400">
-                  <span className="font-mono text-[11px]">{proj.date?.slice(0, 4) || '2024'}</span>
-                  <span className="text-rose-400 font-medium flex items-center gap-1">
-                    Read Case Study <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================
-            SERVICES & ENGAGEMENT PACKAGES
-            - Service name, included deliverables, starting price, timeline
-           ============================================================ */}
-        <section id="services" className="space-y-12 scroll-mt-24">
-          <div className="space-y-2">
-            <span className="text-xs font-mono uppercase text-rose-400 font-semibold">Services</span>
-            <h2 className="text-3xl font-bold text-white tracking-tight">
-              Transparent, Scoped Engagements
-            </h2>
-            <p className="text-xs text-gray-400">
-              Fixed-scope deliverables with clear timelines. No hidden retainers or surprise bills.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {services.map((svc, idx) => (
-              <div
-                key={idx}
-                className="p-7 rounded-2xl bg-[#141720] border border-white/[0.08] hover:border-white/20 flex flex-col justify-between space-y-6 transition-colors"
-              >
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-white">{svc.title}</h3>
-                    <p className="text-xs text-gray-400 mt-2 leading-relaxed">{svc.desc}</p>
-                  </div>
-
-                  <div className="space-y-2 pt-2 border-t border-white/[0.06]">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-gray-500 block">Deliverables</span>
-                    {svc.deliverables.map((item, dIdx) => (
-                      <div key={dIdx} className="flex items-center gap-2 text-xs text-gray-300">
-                        <Check className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-                        <span>{item}</span>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Options Checkbox Grid */}
+            <div className="lg:col-span-7 space-y-3">
+              {Object.keys(servicesConfig).map(key => {
+                const item = servicesConfig[key];
+                const isSelected = !!selectedServices[key];
+                return (
+                  <div
+                    key={key}
+                    onClick={() => toggleService(key)}
+                    className={`p-4 rounded-2xl border cursor-pointer transition-all flex items-center justify-between ${
+                      isSelected
+                        ? 'bg-emerald-500/10 border-emerald-500/50 text-white'
+                        : 'bg-white/[0.02] border-white/[0.06] text-gray-400 hover:border-white/20'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-5 h-5 rounded-md flex items-center justify-center border ${
+                        isSelected ? 'bg-emerald-500 border-emerald-500 text-black' : 'border-gray-600'
+                      }`}>
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-white/[0.06] space-y-3">
-                  <div className="flex items-baseline justify-between">
-                    <div>
-                      <span className="text-xl font-extrabold text-white">{svc.price}</span>
-                      <span className="text-[10px] text-gray-500 block">Starting rate</span>
+                      <span className="font-semibold text-sm text-white">{item.label}</span>
                     </div>
-                    <span className="text-xs font-mono text-gray-400 flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5" /> {svc.timeline}
-                    </span>
+
+                    <div className="text-right">
+                      <span className="text-sm font-bold text-emerald-400 font-mono">
+                        +${item.price.toLocaleString()}
+                      </span>
+                    </div>
                   </div>
-
-                  <a
-                    href="#contact"
-                    className="w-full py-2.5 rounded-xl bg-white/[0.06] hover:bg-rose-600 hover:text-white text-gray-200 text-xs font-semibold flex items-center justify-center transition-colors"
-                  >
-                    Inquire About This Service
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================
-            CLIENT TESTIMONIAL
-           ============================================================ */}
-        <section className="p-8 sm:p-12 rounded-3xl bg-gradient-to-tr from-[#141720] to-[#1c202d] border border-white/[0.08] space-y-6">
-          <div className="flex items-center gap-1 text-amber-400">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-amber-400" />
-            ))}
-          </div>
-          <blockquote className="text-xl sm:text-2xl font-medium text-white leading-relaxed">
-            "Working with {identity.name} was hands-down the best technical partnership we've had.
-            He took our messy prototype and engineered a production system that effortlessly handled
-            our 10x traffic spike on launch day."
-          </blockquote>
-          <div className="flex items-center gap-3 pt-2">
-            <div className="w-10 h-10 rounded-full bg-rose-500/20 border border-rose-500/30 flex items-center justify-center font-bold text-sm text-rose-400">
-              TL
+                );
+              })}
             </div>
-            <div>
-              <p className="text-sm font-bold text-white">Trevor Lindstrom</p>
-              <p className="text-xs text-gray-400 font-mono">VP Engineering, TechFlow</p>
-            </div>
-          </div>
-        </section>
 
-        {/* ============================================================
-            PROJECT INQUIRY FLOW
-           ============================================================ */}
-        <section id="contact" className="p-8 sm:p-12 rounded-3xl bg-[#141720] border border-white/[0.08] space-y-8 scroll-mt-24">
-          <div className="space-y-2 max-w-xl">
-            <span className="text-xs font-mono uppercase text-rose-400 font-semibold">Initiation</span>
-            <h2 className="text-3xl font-bold text-white tracking-tight">Let's build something together.</h2>
-            <p className="text-xs text-gray-400">Fill in your requirements below for a detailed proposal within 24 hours.</p>
-          </div>
+            {/* Live Calculation Output Card */}
+            <div className="lg:col-span-5 p-6 rounded-2xl bg-black/60 border border-emerald-500/30 space-y-6">
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest block">
+                Estimated Commitment
+              </span>
 
-          {inquirySent ? (
-            <div className="p-8 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-center space-y-2">
-              <Check className="w-8 h-8 text-rose-400 mx-auto" />
-              <h3 className="font-bold text-white">Inquiry Received</h3>
-              <p className="text-xs text-gray-400 font-mono">I will review your project scope and follow up promptly.</p>
-            </div>
-          ) : (
-            <form onSubmit={(e) => { e.preventDefault(); setInquirySent(true); }} className="space-y-4 max-w-xl font-mono text-xs">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div>
-                  <label className="block text-gray-400 mb-1">Your Name</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Sarah Miller"
-                    value={inquiry.name}
-                    onChange={(e) => setInquiry({ ...inquiry, name: e.target.value })}
-                    className="w-full p-3 rounded-xl bg-[#0d0f14] border border-white/10 text-white focus:outline-none focus:border-rose-500"
-                  />
+                  <span className="text-gray-400 text-xs block">Estimated Investment</span>
+                  <div className="text-4xl font-extrabold text-white font-mono mt-1">
+                    ${total.toLocaleString()}
+                    <span className="text-xs text-gray-400 font-sans font-normal ml-2">USD</span>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-gray-400 mb-1">Email</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="sarah@company.com"
-                    value={inquiry.email}
-                    onChange={(e) => setInquiry({ ...inquiry, email: e.target.value })}
-                    className="w-full p-3 rounded-xl bg-[#0d0f14] border border-white/10 text-white focus:outline-none focus:border-rose-500"
-                  />
+
+                <div className="flex items-center justify-between text-xs border-t border-white/[0.08] pt-3 text-gray-300">
+                  <span>Estimated Delivery Window:</span>
+                  <span className="font-bold text-white font-mono">{weeks} — {weeks + 2} Weeks</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-400 mb-1">Budget Range</label>
-                  <select
-                    value={inquiry.budget}
-                    onChange={(e) => setInquiry({ ...inquiry, budget: e.target.value })}
-                    className="w-full p-3 rounded-xl bg-[#0d0f14] border border-white/10 text-white focus:outline-none focus:border-rose-500"
-                  >
-                    <option>$3,000 - $5,000</option>
-                    <option>$5,000 - $10,000</option>
-                    <option>$10,000 - $25,000</option>
-                    <option>$25,000+</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-gray-400 mb-1">Target Timeline</label>
-                  <select
-                    value={inquiry.timeline}
-                    onChange={(e) => setInquiry({ ...inquiry, timeline: e.target.value })}
-                    className="w-full p-3 rounded-xl bg-[#0d0f14] border border-white/10 text-white focus:outline-none focus:border-rose-500"
-                  >
-                    <option>Under 1 month</option>
-                    <option>1-2 months</option>
-                    <option>3+ months</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-gray-400 mb-1">Project Summary</label>
-                <textarea
-                  required
-                  rows={3}
-                  placeholder="Key goals, technical stack preferences, and scope..."
-                  value={inquiry.description}
-                  onChange={(e) => setInquiry({ ...inquiry, description: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-[#0d0f14] border border-white/10 text-white focus:outline-none focus:border-rose-500 resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold transition-colors shadow-lg shadow-rose-600/20"
+              <a
+                href={`mailto:${identity.socialLinks.email}?subject=Project Inquiry (${weeks}w scope, $${total})`}
+                className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl transition-colors text-center block text-sm shadow-lg shadow-emerald-500/20"
               >
-                Submit Project Brief
-              </button>
-            </form>
-          )}
-        </section>
+                Lock In Scope & Start Sprint →
+              </a>
+              <p className="text-[11px] text-gray-500 text-center">
+                Includes code handover, full repository rights, and 14-day warranty.
+              </p>
+            </div>
+          </div>
 
-      </main>
+        </div>
+      </section>
 
-      {/* Footer */}
-      <footer className="border-t border-white/[0.08] py-12 text-xs font-mono text-gray-500 text-center">
-        © 2026 {identity.name}. Available worldwide for engineering and advisory.
+      {/* 5. THREE FIXED-SCOPE TIERS */}
+      <section id="packages" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 space-y-12">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">Fixed Scope Packages</span>
+          <h2 className="text-3xl font-extrabold text-white">Transparent, Turnkey Pricing</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Tier 1 */}
+          <div className="p-6 rounded-2xl bg-[#111722] border border-white/[0.08] space-y-6 flex flex-col justify-between">
+            <div className="space-y-4">
+              <span className="text-xs font-mono text-gray-400 uppercase">TIER 01</span>
+              <h3 className="text-xl font-bold text-white">MVP Sprint</h3>
+              <div className="text-3xl font-extrabold text-white font-mono">$4,500</div>
+              <p className="text-xs text-gray-400">For early-stage founders needing a polished prototype to test market traction.</p>
+              <ul className="space-y-2 text-xs text-gray-300 border-t border-white/[0.08] pt-4">
+                <li className="flex items-center gap-2">✓ 2-Week Dedicated Sprint</li>
+                <li className="flex items-center gap-2">✓ React / Next.js Frontend</li>
+                <li className="flex items-center gap-2">✓ Supabase / PostgreSQL DB</li>
+                <li className="flex items-center gap-2">✓ Stripe Checkout Integration</li>
+              </ul>
+            </div>
+            <a
+              href={`mailto:${identity.socialLinks.email}?subject=MVP Sprint Tier`}
+              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold text-center block text-xs"
+            >
+              Select MVP Sprint
+            </a>
+          </div>
+
+          {/* Tier 2: Highlighted */}
+          <div className="p-6 rounded-2xl bg-[#131d2c] border-2 border-emerald-500/80 space-y-6 flex flex-col justify-between shadow-xl shadow-emerald-950/50 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-emerald-500 text-black font-bold text-[10px] tracking-wider uppercase">
+              Most Popular
+            </div>
+            <div className="space-y-4">
+              <span className="text-xs font-mono text-emerald-400 uppercase">TIER 02</span>
+              <h3 className="text-xl font-bold text-white">Production System</h3>
+              <div className="text-3xl font-extrabold text-white font-mono">$9,500</div>
+              <p className="text-xs text-gray-400">Complete architectural overhaul, design system, and multi-tenant cloud scale.</p>
+              <ul className="space-y-2 text-xs text-gray-300 border-t border-white/[0.08] pt-4">
+                <li className="flex items-center gap-2 font-semibold text-white">✓ Everything in MVP Sprint</li>
+                <li className="flex items-center gap-2">✓ Accessible Figma Design System</li>
+                <li className="flex items-center gap-2">✓ Automated CI/CD & Testing</li>
+                <li className="flex items-center gap-2">✓ 30-Day Post-Launch SLA</li>
+              </ul>
+            </div>
+            <a
+              href={`mailto:${identity.socialLinks.email}?subject=Production System Tier`}
+              className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-center block text-xs"
+            >
+              Select Production System
+            </a>
+          </div>
+
+          {/* Tier 3 */}
+          <div className="p-6 rounded-2xl bg-[#111722] border border-white/[0.08] space-y-6 flex flex-col justify-between">
+            <div className="space-y-4">
+              <span className="text-xs font-mono text-gray-400 uppercase">TIER 03</span>
+              <h3 className="text-xl font-bold text-white">Fractional CTO</h3>
+              <div className="text-3xl font-extrabold text-white font-mono">$3,000<span className="text-xs text-gray-400 font-sans font-normal"> / mo</span></div>
+              <p className="text-xs text-gray-400">Ongoing technical leadership, architecture reviews, and high-impact PR reviews.</p>
+              <ul className="space-y-2 text-xs text-gray-300 border-t border-white/[0.08] pt-4">
+                <li className="flex items-center gap-2">✓ Weekly Architecture Sync</li>
+                <li className="flex items-center gap-2">✓ Unlimited Async Code Reviews</li>
+                <li className="flex items-center gap-2">✓ Candidate Technical Interviews</li>
+                <li className="flex items-center gap-2">✓ Cancel Anytime</li>
+              </ul>
+            </div>
+            <a
+              href={`mailto:${identity.socialLinks.email}?subject=Fractional Retainer Inquiry`}
+              className="w-full py-2.5 rounded-xl border border-white/20 hover:bg-white/10 text-white font-semibold text-center block text-xs"
+            >
+              Join Advisory Retainer
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. SHIPPED WORK REPERTOIRE */}
+      <section id="work" className="max-w-7xl mx-auto px-4 sm:px-8 py-20 border-t border-white/[0.08] space-y-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest block">Client Results</span>
+            <h2 className="text-3xl font-extrabold text-white mt-1">Selected Commercial Proof</h2>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map(proj => (
+            <div
+              key={proj.id}
+              onClick={() => onNavigate(`/projects/${proj.slug || proj.id}`)}
+              className="p-6 rounded-2xl bg-[#111722] border border-white/[0.08] hover:border-emerald-500/40 transition-all cursor-pointer space-y-4 group"
+            >
+              {proj.coverImage && (
+                <div className="aspect-video rounded-xl overflow-hidden bg-black/40">
+                  <img src={proj.coverImage} alt={proj.title} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
+                </div>
+              )}
+              <div className="flex items-center justify-between text-xs text-emerald-400 font-mono">
+                <span>{proj.role}</span>
+                <span className="text-gray-500">{proj.date || '2024'}</span>
+              </div>
+              <h3 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">{proj.title}</h3>
+              <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{proj.summary}</p>
+              <div className="pt-2 flex items-center justify-between text-xs">
+                <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                  <span>View Case Study</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 7. FAQ ACCORDION */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-8 py-20 border-t border-white/[0.08] space-y-8">
+        <div className="text-center space-y-2">
+          <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">Common Questions</span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Frequently Asked Questions</h2>
+        </div>
+
+        <div className="space-y-3">
+          {faqs.map((faq, idx) => (
+            <div
+              key={idx}
+              onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
+              className="p-5 rounded-2xl bg-[#111722] border border-white/[0.08] cursor-pointer space-y-2"
+            >
+              <div className="flex items-center justify-between text-sm font-bold text-white">
+                <span>{faq.q}</span>
+                {expandedFaq === idx ? <ChevronUp className="w-4 h-4 text-emerald-400" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+              </div>
+              {expandedFaq === idx && (
+                <p className="text-xs text-gray-400 leading-relaxed pt-2 border-t border-white/[0.06]">
+                  {faq.a}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 8. FOOTER */}
+      <footer className="border-t border-white/[0.08] bg-[#080b10] py-8 text-xs text-gray-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <span>© {new Date().getFullYear()} {identity.name} Studio</span>
+            <span className="mx-2">·</span>
+            <span>Commercial Contracts & Invoicing</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <button onClick={() => onNavigate('/admin')} className="hover:text-white transition-colors">
+              Admin OS
+            </button>
+            <a href={`mailto:${identity.socialLinks.email}`} className="hover:text-white transition-colors">
+              {identity.socialLinks.email}
+            </a>
+          </div>
+        </div>
       </footer>
+
     </div>
   );
 };

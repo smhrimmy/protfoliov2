@@ -282,7 +282,7 @@ export function App() {
     const currentManifest = THEME_MANIFESTS.find(m => m.id === activeThemeId) || THEME_MANIFESTS[0];
 
     return (
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen w-full max-w-full overflow-x-hidden">
         {/* Render Isolated Theme Page */}
         <ThemeComponent
           identity={mockStorage.getIdentity()}

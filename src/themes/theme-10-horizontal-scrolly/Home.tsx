@@ -35,21 +35,21 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, blogPosts, 
 
   return (
     <div
-      className="relative w-screen h-screen overflow-hidden text-amber-50 select-none flex flex-col justify-between"
+      className="relative w-full h-screen overflow-hidden text-amber-50 select-none flex flex-col justify-between"
       style={{ backgroundColor: config?.colorTokens.bgPrimary || '#0e0e11' }}
       onWheel={handleWheel}
     >
       {/* Top Cinematic Header Bar */}
-      <header className="h-16 px-8 flex items-center justify-between border-b border-amber-950/40 bg-black/60 backdrop-blur-md z-30">
-        <div className="flex items-center space-x-4">
-          <div className="w-8 h-8 rounded-full border border-amber-500/50 flex items-center justify-center bg-amber-950/30">
+      <header className="h-16 px-4 md:px-8 flex items-center justify-between border-b border-amber-950/40 bg-black/60 backdrop-blur-md z-30">
+        <div className="flex items-center space-x-3 md:space-x-4">
+          <div className="w-8 h-8 rounded-full border border-amber-500/50 flex items-center justify-center bg-amber-950/30 shrink-0">
             <Film className="w-4 h-4 text-amber-400" />
           </div>
-          <div>
-            <h1 className="font-serif tracking-widest text-sm uppercase text-amber-200 font-bold">
+          <div className="truncate">
+            <h1 className="font-serif tracking-widest text-sm uppercase text-amber-200 font-bold truncate">
               {identity.name}
             </h1>
-            <p className="text-[10px] tracking-widest uppercase text-amber-500/80 font-mono">
+            <p className="text-[10px] tracking-widest uppercase text-amber-500/80 font-mono truncate">
               Panoramic Production Reel · 35mm Digital
             </p>
           </div>
@@ -77,8 +77,8 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, blogPosts, 
         style={{ scrollBehavior: 'smooth' }}
       >
         {/* Frame 1: Hero & Identity */}
-        <section className="min-w-[90vw] md:min-w-[70vw] h-full flex items-center px-12 md:px-24 snap-start border-r border-amber-950/40 shrink-0 relative">
-          <div className="absolute top-8 left-12 text-[10px] font-mono text-amber-600/70 tracking-widest">
+        <section className="min-w-[90vw] md:min-w-[70vw] h-full flex items-center px-6 md:px-24 snap-start border-r border-amber-950/40 shrink-0 relative">
+          <div className="absolute top-8 left-6 md:left-12 text-[10px] font-mono text-amber-600/70 tracking-widest">
             REEL 01 / PROLOGUE · {identity.alias}
           </div>
           <div className="max-w-2xl space-y-6">
@@ -109,7 +109,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, blogPosts, 
         </section>
 
         {/* Frame 2: Flagship Systems */}
-        <section className="min-w-[150vw] md:min-w-[120vw] h-full flex flex-col justify-center px-12 md:px-20 snap-start border-r border-amber-950/40 shrink-0">
+        <section className="min-w-[150vw] md:min-w-[120vw] h-full flex flex-col justify-center px-6 md:px-20 snap-start border-r border-amber-950/40 shrink-0">
           <div className="mb-6 flex justify-between items-end">
             <div>
               <div className="text-[10px] font-mono text-amber-600/70 tracking-widest">
@@ -160,7 +160,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, blogPosts, 
         </section>
 
         {/* Frame 3: Architecture & Engineering Stack */}
-        <section className="min-w-[100vw] md:min-w-[80vw] h-full flex flex-col justify-center px-12 md:px-20 snap-start border-r border-amber-950/40 shrink-0">
+        <section className="min-w-[100vw] md:min-w-[80vw] h-full flex flex-col justify-center px-6 md:px-20 snap-start border-r border-amber-950/40 shrink-0">
           <div className="mb-8">
             <div className="text-[10px] font-mono text-amber-600/70 tracking-widest">
               REEL 03 / SYSTEM ARCHITECTURE &amp; CAPABILITIES
@@ -193,7 +193,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, blogPosts, 
         </section>
 
         {/* Frame 4: Publications & Research */}
-        <section className="min-w-[90vw] md:min-w-[70vw] h-full flex flex-col justify-center px-12 md:px-20 snap-start border-r border-amber-950/40 shrink-0">
+        <section className="min-w-[90vw] md:min-w-[70vw] h-full flex flex-col justify-center px-6 md:px-20 snap-start border-r border-amber-950/40 shrink-0">
           <div className="mb-8">
             <div className="text-[10px] font-mono text-amber-600/70 tracking-widest">
               REEL 04 / PUBLICATIONS &amp; FIELD NOTES
@@ -226,7 +226,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, blogPosts, 
         </section>
 
         {/* Frame 5: Epilogue & Inbound */}
-        <section className="min-w-[90vw] md:min-w-[70vw] h-full flex flex-col justify-center px-12 md:px-24 snap-start shrink-0">
+        <section className="min-w-[90vw] md:min-w-[70vw] h-full flex flex-col justify-center px-6 md:px-24 snap-start shrink-0">
           <div className="max-w-xl space-y-6">
             <div className="text-[10px] font-mono text-amber-600/70 tracking-widest">
               REEL 05 / EPILOGUE &amp; CONTRACTS

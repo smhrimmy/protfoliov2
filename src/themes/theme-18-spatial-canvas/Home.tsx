@@ -74,7 +74,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, onNavigate,
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onWheel={handleWheel}
-      className={`relative w-screen h-screen overflow-hidden select-none font-sans text-indigo-100 ${
+      className={`relative w-full max-w-full h-screen overflow-hidden select-none font-sans text-indigo-100 ${
         isPanning ? 'cursor-grabbing' : 'cursor-grab'
       }`}
       style={{
@@ -84,48 +84,48 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, onNavigate,
       }}
     >
       {/* Top Floating Controls Bar */}
-      <header className="absolute top-5 left-6 right-6 z-30 flex items-center justify-between pointer-events-none">
-        <div className="pointer-events-auto flex items-center space-x-3 bg-gray-900/80 backdrop-blur-md border border-indigo-500/30 px-4 py-2 rounded-xl shadow-xl">
-          <div className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse" />
-          <span className="font-bold text-sm text-white">
+      <header className="absolute top-3 left-3 right-3 sm:top-5 sm:left-6 sm:right-6 z-30 flex items-center justify-between gap-2 pointer-events-none">
+        <div className="pointer-events-auto flex items-center space-x-2 bg-gray-900/80 backdrop-blur-md border border-indigo-500/30 px-3 py-1.5 rounded-xl shadow-xl truncate">
+          <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shrink-0" />
+          <span className="font-bold text-xs sm:text-sm text-white truncate">
             {identity.name}
           </span>
-          <span className="text-xs text-indigo-400 border-l border-gray-700 pl-2">
+          <span className="text-xs text-indigo-400 border-l border-gray-700 pl-2 hidden sm:inline">
             Infinite Spatial Canvas
           </span>
         </div>
 
-        <div className="pointer-events-auto flex items-center space-x-2 bg-gray-900/80 backdrop-blur-md border border-indigo-500/30 p-1.5 rounded-xl shadow-xl">
+        <div className="pointer-events-auto flex items-center space-x-1.5 bg-gray-900/80 backdrop-blur-md border border-indigo-500/30 p-1 rounded-xl shadow-xl shrink-0 text-xs">
           <button
             onClick={() => setZoom(prev => Math.min(1.8, prev + 0.15))}
-            className="p-1.5 text-gray-400 hover:text-white rounded hover:bg-gray-800"
+            className="p-1 text-gray-400 hover:text-white rounded hover:bg-gray-800"
             title="Zoom In"
           >
-            <ZoomIn className="w-4 h-4" />
+            <ZoomIn className="w-3.5 h-3.5" />
           </button>
-          <span className="text-xs font-mono text-indigo-300 px-1">
+          <span className="text-[11px] font-mono text-indigo-300 px-1">
             {Math.round(zoom * 100)}%
           </span>
           <button
             onClick={() => setZoom(prev => Math.max(0.5, prev - 0.15))}
-            className="p-1.5 text-gray-400 hover:text-white rounded hover:bg-gray-800"
+            className="p-1 text-gray-400 hover:text-white rounded hover:bg-gray-800"
             title="Zoom Out"
           >
-            <ZoomOut className="w-4 h-4" />
+            <ZoomOut className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={resetView}
-            className="p-1.5 text-gray-400 hover:text-white rounded hover:bg-gray-800"
+            className="p-1 text-gray-400 hover:text-white rounded hover:bg-gray-800 hidden sm:inline-block"
             title="Reset to Center"
           >
-            <Maximize2 className="w-4 h-4" />
+            <Maximize2 className="w-3.5 h-3.5" />
           </button>
-          <div className="border-l border-gray-700 pl-1.5">
+          <div className="border-l border-gray-700 pl-1">
             <button
               onClick={() => onNavigate && onNavigate('/admin')}
-              className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-colors"
+              className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold rounded-lg transition-colors"
             >
-              Admin OS
+              Admin
             </button>
           </div>
         </div>
