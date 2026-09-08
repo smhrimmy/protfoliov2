@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { mockStorage } from '@/data/mockStorage';
+import { 
+  Activity, Zap, ShieldCheck, FolderGit2, FileText, Send, 
+  GitBranch, Palette, Users, ChevronLeft, ChevronRight, Sliders, Layers
+} from 'lucide-react';
 
 // 7-row bitmap glyph dictionary (exact definitions + common characters for flexible masthead)
 const GLYPHS: Record<string, string[]> = {
@@ -128,12 +132,30 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
   const [automationsCount, setAutomationsCount] = useState(
     mockStorage.getAutomations().filter(a => a.enabled).length
   );
+  const [pendingDraftsCount, setPendingDraftsCount] = useState(
+    mockStorage.getSocialDrafts().filter(d => d.status === 'pending_approval').length
+  );
+
+  // Card filter / category for mobile & desktop navigation
+  const [activeCategory, setActiveCategory] = useState<'all' | 'core' | 'intelligence'>('all');
+  const [mobileViewMode, setMobileViewMode] = useState<'carousel' | 'stack'>('carousel');
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Multi-metric active indexes for each of the 6 cards
+  const [card1Index, setCard1Index] = useState(0); // 0: Latency (118ms), 1: Health (98%), 2: LCP (0.8s), 3: TTFB (42ms)
+  const [card2Index, setCard2Index] = useState(0); // 0: Tokens (8.0M), 1: Items (8), 2: Projects (6), 3: Words (14.8K)
+  const [card3Index, setCard3Index] = useState(0); // 0: Endpoints (16K), 1: Active Channels (4), 2: Success (99%), 3: Cadence (15m)
+  const [card4Index, setCard4Index] = useState(0); // 0: Visitors (4.8K), 1: Company IPs (84), 2: Pageviews (19K), 3: Session (3.4m)
+  const [card5Index, setCard5Index] = useState(0); // 0: Themes (23), 1: Layouts (6), 2: Isolation (100%), 3: Active (#01)
+  const [card6Index, setCard6Index] = useState(0); // 0: Queue (1), 1: Broadcast (14), 2: AI Speed (1.2s), 3: Hubs (4)
 
   useEffect(() => {
     const handleStorage = () => {
       setProjectsCount(mockStorage.getProjects().length);
       setPostsCount(mockStorage.getPosts().length);
       setAutomationsCount(mockStorage.getAutomations().filter(a => a.enabled).length);
+      setPendingDraftsCount(mockStorage.getSocialDrafts().filter(d => d.status === 'pending_approval').length);
       setAmbientMotion(localStorage.getItem('pdl_ambient_motion') !== 'false');
     };
     window.addEventListener('storage', handleStorage);
@@ -144,10 +166,59 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
     };
   }, []);
 
-  // Compute live metric display strings
-  const siteLatency = '118'; // 118ms edge latency
-  const contentTotal = ((projectsCount * 0.8 + postsCount * 1.6) || 2.4).toFixed(1); // e.g. 2.4M tokens / words indexed
-  const connectionsCount = Math.max(16, automationsCount * 4); // 16 active connections / webhooks
+  const toggleAmbientMotion = () => {
+    const next = !ambientMotion;
+    setAmbientMotion(next);
+    localStorage.setItem('pdl_ambient_motion', String(next));
+  };
+
+  // Card 1 Data Multi-Options
+  const card1Data = [
+    { num: '118', unit: 'ms', title: 'Site Performance', subtitle: 'Edge Response Latency', caption: 'Average global edge response latency' },
+    { num: '98', unit: '%', title: 'System Health', subtitle: 'Lighthouse Rating', caption: 'Lighthouse audit performance score' },
+    { num: '0.8', unit: 's', title: 'Core Web Vitals', subtitle: 'Largest Contentful Paint', caption: 'LCP hero content render velocity' },
+    { num: '42', unit: 'ms', title: 'Edge Telemetry', subtitle: 'Time to First Byte', caption: 'Global CDN cached server handshake' }
+  ];
+
+  // Card 2 Data Multi-Options
+  const card2Data = [
+    { num: '8.0', unit: 'M', title: 'Content Library', subtitle: 'System Index Volume', caption: 'Indexed words & production assets' },
+    { num: String(projectsCount + postsCount), unit: 'Items', title: 'Content Corpus', subtitle: 'Total Published Nodes', caption: `${projectsCount} Case studies & ${postsCount} published articles` },
+    { num: String(projectsCount), unit: 'Repos', title: 'Production Systems', subtitle: 'Client Case Studies', caption: 'Shipped high-converting web applications' },
+    { num: '14.8', unit: 'K', title: 'Knowledge Base', subtitle: 'Technical Essay Words', caption: 'Published engineering architecture words' }
+  ];
+
+  // Card 3 Data Multi-Options
+  const card3Data = [
+    { num: '16', unit: 'K', title: 'Connected Channels', subtitle: 'Cross-Source Context', caption: 'Connected data sources & API nodes' },
+    { num: String(Math.max(4, automationsCount)), unit: 'Active', title: 'Active Pipelines', subtitle: 'Automation Channels', caption: 'GitHub, LinkedIn, Telegram & webhooks' },
+    { num: '99', unit: '%', title: 'Pipeline Health', subtitle: 'Delivery Reliability', caption: 'Automated broadcast delivery rate' },
+    { num: '15', unit: 'm', title: 'Sync Cadence', subtitle: 'Background Polling', caption: 'Continuous live commit & telemetry sync' }
+  ];
+
+  // Card 4 Data Multi-Options (Audience Telemetry)
+  const card4Data = [
+    { num: '4.8', unit: 'K', title: 'Audience Intelligence', subtitle: 'Weekly Verified Visits', caption: 'Verified developer & recruiter traffic (+18%)' },
+    { num: '84', unit: 'IPs', title: 'Recruiter Traffic', subtitle: 'Target Company IPs', caption: 'Fortune 500 & tech firm employer visits' },
+    { num: '19', unit: 'K', title: 'Monthly Reach', subtitle: 'Global Impressions', caption: 'Portfolio page impressions across 23 themes' },
+    { num: '3.4', unit: 'm', title: 'Dwell Duration', subtitle: 'Average Session Time', caption: 'High-intent technical reader engagement' }
+  ];
+
+  // Card 5 Data Multi-Options (Theme Ecosystem)
+  const card5Data = [
+    { num: '23', unit: 'Worlds', title: 'Theme Ecosystem', subtitle: 'Isolated Architectures', caption: '23 Structurally distinct production themes' },
+    { num: '6', unit: 'Types', title: 'Design Paradigms', subtitle: 'DOM Layout Systems', caption: 'IDE, Swiss Canvas, 3D, Zine, OS, Collage' },
+    { num: '100', unit: '%', title: 'Isolation Score', subtitle: 'Zero Style Leakage', caption: 'Strict CSS scoped component sandboxing' },
+    { num: '01', unit: 'Active', title: 'Selected World', subtitle: 'Serving Live Visitors', caption: 'Developer Portfolio Workstation active' }
+  ];
+
+  // Card 6 Data Multi-Options (Autonomous Social Pipeline)
+  const card6Data = [
+    { num: String(Math.max(1, pendingDraftsCount)), unit: 'Queue', title: 'Autonomous Pipeline', subtitle: 'Human-in-the-Loop', caption: 'Telegram & LinkedIn drafts awaiting review' },
+    { num: '14', unit: 'Sent', title: 'Broadcast Engine', subtitle: 'Dispatched Updates', caption: 'Syndicated articles & project spotlights' },
+    { num: '1.2', unit: 's', title: 'AI Drafter Latency', subtitle: 'Generation Velocity', caption: 'Autonomous markdown-to-social conversion' },
+    { num: '4', unit: 'Hubs', title: 'Social Distribution', subtitle: 'Multi-Channel Reach', caption: 'LinkedIn, Telegram, X and RSS syndication' }
+  ];
 
   // Render Gauge Ticks
   const gaugeTicks = useMemo(() => {
@@ -168,6 +239,35 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
     }
     return ticks;
   }, []);
+
+  // Filter cards based on activeCategory
+  const showCard1 = activeCategory === 'all' || activeCategory === 'core';
+  const showCard2 = activeCategory === 'all' || activeCategory === 'core';
+  const showCard3 = activeCategory === 'all' || activeCategory === 'core';
+  const showCard4 = activeCategory === 'all' || activeCategory === 'intelligence';
+  const showCard5 = activeCategory === 'all' || activeCategory === 'intelligence';
+  const showCard6 = activeCategory === 'all' || activeCategory === 'intelligence';
+
+  const visibleCardsCount = [showCard1, showCard2, showCard3, showCard4, showCard5, showCard6].filter(Boolean).length;
+
+  const scrollToCard = (index: number) => {
+    setCurrentSlide(index);
+    if (carouselRef.current) {
+      const cards = carouselRef.current.querySelectorAll('.card');
+      if (cards[index]) {
+        cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    }
+  };
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      const scrollLeft = carouselRef.current.scrollLeft;
+      const width = carouselRef.current.offsetWidth;
+      const index = Math.round(scrollLeft / (width * 0.85 || 320));
+      setCurrentSlide(Math.min(visibleCardsCount - 1, Math.max(0, index)));
+    }
+  };
 
   return (
     <div className="intelligent-stage-root relative w-full min-h-full">
@@ -239,10 +339,10 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           --gap: clamp(8px, 1.5vw, 23px);
           --gutter: clamp(14px, 3.2vw, 44px);
           --content-max: calc(var(--card-count) * var(--card-ref-w) * 1px + (var(--card-count) - 1) * var(--gap));
-          --pad-top: clamp(24px, 4vw, 56px);
+          --pad-top: clamp(20px, 3.5vw, 48px);
           --pad-bottom: clamp(20px, 3.5vw, 44px);
           --masthead-gap: clamp(16px, 2.5vw, 36px);
-          --cards-offset: clamp(20px, 4.5vw, 54px);
+          --cards-offset: clamp(16px, 3vw, 40px);
           background: var(--paper);
           color: var(--ink);
           font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -400,16 +500,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           transform: translateY(.085em);
         }
 
-        .dot-svg {
-          display: block;
-          overflow: visible;
-          color: inherit;
-          width: 100%;
-          height: 100%;
-        }
-
         .intro-stage {
-          container-type: inline-size;
           width: 100%;
           margin: .34em 0 0;
           color: var(--copy);
@@ -419,60 +510,79 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           line-height: 1.62;
         }
 
-        .desktop-break { display: none; }
-        @container (min-width: 26.5em) {
-          .desktop-break { display: inline; }
-        }
-
-        /* CARDS CONTAINER */
-        .cards-wrap {
+        /* CARD ROW / GRID STAGE */
+        /* CARD ROW / GRID STAGE */
+        .cards-stage {
           container-type: inline-size;
           display: flex;
-          justify-content: space-between;
+          flex-wrap: wrap;
+          justify-content: center;
           align-items: center;
           gap: var(--gap);
           margin-top: var(--cards-offset);
           --card-w: min(
-            (100cqw - (var(--card-count) - 1) * var(--gap)) / var(--card-count),
+            calc((100cqw - (var(--card-count) - 1) * var(--gap)) / var(--card-count)),
             var(--card-ref-w) * 1px
           );
         }
 
-        @media (min-width: 768px) and (max-width: 1100px) {
-          .cards-wrap {
-            display: grid;
-            grid-template-columns: repeat(2, max-content);
-            justify-content: center;
-            align-content: center;
-            --card-w: min((100cqw - var(--gap)) / 2, 429px);
-          }
-          .cards-wrap .card:last-child {
-            grid-column: 1 / -1;
-            justify-self: center;
-          }
-        }
-
+        /* MOBILE CAROUSEL MODE */
         @media (max-width: 767px) {
-          .cards-wrap {
+          .cards-stage.mode-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding-inline: 12px;
+            padding-bottom: 16px;
+            gap: 16px;
+            justify-content: flex-start;
+            -webkit-overflow-scrolling: touch;
+            width: 100vw;
+            margin-left: calc(-1 * var(--gutter));
+            margin-right: calc(-1 * var(--gutter));
+          }
+          .cards-stage.mode-carousel .card {
+            flex: 0 0 calc(100vw - 44px) !important;
+            --card-w: min(calc(100vw - 44px), 429px);
+            max-width: 429px;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+          }
+          .cards-stage.mode-stack {
             flex-direction: column;
             align-items: center;
             --card-w: min(100cqw, 429px);
           }
         }
 
+        /* TABLET */
+        @media (min-width: 768px) and (max-width: 1180px) {
+          .cards-stage {
+            display: grid;
+            grid-template-columns: repeat(2, min(calc((100cqw - var(--gap)) / 2), 429px));
+            justify-content: center;
+            align-content: center;
+            --card-w: min(calc((100cqw - var(--gap)) / 2), 429px);
+          }
+        }
+
+        /* CARD RIGID SCALING CONTAINER */
         .card {
           container-type: inline-size;
           position: relative;
           flex: 0 0 auto;
           overflow: hidden;
           width: var(--card-w);
-          aspect-ratio: 429/554;
+          aspect-ratio: 429 / 554;
           border: 1px solid var(--glass-line);
           border-radius: calc(var(--card-w) * 17 / 429);
           background-origin: border-box;
           color: #fff;
           --u: calc(100cqw / 429);
-          box-shadow: 0 2px 4px rgba(50,28,39,.30), inset 0 1px 0 rgba(255,255,255,.24);
+          box-shadow: 0 4px 16px rgba(50,28,39,.22), inset 0 1px 0 rgba(255,255,255,.24);
+          user-select: none;
         }
 
         .card::before {
@@ -487,6 +597,16 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             radial-gradient(ellipse 85% 34% at 54% 7%, rgba(255,255,255,.24), transparent 72%);
         }
 
+        .card__media {
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: fill;
+          pointer-events: none;
+        }
+
         .card__grain {
           position: absolute;
           z-index: 2;
@@ -498,16 +618,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           pointer-events: none;
         }
 
-        .card__media {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: fill;
-          pointer-events: none;
-        }
-
+        /* CARD HEADERS & METRICS */
         .card__title {
           position: absolute;
           z-index: 4;
@@ -535,55 +646,119 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           color: rgba(255,255,255,.97);
           filter: drop-shadow(0 1px 1px rgba(104,27,54,.08));
         }
+        .dot-number {
+          display: inline-flex;
+          align-items: flex-end;
+          height: calc(44 * var(--u));
+        }
+        .dot-svg {
+          height: 100%;
+          width: auto;
+          max-height: 100%;
+          overflow: visible;
+        }
+        .metric--speed {
+          top: 48.6%;
+        }
+        .metric--context {
+          top: 48.0%;
+        }
+        .metric--connections {
+          top: 48.5%;
+        }
+
+        .metric__unit {
+          margin-left: calc(5 * var(--u));
+          font-size: calc(26 * var(--u));
+          font-weight: 500;
+          line-height: 1;
+          transform: translateY(calc(2 * var(--u)));
+        }
 
         .caption {
           position: absolute;
           z-index: 5;
-          top: 65.1%;
-          left: 10%;
-          width: 80%;
+          top: 63.5%;
+          left: 6%;
+          width: 88%;
           color: rgba(255,255,255,.87);
-          font-size: calc(19.95 * var(--u));
+          font-size: calc(16.5 * var(--u));
           font-weight: 400;
           letter-spacing: calc(-.36 * var(--u));
-          line-height: 1.45;
+          line-height: 1.35;
           text-align: center;
           text-shadow: 0 1px 2px rgba(60,21,35,.16);
+        }
+
+        /* INTERACTIVE CARD DATA PILLS */
+        .card-data-pills {
+          position: absolute;
+          z-index: 6;
+          top: 74%;
+          left: 4%;
+          width: 92%;
+          display: flex;
+          justify-content: center;
+          gap: calc(5 * var(--u));
+          flex-wrap: wrap;
+        }
+
+        .card-data-pill {
+          padding: calc(3 * var(--u)) calc(8 * var(--u));
+          border-radius: 9999px;
+          font-size: calc(10.5 * var(--u));
+          font-weight: 500;
+          font-family: inherit;
+          color: rgba(255, 255, 255, 0.88);
+          background: rgba(255, 255, 255, 0.16);
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(4px);
+          cursor: pointer;
+          transition: all 0.16s ease;
+          white-space: nowrap;
+        }
+
+        .card-data-pill:hover {
+          background: rgba(255, 255, 255, 0.30);
+          color: #ffffff;
+        }
+
+        .card-data-pill.active {
+          background: rgba(255, 255, 255, 0.96);
+          color: #1a1a1a;
+          font-weight: 700;
+          border-color: rgba(255, 255, 255, 1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
         }
 
         .learn-more {
           position: absolute;
           z-index: 6;
-          top: 83.75%;
+          top: 85.5%;
           left: 50%;
-          width: calc(111 * var(--u));
-          height: calc(45 * var(--u));
+          width: calc(130 * var(--u));
+          height: calc(42 * var(--u));
           transform: translateX(-50%);
           border: 0;
           border-radius: 999px;
           color: #2d2d2d;
           background: rgba(255,255,255,.97);
           box-shadow: 0 1px 0 rgba(255,255,255,.50) inset, 0 1px 3px rgba(58,25,39,.08);
-          font-size: calc(14 * var(--u));
-          font-weight: 400;
+          font-size: calc(13.5 * var(--u));
+          font-weight: 600;
           letter-spacing: calc(-.25 * var(--u));
-          transition: transform .18s ease, box-shadow .18s ease;
           cursor: pointer;
+          transition: transform .18s ease, box-shadow .18s ease;
           display: flex;
           align-items: center;
           justify-content: center;
-          text-decoration: none;
         }
         .learn-more:hover {
           transform: translateX(-50%) translateY(calc(-2 * var(--u)));
           box-shadow: 0 8px 20px rgba(58,25,39,.16);
         }
-        .learn-more:focus-visible {
-          outline: 3px solid rgba(255,255,255,.78);
-          outline-offset: 3px;
-        }
 
-        /* CARD 1 — .card--speed */
+        /* CARD 1 BACKGROUND STACK */
         .card--speed {
           background:
             radial-gradient(ellipse 34% 24% at 50% 2%, rgba(255,220,211,.10) 0%, transparent 76%),
@@ -607,30 +782,8 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             linear-gradient(180deg, #bd4468 0%, #ad355b 38%, #a63b50 72%, #8c1320 100%);
           background-origin: border-box;
         }
-        .card--speed::before {
-          background:
-            linear-gradient(103deg, rgba(255,255,255,.08), transparent 31%, rgba(255,255,255,.055) 63%, transparent 88%),
-            radial-gradient(ellipse 92% 19% at 51% 0%, rgba(255,255,255,.08), transparent 78%);
-        }
-        .card--speed .card__grain { opacity: .54; }
-        .card--speed .card__title { top: 6.3%; color: #fff; font-size: calc(22.7 * var(--u)); }
-        .metric--speed { top: 48.6%; }
-        .card--speed .dot-number { width: 31.2%; }
-        .card--speed .dot-svg {
-          transform: translate(calc(4 * var(--u)), calc(2 * var(--u))) scale(.925, 1.018);
-          transform-origin: left top;
-        }
-        .card--speed .dot-svg circle { r: 2.05px; fill-opacity: 1; }
-        .card--speed .metric__unit {
-          margin-left: 1%;
-          font-size: calc(30.6 * var(--u));
-          transform: translateY(calc(5 * var(--u)));
-          font-weight: 400;
-          line-height: 1;
-        }
-        .card--speed .caption { top: 64.75%; font-size: calc(20.33 * var(--u)); }
-        .card--speed .learn-more { top: 83.9%; width: calc(111 * var(--u)); height: calc(44 * var(--u)); }
 
+        /* GAUGE ART */
         .gauge {
           position: absolute;
           z-index: 2;
@@ -639,11 +792,9 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           width: 79%;
           height: 59%;
           overflow: visible;
-          pointer-events: none;
         }
-        .tick { stroke: rgba(255,188,210,.34); }
 
-        /* CARD 2 — .card--context */
+        /* CARD 2 BACKGROUND STACK */
         .card--context {
           background:
             radial-gradient(ellipse 118% 66% at 48% -8%, rgba(221,232,255,.065), transparent 74%),
@@ -660,21 +811,6 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             linear-gradient(164deg, #c9b5e1 0%, #ad80ca 29%, #9d4f72 64%, #793246 100%);
           background-origin: border-box;
         }
-        .card--context .card__title {
-          font-size: calc(23 * var(--u));
-          line-height: 1.48;
-        }
-        .card--context .card__grain { opacity: .68; }
-        .card--context::before {
-          mix-blend-mode: multiply;
-          opacity: .54;
-          background:
-            radial-gradient(ellipse 18% 23% at 20% 32%, rgba(103,41,148,.24), transparent 76%),
-            radial-gradient(ellipse 20% 24% at 81% 30%, rgba(121,34,113,.22), transparent 76%),
-            radial-gradient(ellipse 66% 9% at 50% 30%, rgba(103,33,125,.26), transparent 82%),
-            radial-gradient(ellipse 68% 8% at 50% 69%, rgba(86,27,64,.23), transparent 83%),
-            linear-gradient(103deg, rgba(255,255,255,.08), transparent 31%, rgba(255,255,255,.05) 63%, transparent 88%);
-        }
 
         .context-glow {
           position: absolute;
@@ -685,13 +821,12 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
         .context-backdrop {
           position: absolute;
           inset: 0;
-          z-index: 0;
+          z-index: 1;
           pointer-events: none;
         }
         .context-backdrop svg {
           width: 100%;
           height: 100%;
-          display: block;
         }
 
         .context-window {
@@ -702,7 +837,6 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           width: 59%;
           height: 30.1%;
           overflow: hidden;
-          border: none;
           border-radius: calc(10 * var(--u));
           background:
             linear-gradient(0deg, rgba(255,255,255,.30) 0%, rgba(255,255,255,.15) 45%, rgba(255,255,255,0) 80%),
@@ -711,16 +845,6 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             linear-gradient(105deg, rgba(250,232,250,.72) 0%, rgba(238,120,214,.68) 51%, rgba(222,86,177,.82) 100%);
           box-shadow: 0 calc(13 * var(--u)) calc(25 * var(--u)) rgba(70,17,69,.31), inset 0 1px 0 rgba(255,255,255,.12);
           backdrop-filter: blur(calc(9 * var(--u))) saturate(1.08);
-          -webkit-backdrop-filter: blur(calc(9 * var(--u))) saturate(1.08);
-        }
-        .context-window svg {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          opacity: .24;
-          mix-blend-mode: soft-light;
-          pointer-events: none;
         }
 
         .window-lines {
@@ -729,10 +853,10 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           left: 6.7%;
           width: 87%;
           height: 24%;
-          pointer-events: none;
+          display: flex;
+          flex-direction: column;
         }
         .window-line--1 {
-          display: block;
           height: calc(6 * var(--u));
           border-radius: calc(2.5 * var(--u));
           background: rgba(255,255,255,.72);
@@ -740,44 +864,20 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           margin-bottom: calc(3 * var(--u));
         }
         .window-line--2 {
-          display: block;
           width: 100%;
           height: calc(22 * var(--u));
           border-radius: calc(6 * var(--u));
           background: linear-gradient(90deg, rgba(255,240,253,.72), rgba(255,170,242,.75) 42%, rgba(255,108,235,.78));
         }
         .window-line--3 {
-          display: block;
           width: 86%;
-          height: calc(6 * var(--u));
-          border-radius: calc(2.5 * var(--u));
-          background: rgba(255,255,255,.72);
+          height: calc(5 * var(--u));
+          border-radius: calc(2 * var(--u));
+          background: rgba(255,255,255,.45);
           margin-top: calc(3 * var(--u));
-          opacity: .64;
         }
 
-        .metric--context {
-          top: 48.0%;
-          transform: translateX(2.1cqw);
-        }
-        .metric--context .dot-number { width: 30.5%; }
-        .metric--context .dot-svg {
-          transform: translate(calc(-1 * var(--u)), calc(-.5 * var(--u))) scale(.96, 1.02);
-          transform-origin: center;
-        }
-        .card--context .caption {
-          top: 65.72%;
-          color: rgba(255,255,255,.84);
-          font-size: calc(19.1 * var(--u));
-          letter-spacing: calc(-.28 * var(--u));
-          line-height: 1.38;
-        }
-        .card--context .learn-more {
-          top: 83.9%;
-          height: calc(44 * var(--u));
-        }
-
-        /* CARD 3 — .card--connections */
+        /* CARD 3 BACKGROUND STACK */
         .card--connections {
           background:
             radial-gradient(ellipse 54% 14% at 56% 0%, rgba(255,206,190,.16), transparent 76%),
@@ -790,12 +890,6 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             linear-gradient(177deg, #d84736 0%, #dd523c 24%, #e8703d 52%, #de5641 78%, #d34239 100%);
           background-origin: border-box;
         }
-        .card--connections .card__grain { opacity: .58; }
-        .card--connections::before {
-          background:
-            linear-gradient(102deg, rgba(255,255,255,.07), transparent 30%, rgba(255,255,255,.05) 62%, transparent 88%),
-            radial-gradient(ellipse 84% 26% at 54% 4%, rgba(255,255,255,.11), transparent 74%);
-        }
 
         .connections-map {
           position: absolute;
@@ -804,40 +898,43 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           left: 0;
           width: 100%;
           height: 43%;
-          opacity: .78;
-          pointer-events: none;
-        }
-        .connections-map svg {
-          width: 100%;
-          height: 100%;
-          display: block;
+          opacity: .88;
         }
 
-        .metric--connections {
-          top: 48.5%;
-          transform: translateX(2.1cqw);
-        }
-        .metric--connections .dot-number { width: 23%; }
-        .metric__unit {
-          margin-left: 1.3%;
-          font-size: calc(30.46 * var(--u));
-          font-weight: 400;
-          line-height: 1;
-          letter-spacing: calc(-.8 * var(--u));
+        /* CARD 4: AUDIENCE TELEMETRY (INDIGO / VIOLET) */
+        .card--audience {
+          background:
+            radial-gradient(ellipse 70% 35% at 50% 0%, rgba(167, 139, 250, 0.40) 0%, transparent 75%),
+            radial-gradient(ellipse 60% 40% at 100% 100%, rgba(99, 102, 241, 0.35) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 30% at 0% 100%, rgba(139, 92, 246, 0.30) 0%, transparent 70%),
+            linear-gradient(175deg, #4338ca 0%, #3730a3 35%, #312e81 70%, #1e1b4b 100%);
+          background-origin: border-box;
         }
 
-        .filter-defs {
-          position: absolute;
-          width: 0;
-          height: 0;
-          overflow: hidden;
-          pointer-events: none;
+        /* CARD 5: THEME ECOSYSTEM (EMERALD / FOREST) */
+        .card--themes {
+          background:
+            radial-gradient(ellipse 70% 35% at 50% 0%, rgba(52, 211, 153, 0.40) 0%, transparent 75%),
+            radial-gradient(ellipse 60% 40% at 100% 100%, rgba(16, 185, 129, 0.35) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 30% at 0% 100%, rgba(5, 150, 105, 0.30) 0%, transparent 70%),
+            linear-gradient(175deg, #065f46 0%, #047857 35%, #064e3b 70%, #022c22 100%);
+          background-origin: border-box;
+        }
+
+        /* CARD 6: AUTONOMOUS PIPELINE (AMBER / SUNSET) */
+        .card--pipeline {
+          background:
+            radial-gradient(ellipse 70% 35% at 50% 0%, rgba(251, 191, 36, 0.40) 0%, transparent 75%),
+            radial-gradient(ellipse 60% 40% at 100% 100%, rgba(245, 158, 11, 0.35) 0%, transparent 70%),
+            radial-gradient(ellipse 50% 30% at 0% 100%, rgba(217, 119, 6, 0.30) 0%, transparent 70%),
+            linear-gradient(175deg, #b45309 0%, #92400e 35%, #78350f 70%, #451a03 100%);
+          background-origin: border-box;
         }
       `}</style>
 
       <div className="stage-box">
-        {/* AMBIENT BACKGROUND VIDEOS OR POSTER */}
-        {ambientMotion ? (
+        {/* VIDEOS */}
+        {ambientMotion && (
           <>
             <video
               className="stage-motion stage-motion--wide"
@@ -862,240 +959,360 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
               src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_125242_daae1570-386d-4bd5-8896-80499e2371e0.mp4"
             />
           </>
-        ) : (
-          <div
-            className="stage-motion"
-            style={{
-              backgroundImage: `url("https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/5c3ec08f-2dbf-4c0a-8588-f6106a789443.webp")`,
-              backgroundPosition: 'center',
-              backgroundSize: 'cover'
-            }}
-          />
         )}
+
+        {/* TOP TELEMETRY RIBBON & STAGE CONTROLS */}
+        <div className="masthead-wrap mb-6 flex items-center justify-between z-10">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/70 border border-black/8 text-[11px] font-mono text-[#333339] shadow-sm backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              LIVE TELEMETRY STREAM
+            </span>
+            <span className="hidden sm:inline text-xs font-mono text-[#666670]">
+              PRAJWAL DL // PORTFOLIO OS v2.4
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Ambient Motion Toggle */}
+            <button
+              onClick={toggleAmbientMotion}
+              className={`px-3 py-1 rounded-full text-[11px] font-mono font-medium flex items-center gap-1.5 transition-all shadow-sm ${
+                ambientMotion
+                  ? 'bg-white/90 text-black border border-black/10'
+                  : 'bg-black/5 text-gray-600 border border-transparent'
+              }`}
+              title="Toggle ambient video backgrounds"
+            >
+              <Zap className="w-3 h-3 text-[#ad314d]" />
+              <span className="hidden sm:inline">Motion:</span> {ambientMotion ? 'ON' : 'STILL'}
+            </button>
+          </div>
+        </div>
 
         {/* MASTHEAD */}
         <header className="masthead-wrap">
           <h1 className="headline-stage">
-            <span className="headline__line">
+            <div className="headline__line">
               {headlinePrefix}
-              <span className="dot-word" aria-label={dotWord}>
+              <span className="dot-word" data-dots={dotWord} aria-label={dotWord}>
                 <DotWord text={dotWord} isWord />
               </span>
-            </span>
-            <span className="headline__line">{headlineSuffix}</span>
+            </div>
+            <div className="headline__line">{headlineSuffix}</div>
           </h1>
-          <p className="intro-stage">
-            {introText}
-          </p>
+
+          <p className="intro-stage">{introText}</p>
         </header>
 
-        {/* CARDS ROW */}
-        <section className="cards-wrap" aria-label="Operating telemetry & metrics">
-          {/* CARD 1: SITE PERFORMANCE & EDGE LATENCY */}
-          <article className="card card--speed">
-            {ambientMotion && (
-              <video
-                className="card__media"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-hidden="true"
-                poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/167977c6-8539-46b1-9a15-8dba566f50b8.png"
-                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_130045_1a612b69-4854-4b34-8043-ccb91f2c60af.mp4"
-              />
-            )}
-
-            <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
-              <rect width="100%" height="100%" filter="url(#cardNoise)" />
-            </svg>
-
-            <h2 className="card__title">Site Performance<br />AI Response Latency</h2>
-
-            {/* GAUGE */}
-            <svg className="gauge" viewBox="0 0 326 326" aria-hidden="true">
-              <defs>
-                <linearGradient id="gaugeArc" gradientUnits="userSpaceOnUse" x1="7" y1="136" x2="312" y2="109">
-                  <stop offset="0" stopColor="#ff9ab7" stopOpacity="0.06" />
-                  <stop offset="0.08" stopColor="#ff8caf" stopOpacity="0.44" />
-                  <stop offset="0.34" stopColor="#ff6796" stopOpacity="0.94" />
-                  <stop offset="0.58" stopColor="#ff6796" stopOpacity="1" />
-                  <stop offset="0.82" stopColor="#ffe7ed" stopOpacity="0.74" />
-                  <stop offset="0.94" stopColor="#fff8fa" stopOpacity="0.28" />
-                  <stop offset="1" stopColor="#fff" stopOpacity="0" />
-                </linearGradient>
-                <linearGradient id="gaugeShadow" gradientUnits="userSpaceOnUse" x1="11" y1="136" x2="308" y2="110">
-                  <stop offset="0" stopColor="#6e1639" stopOpacity="0.04" />
-                  <stop offset="0.09" stopColor="#6e1639" stopOpacity="0.17" />
-                  <stop offset="0.52" stopColor="#72163d" stopOpacity="0.18" />
-                  <stop offset="0.78" stopColor="#7b1a43" stopOpacity="0.1" />
-                  <stop offset="1" stopColor="#7b1a43" stopOpacity="0" />
-                </linearGradient>
-                <radialGradient id="radarBeam" cx="163" cy="163" r="145" gradientUnits="userSpaceOnUse">
-                  <stop offset="0.3" stopColor="#650f35" stopOpacity="0" />
-                  <stop offset="0.45" stopColor="#650f35" stopOpacity="0.025" />
-                  <stop offset="0.7" stopColor="#650f35" stopOpacity="0.065" />
-                  <stop offset="0.9" stopColor="#650f35" stopOpacity="0.08" />
-                  <stop offset="1" stopColor="#650f35" stopOpacity="0.05" />
-                </radialGradient>
-                <linearGradient id="radarBeamEdge" x1="238" y1="33" x2="190.5" y2="115.4" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#ffe7ef" stopOpacity="0.19" />
-                  <stop offset="0.48" stopColor="#ffd1df" stopOpacity="0.11" />
-                  <stop offset="0.82" stopColor="#ffc6d7" stopOpacity="0.045" />
-                  <stop offset="1" stopColor="#ffc6d7" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <path className="arc-shadow" d="M11.34 136.26A154 154 0 0 1 307.71 110.33" fill="none" strokeWidth="3.2" strokeLinecap="round" stroke="url(#gaugeShadow)" />
-              <path className="outer-ring" d="M6.91 135.48A158.5 158.5 0 0 1 311.94 108.79" fill="none" strokeWidth="2.2" strokeLinecap="round" stroke="url(#gaugeArc)" />
-              <path className="fine-ring" d="M19.22 137.65A146 146 0 0 1 236 36.56" fill="none" strokeWidth="1.15" stroke="rgba(255,166,194,.31)" />
-              <path className="halo-wedge" d="M238 33.1A150 150 0 0 1 277.9 66.6L199.8 119.5A55 55 0 0 0 190.5 115.4Z" fill="#6a1238" opacity="0.022" filter="url(#radarHalo)" />
-              <path className="radar-sweep" d="M238 33.1A150 150 0 0 1 277.9 66.6L199.8 119.5A55 55 0 0 0 190.5 115.4Z" fill="url(#radarBeam)" filter="url(#radarSoft)" />
-              <path className="edge-line" d="M238 33.1L190.5 115.4" stroke="url(#radarBeamEdge)" strokeWidth="1.25" strokeLinecap="round" filter="url(#radarSoft)" />
-              <g id="gaugeTicks">
-                {gaugeTicks.map(t => (
-                  <line
-                    key={t.key}
-                    className="tick"
-                    x1={t.x1}
-                    y1={t.y1}
-                    x2={t.x2}
-                    y2={t.y2}
-                    strokeWidth={t.sw}
-                    strokeLinecap="round"
-                  />
-                ))}
-              </g>
-              <ellipse cx="225" cy="166" rx="92" ry="76" fill="#fff" opacity="0.055" filter="url(#gaugeBlur)" />
-            </svg>
-
-            <div className="metric metric--speed">
-              <span className="dot-number">
-                <DotWord text={siteLatency} isSpeed />
-              </span>
-              <span className="metric__unit">ms</span>
-            </div>
-
-            <p className="caption">Average global<br />response</p>
-
+        {/* STAGE CONTROLS & MOBILE CAROUSEL CONTROLLER */}
+        <div className="masthead-wrap mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 z-10">
+          {/* Category Filter Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
             <button
-              type="button"
-              className="learn-more"
-              onClick={() => onNavigate('/admin/site-health')}
+              onClick={() => setActiveCategory('all')}
+              className={`stage-pill-action py-1 px-3 text-xs ${
+                activeCategory === 'all' ? 'stage-pill-action-dark' : 'stage-pill-action-glass'
+              }`}
             >
-              Learn More
+              All 6 System Cards
             </button>
-          </article>
+            <button
+              onClick={() => setActiveCategory('core')}
+              className={`stage-pill-action py-1 px-3 text-xs ${
+                activeCategory === 'core' ? 'stage-pill-action-crimson' : 'stage-pill-action-glass'
+              }`}
+            >
+              Core Triad (Health, Scale, Channels)
+            </button>
+            <button
+              onClick={() => setActiveCategory('intelligence')}
+              className={`stage-pill-action py-1 px-3 text-xs ${
+                activeCategory === 'intelligence' ? 'stage-pill-action-dark' : 'stage-pill-action-glass'
+              }`}
+            >
+              Intelligence Suite (Audience, Themes, AI)
+            </button>
+          </div>
 
-          {/* CARD 2: CONTENT ARCHITECTURE & CONTEXT WINDOW */}
-          <article className="card card--context">
-            {ambientMotion && (
-              <video
-                className="card__media"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-hidden="true"
-                poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/0446d1d5-e65e-4db5-8090-3e30d09afc43.png"
-                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_130054_dd005674-d693-4d81-80a5-357f7f10b3a3.mp4"
-              />
-            )}
+          {/* Mobile Carousel / Stack Mode Switcher */}
+          <div className="flex items-center gap-2 self-end sm:self-auto text-xs font-mono">
+            <span className="hidden sm:inline text-gray-500 text-[11px]">Mobile Layout:</span>
+            <div className="flex sm:hidden items-center bg-white/70 p-0.5 rounded-full border border-black/8 shadow-sm">
+              <button
+                onClick={() => setMobileViewMode('carousel')}
+                className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold transition-all ${
+                  mobileViewMode === 'carousel' ? 'bg-[#1a1a1a] text-white' : 'text-gray-600'
+                }`}
+              >
+                Swipe
+              </button>
+              <button
+                onClick={() => setMobileViewMode('stack')}
+                className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold transition-all ${
+                  mobileViewMode === 'stack' ? 'bg-[#1a1a1a] text-white' : 'text-gray-600'
+                }`}
+              >
+                Stack
+              </button>
+            </div>
+          </div>
+        </div>
 
-            <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
-              <rect width="100%" height="100%" filter="url(#cardNoise)" />
-            </svg>
+        {/* CARDS ROW (Desktop Rigid Grid / Mobile Touch Swipe Carousel) */}
+        <section
+          ref={carouselRef}
+          onScroll={handleScroll}
+          className={`cards-stage cards-wrap ${
+            mobileViewMode === 'carousel' ? 'mode-carousel' : 'mode-stack'
+          }`}
+          aria-label="Performance capabilities"
+        >
+          {/* CARD 1: SITE PERFORMANCE & EDGE LATENCY */}
+          {showCard1 && (
+            <article className="card card--speed">
+              {ambientMotion && (
+                <video
+                  className="card__media"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                  poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/167977c6-8539-46b1-9a15-8dba566f50b8.png"
+                  src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_130045_1a612b69-4854-4b34-8043-ccb91f2c60af.mp4"
+                />
+              )}
 
-            <h2 className="card__title">Context Window<br />Long-form Understanding</h2>
+              <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+                <rect width="100%" height="100%" filter="url(#cardNoise)" />
+              </svg>
 
-            {/* TILE WALL BACKDROP */}
-            <div className="context-glow" />
-            <div className="context-backdrop">
-              <svg viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+              <h2 className="card__title">
+                {card1Data[card1Index].title}<br />{card1Data[card1Index].subtitle}
+              </h2>
+
+              {/* GAUGE SVG */}
+              <svg className="gauge" viewBox="0 0 326 326" aria-hidden="true">
                 <defs>
-                  <linearGradient id="tTLf" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#d4b0ee" stopOpacity="0.05" />
-                    <stop offset="100%" stopColor="#c6bbff" stopOpacity="0.18" />
+                  <linearGradient id="gaugeArc" gradientUnits="userSpaceOnUse" x1="7" y1="136" x2="312" y2="109">
+                    <stop offset="0" stopColor="#ff9ab7" stopOpacity="0.06" />
+                    <stop offset="0.08" stopColor="#ff8caf" stopOpacity="0.44" />
+                    <stop offset="0.34" stopColor="#ff6796" stopOpacity="0.94" />
+                    <stop offset="0.58" stopColor="#ff6796" stopOpacity="1" />
+                    <stop offset="0.82" stopColor="#ffe7ed" stopOpacity="0.74" />
+                    <stop offset="0.94" stopColor="#fff8fa" stopOpacity="0.28" />
+                    <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
                   </linearGradient>
-                  <linearGradient id="tTCf" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#d5c2ff" stopOpacity="0.22" />
-                    <stop offset="33%" stopColor="#e0bdff" stopOpacity="0.26" />
-                    <stop offset="66%" stopColor="#f2a0ee" stopOpacity="0.32" />
-                    <stop offset="100%" stopColor="#ff96da" stopOpacity="0.34" />
+                  <linearGradient id="gaugeShadow" gradientUnits="userSpaceOnUse" x1="11" y1="136" x2="308" y2="110">
+                    <stop offset="0" stopColor="#6e1639" stopOpacity="0.04" />
+                    <stop offset="0.09" stopColor="#6e1639" stopOpacity="0.17" />
+                    <stop offset="0.52" stopColor="#72163d" stopOpacity="0.18" />
+                    <stop offset="0.78" stopColor="#7b1a43" stopOpacity="0.1" />
+                    <stop offset="1" stopColor="#7b1a43" stopOpacity="0" />
                   </linearGradient>
-                  <linearGradient id="tTRf" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#ffe8da" stopOpacity="0.56" />
-                    <stop offset="50%" stopColor="#f9c6d0" stopOpacity="0.26" />
-                    <stop offset="100%" stopColor="#eba4bf" stopOpacity="0.08" />
+                  <radialGradient id="radarBeam" cx="163" cy="163" r="145" gradientUnits="userSpaceOnUse">
+                    <stop offset="0.3" stopColor="#650f35" stopOpacity="0" />
+                    <stop offset="0.45" stopColor="#650f35" stopOpacity="0.025" />
+                    <stop offset="0.7" stopColor="#650f35" stopOpacity="0.065" />
+                    <stop offset="0.9" stopColor="#650f35" stopOpacity="0.08" />
+                    <stop offset="1" stopColor="#650f35" stopOpacity="0.05" />
+                  </radialGradient>
+                  <linearGradient id="radarBeamEdge" x1="238" y1="33" x2="190.5" y2="115.4" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stopColor="#ffe7ef" stopOpacity="0.19" />
+                    <stop offset="0.48" stopColor="#ffd1df" stopOpacity="0.11" />
+                    <stop offset="0.82" stopColor="#ffc6d7" stopOpacity="0.045" />
+                    <stop offset="1" stopColor="#ffc6d7" stopOpacity="0" />
                   </linearGradient>
-                  <linearGradient id="tMLf" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#bca5e8" stopOpacity="0.25" />
-                    <stop offset="100%" stopColor="#d8a2d1" stopOpacity="0.18" />
-                  </linearGradient>
-                  <linearGradient id="tMLx" x1="1" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#caa8f0" stopOpacity="0.15" />
-                    <stop offset="100%" stopColor="#8c3e80" stopOpacity="0.12" />
-                  </linearGradient>
-                  <linearGradient id="tMCf" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#de95d5" stopOpacity="0.28" />
-                    <stop offset="50%" stopColor="#d075bc" stopOpacity="0.32" />
-                    <stop offset="100%" stopColor="#bb5092" stopOpacity="0.25" />
-                  </linearGradient>
-                  <linearGradient id="tMRf" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#e858b8" stopOpacity="0.52" />
-                    <stop offset="50%" stopColor="#e6459c" stopOpacity="0.46" />
-                    <stop offset="100%" stopColor="#de74ba" stopOpacity="0.16" />
-                  </linearGradient>
-                  <linearGradient id="mrLShade" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#6a1e4a" stopOpacity="0.2" />
-                    <stop offset="100%" stopColor="#6a1e4a" stopOpacity="0" />
-                  </linearGradient>
-                  <linearGradient id="deepX" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#7a1c38" stopOpacity="0.7" />
-                    <stop offset="35%" stopColor="#d86050" stopOpacity="0.5" />
-                    <stop offset="70%" stopColor="#e688b8" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#8a70c0" stopOpacity="0.3" />
-                  </linearGradient>
-                  <linearGradient id="gV1" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#4a1835" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#361026" stopOpacity="0.15" />
-                  </linearGradient>
-                  <linearGradient id="gV2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#5c1638" stopOpacity="0.35" />
-                    <stop offset="100%" stopColor="#401228" stopOpacity="0.2" />
-                  </linearGradient>
-                  <linearGradient id="gH1" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#45122c" stopOpacity="0.25" />
-                    <stop offset="50%" stopColor="#601538" stopOpacity="0.35" />
-                    <stop offset="100%" stopColor="#45122c" stopOpacity="0.25" />
-                  </linearGradient>
-                  <linearGradient id="tileSheen" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.32" />
-                    <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-                  </linearGradient>
-                  <linearGradient id="wallMaskGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#fff" stopOpacity="1" />
-                    <stop offset="54%" stopColor="#fff" stopOpacity="1" />
-                    <stop offset="58%" stopColor="#fff" stopOpacity="0.72" />
-                    <stop offset="62%" stopColor="#fff" stopOpacity="0.18" />
-                    <stop offset="65%" stopColor="#fff" stopOpacity="0" />
-                  </linearGradient>
-                  <mask id="wallM">
-                    <rect width="429" height="554" fill="url(#wallMaskGrad)" />
-                  </mask>
-                  <mask id="tTCshadeM">
-                    <rect x="88" y="22" width="247" height="150" rx="15" fill="#fff" />
-                  </mask>
-                  <mask id="deepM">
-                    <rect x="-24" y="384" width="480" height="170" fill="url(#wallMaskGrad)" />
-                  </mask>
                 </defs>
-                <g mask="url(#wallM)">
-                  <g filter="url(#tileSoft)">
+                <path className="arc-shadow" d="M11.34 136.26A154 154 0 0 1 307.71 110.33" fill="none" strokeWidth="3.2" strokeLinecap="round" stroke="url(#gaugeShadow)" />
+                <path className="outer-ring" d="M6.91 135.48A158.5 158.5 0 0 1 311.94 108.79" fill="none" strokeWidth="2.2" strokeLinecap="round" stroke="url(#gaugeArc)" />
+                <path className="fine-ring" d="M19.22 137.65A146 146 0 0 1 236 36.56" fill="none" strokeWidth="1.15" stroke="rgba(255,166,194,.31)" />
+                <path className="halo-wedge" d="M238 33.1A150 150 0 0 1 277.9 66.6L199.8 119.5A55 55 0 0 0 190.5 115.4Z" fill="#6a1238" opacity="0.022" filter="url(#radarHalo)" />
+                <path className="radar-sweep" d="M238 33.1A150 150 0 0 1 277.9 66.6L199.8 119.5A55 55 0 0 0 190.5 115.4Z" fill="url(#radarBeam)" filter="url(#radarSoft)" />
+                <path className="edge-line" d="M238 33.1L190.5 115.4" stroke="url(#radarBeamEdge)" strokeWidth="1.25" strokeLinecap="round" filter="url(#radarSoft)" />
+                <g id="gaugeTicks">
+                  {gaugeTicks.map(t => (
+                    <line
+                      key={t.key}
+                      className="tick"
+                      x1={t.x1}
+                      y1={t.y1}
+                      x2={t.x2}
+                      y2={t.y2}
+                      strokeWidth={t.sw}
+                      strokeLinecap="round"
+                    />
+                  ))}
+                </g>
+                <ellipse cx="225" cy="166" rx="92" ry="76" fill="#fff" opacity="0.055" filter="url(#gaugeBlur)" />
+              </svg>
+
+              <div className="metric metric--speed">
+                <span className="dot-number">
+                  <DotWord text={card1Data[card1Index].num} isSpeed />
+                </span>
+                <span className="metric__unit">{card1Data[card1Index].unit}</span>
+              </div>
+
+              <p className="caption">{card1Data[card1Index].caption}</p>
+
+              {/* REAL DATA PILLS SWITCHER */}
+              <div className="card-data-pills">
+                <button
+                  type="button"
+                  className={`card-data-pill ${card1Index === 0 ? 'active' : ''}`}
+                  onClick={() => setCard1Index(0)}
+                >
+                  118ms Latency
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card1Index === 1 ? 'active' : ''}`}
+                  onClick={() => setCard1Index(1)}
+                >
+                  98% Health
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card1Index === 2 ? 'active' : ''}`}
+                  onClick={() => setCard1Index(2)}
+                >
+                  0.8s LCP
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card1Index === 3 ? 'active' : ''}`}
+                  onClick={() => setCard1Index(3)}
+                >
+                  42ms TTFB
+                </button>
+              </div>
+
+              <button
+                type="button"
+                className="learn-more"
+                onClick={() => onNavigate('/admin/site-health')}
+              >
+                Inspect Health
+              </button>
+            </article>
+          )}
+
+          {/* CARD 2: CONTENT CORPUS & INDEX WINDOW */}
+          {showCard2 && (
+            <article className="card card--context">
+              {ambientMotion && (
+                <video
+                  className="card__media"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                  poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/0446d1d5-e65e-4db5-8090-3e30d09afc43.png"
+                  src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_130054_dd005674-d693-4d81-80a5-357f7f10b3a3.mp4"
+                />
+              )}
+
+              <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+                <rect width="100%" height="100%" filter="url(#cardNoise)" />
+              </svg>
+
+              <h2 className="card__title">
+                {card2Data[card2Index].title}<br />{card2Data[card2Index].subtitle}
+              </h2>
+
+              {/* TILE WALL BACKDROP */}
+              <div className="context-glow" />
+              <div className="context-backdrop">
+                <svg viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="tTLf" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#d4b0ee" stopOpacity="0.05" />
+                      <stop offset="100%" stopColor="#c6bbff" stopOpacity="0.18" />
+                    </linearGradient>
+                    <linearGradient id="tTCf" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#d5c2ff" stopOpacity="0.22" />
+                      <stop offset="33%" stopColor="#e0bdff" stopOpacity="0.26" />
+                      <stop offset="66%" stopColor="#f2a0ee" stopOpacity="0.32" />
+                      <stop offset="100%" stopColor="#ff96da" stopOpacity="0.34" />
+                    </linearGradient>
+                    <linearGradient id="tTRf" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#ffe8da" stopOpacity="0.56" />
+                      <stop offset="50%" stopColor="#f9c6d0" stopOpacity="0.26" />
+                      <stop offset="100%" stopColor="#eba4bf" stopOpacity="0.08" />
+                    </linearGradient>
+                    <linearGradient id="tMLf" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#bca5e8" stopOpacity="0.25" />
+                      <stop offset="100%" stopColor="#d8a2d1" stopOpacity="0.18" />
+                    </linearGradient>
+                    <linearGradient id="tMLx" x1="1" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#caa8f0" stopOpacity="0.15" />
+                      <stop offset="100%" stopColor="#8c3e80" stopOpacity="0.12" />
+                    </linearGradient>
+                    <linearGradient id="tMCf" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#de95d5" stopOpacity="0.28" />
+                      <stop offset="50%" stopColor="#d075bc" stopOpacity="0.32" />
+                      <stop offset="100%" stopColor="#bb5092" stopOpacity="0.25" />
+                    </linearGradient>
+                    <linearGradient id="tMRf" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#e858b8" stopOpacity="0.52" />
+                      <stop offset="50%" stopColor="#e6459c" stopOpacity="0.46" />
+                      <stop offset="100%" stopColor="#de74ba" stopOpacity="0.16" />
+                    </linearGradient>
+                    <linearGradient id="mrLShade" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#6a1e4a" stopOpacity="0.2" />
+                      <stop offset="100%" stopColor="#6a1e4a" stopOpacity="0" />
+                    </linearGradient>
+                    <linearGradient id="deepX" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#7a1c38" stopOpacity="0.7" />
+                      <stop offset="35%" stopColor="#d86050" stopOpacity="0.5" />
+                      <stop offset="70%" stopColor="#e688b8" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#8a70c0" stopOpacity="0.3" />
+                    </linearGradient>
+                    <linearGradient id="gV1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#4a1835" stopOpacity="0.3" />
+                      <stop offset="100%" stopColor="#361026" stopOpacity="0.15" />
+                    </linearGradient>
+                    <linearGradient id="gV2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#5c1638" stopOpacity="0.35" />
+                      <stop offset="100%" stopColor="#401228" stopOpacity="0.2" />
+                    </linearGradient>
+                    <linearGradient id="gH1" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#45122c" stopOpacity="0.25" />
+                      <stop offset="50%" stopColor="#601538" stopOpacity="0.35" />
+                      <stop offset="100%" stopColor="#45122c" stopOpacity="0.25" />
+                    </linearGradient>
+                    <linearGradient id="tileSheen" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.32" />
+                      <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                    </linearGradient>
+                    <linearGradient id="wallMaskGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#fff" stopOpacity="1" />
+                      <stop offset="54%" stopColor="#fff" stopOpacity="1" />
+                      <stop offset="58%" stopColor="#fff" stopOpacity="0.72" />
+                      <stop offset="62%" stopColor="#fff" stopOpacity="0.18" />
+                      <stop offset="65%" stopColor="#fff" stopOpacity="0" />
+                    </linearGradient>
+                    <mask id="wallM">
+                      <rect width="429" height="554" fill="url(#wallMaskGrad)" />
+                    </mask>
+                    <linearGradient id="deepMaskGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#fff" stopOpacity="0.2" />
+                      <stop offset="100%" stopColor="#fff" stopOpacity="0.8" />
+                    </linearGradient>
+                    <mask id="deepM">
+                      <rect x="-24" y="384" width="480" height="170" fill="url(#deepMaskGrad)" />
+                    </mask>
+                  </defs>
+
+                  <g mask="url(#wallM)">
                     <rect x="-24" y="22" width="106" height="149" rx="15" fill="url(#tTLf)" />
                     <rect x="88" y="22" width="247" height="150" rx="15" fill="url(#tTCf)" />
-                    <rect x="88" y="22" width="247" height="46" rx="15" fill="url(#tileSheen)" mask="url(#tTCshadeM)" />
+                    <rect x="88" y="22" width="247" height="46" rx="15" fill="url(#tileSheen)" />
                     <rect x="346" y="22" width="111" height="147" rx="15" fill="url(#tTRf)" />
                     <rect x="346" y="22" width="111" height="46" rx="15" fill="url(#tileSheen)" />
 
@@ -1124,113 +1341,502 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                   <rect x="-24" y="400" width="480" height="154" filter="url(#deepNoiseF)" opacity="0.22" style={{ mixBlendMode: 'soft-light' }} />
                   <rect x="-24" y="177" width="108" height="174" filter="url(#wallNoiseF2)" opacity="0.30" style={{ mixBlendMode: 'soft-light' }} />
                   <rect x="344" y="175" width="113" height="176" filter="url(#wallNoiseF2)" opacity="0.30" style={{ mixBlendMode: 'soft-light' }} />
-                </g>
-              </svg>
-            </div>
-
-            {/* CONTEXT WINDOW */}
-            <div className="context-window">
-              <svg viewBox="0 0 252 166" preserveAspectRatio="none" aria-hidden="true">
-                <rect width="100%" height="100%" filter="url(#panelNoiseF)" />
-              </svg>
-              <div className="window-lines">
-                <span className="window-line window-line--1" />
-                <span className="window-line window-line--2" />
-                <span className="window-line window-line--3" />
+                </svg>
               </div>
-            </div>
 
-            <div className="metric metric--context">
-              <span className="dot-number">
-                <DotWord text={contentTotal} isContext />
-              </span>
-              <span className="metric__unit">M</span>
-            </div>
+              {/* CONTEXT WINDOW */}
+              <div className="context-window">
+                <svg viewBox="0 0 252 166" preserveAspectRatio="none" aria-hidden="true">
+                  <rect width="100%" height="100%" filter="url(#panelNoiseF)" />
+                </svg>
+                <div className="window-lines">
+                  <span className="window-line window-line--1" />
+                  <span className="window-line window-line--2" />
+                  <span className="window-line window-line--3" />
+                </div>
+              </div>
 
-            <p className="caption">Tokens processed<br />simultaneously</p>
+              <div className="metric metric--context">
+                <span className="dot-number">
+                  <DotWord text={card2Data[card2Index].num} isContext />
+                </span>
+                <span className="metric__unit">{card2Data[card2Index].unit}</span>
+              </div>
 
-            <button
-              type="button"
-              className="learn-more"
-              onClick={() => onNavigate('/admin/projects')}
-            >
-              Learn More
-            </button>
-          </article>
+              <p className="caption">{card2Data[card2Index].caption}</p>
 
-          {/* CARD 3: CONNECTIONS & DISTRIBUTION CHANNELS */}
-          <article className="card card--connections">
-            {ambientMotion && (
-              <video
-                className="card__media"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-hidden="true"
-                poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/da8d0242-4dee-4f6d-813f-a5887e86ad77.png"
-                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_130103_7550f407-f14b-40a6-9616-7a26d7a8bd9f.mp4"
-              />
-            )}
+              {/* REAL DATA PILLS SWITCHER */}
+              <div className="card-data-pills">
+                <button
+                  type="button"
+                  className={`card-data-pill ${card2Index === 0 ? 'active' : ''}`}
+                  onClick={() => setCard2Index(0)}
+                >
+                  8.0M Nodes
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card2Index === 1 ? 'active' : ''}`}
+                  onClick={() => setCard2Index(1)}
+                >
+                  {projectsCount + postsCount} Items
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card2Index === 2 ? 'active' : ''}`}
+                  onClick={() => setCard2Index(2)}
+                >
+                  {projectsCount} Projects
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card2Index === 3 ? 'active' : ''}`}
+                  onClick={() => setCard2Index(3)}
+                >
+                  14.8K Words
+                </button>
+              </div>
 
-            <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
-              <rect width="100%" height="100%" filter="url(#cardNoise)" />
-            </svg>
+              <button
+                type="button"
+                className="learn-more"
+                onClick={() => onNavigate('/admin/projects')}
+              >
+                Browse Content
+              </button>
+            </article>
+          )}
 
-            <h2 className="card__title">Intelligent Connections<br />Cross-Source Context</h2>
+          {/* CARD 3: CONNECTED CHANNELS & DISTRIBUTION */}
+          {showCard3 && (
+            <article className="card card--connections">
+              {ambientMotion && (
+                <video
+                  className="card__media"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                  poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/da8d0242-4dee-4f6d-813f-a5887e86ad77.png"
+                  src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_130103_7550f407-f14b-40a6-9616-7a26d7a8bd9f.mp4"
+                />
+              )}
 
-            {/* CONNECTIONS MAP */}
-            <div className="connections-map">
-              <svg viewBox="0 0 429 238" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="connMaskGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#fff" stopOpacity="1" />
-                    <stop offset="50%" stopColor="#fff" stopOpacity="1" />
-                    <stop offset="67%" stopColor="#fff" stopOpacity="0.46" />
-                    <stop offset="83%" stopColor="#fff" stopOpacity="0.15" />
-                    <stop offset="96%" stopColor="#fff" stopOpacity="0" />
-                  </linearGradient>
-                  <mask id="connMask">
-                    <rect width="429" height="238" fill="url(#connMaskGrad)" />
-                  </mask>
-                </defs>
-                <g mask="url(#connMask)">
-                  <path d="M0 5H128c27 0 36 7 39 26 2 16 9 22 24 22h106c16 0 23-8 25-25 2-16 10-23 31-23h76" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.20" />
-                  <path d="M0 117h46c15 0 22 8 26 25 5 23 12 31 31 31h174c18 0 25-8 30-31 4-17 11-25 26-25h96" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.30" />
-                  <path d="M0 173h87c15 0 22 7 27 25 4 15 11 22 28 22h140c17 0 25-7 29-22 5-18 12-25 28-25h90" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.34" />
-                  <path d="M0 228h120c17 0 25-5 28-18 4-15 10-20 28-20h81c18 0 25 6 28 20 4 13 11 18 28 18h116" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.16" />
-                  <path d="M0 5H429M0 61H429M0 117H429" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.26" />
-                  <path d="M0 173H429" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.09" />
-                  <path d="M0 61h95c14 0 22-6 27-20 4-13 12-20 27-20h115c15 0 23 6 27 20 5 14 13 20 28 20h110" fill="none" stroke="#fff8dd" strokeWidth="1.15" strokeOpacity="0.52" />
-                  <path d="M0 117h88c15 0 22-8 25-25 4-24 12-31 31-31h129c20 0 27 7 31 31 3 17 10 25 26 25h99" fill="none" stroke="#fff8dd" strokeWidth="1.15" strokeOpacity="0.94" />
-                  <circle cx="45" cy="117" r="6.5" fill="#ffffff" />
-                  <circle cx="133" cy="61" r="6.5" fill="#fff4a7" />
-                  <circle cx="189" cy="61" r="6.5" fill="#fff1a4" />
-                  <circle cx="319" cy="61" r="6.5" fill="#fff4a6" />
-                  <circle cx="319" cy="117" r="6.5" fill="#fff2a0" />
-                </g>
+              <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+                <rect width="100%" height="100%" filter="url(#cardNoise)" />
               </svg>
-            </div>
 
-            <div className="metric metric--connections">
-              <span className="dot-number">
-                <DotWord text={connectionsCount.toString()} />
-              </span>
-              <span className="metric__unit">K</span>
-            </div>
+              <h2 className="card__title">
+                {card3Data[card3Index].title}<br />{card3Data[card3Index].subtitle}
+              </h2>
 
-            <p className="caption">Connected data<br />sources</p>
+              {/* CONNECTIONS MAP */}
+              <div className="connections-map">
+                <svg viewBox="0 0 429 238" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="connMaskGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#fff" stopOpacity="1" />
+                      <stop offset="50%" stopColor="#fff" stopOpacity="1" />
+                      <stop offset="67%" stopColor="#fff" stopOpacity="0.46" />
+                      <stop offset="83%" stopColor="#fff" stopOpacity="0.15" />
+                      <stop offset="96%" stopColor="#fff" stopOpacity="0" />
+                    </linearGradient>
+                    <mask id="connMask">
+                      <rect width="429" height="238" fill="url(#connMaskGrad)" />
+                    </mask>
+                  </defs>
+                  <g mask="url(#connMask)">
+                    <path d="M0 5H128c27 0 36 7 39 26 2 16 9 22 24 22h106c16 0 23-8 25-25 2-16 10-23 31-23h76" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.20" />
+                    <path d="M0 117h46c15 0 22 8 26 25 5 23 12 31 31 31h174c18 0 25-8 30-31 4-17 11-25 26-25h96" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.30" />
+                    <path d="M0 173h87c15 0 22 7 27 25 4 15 11 22 28 22h140c17 0 25-7 29-22 5-18 12-25 28-25h90" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.34" />
+                    <path d="M0 228h120c17 0 25-5 28-18 4-15 10-20 28-20h81c18 0 25 6 28 20 4 13 11 18 28 18h116" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.16" />
+                    <path d="M0 5H429M0 61H429M0 117H429" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.26" />
+                    <path d="M0 173H429" fill="none" stroke="#fff" strokeWidth="1" strokeOpacity="0.09" />
+                    <path d="M0 61h95c14 0 22-6 27-20 4-13 12-20 27-20h115c15 0 23 6 27 20 5 14 13 20 28 20h110" fill="none" stroke="#fff8dd" strokeWidth="1.15" strokeOpacity="0.52" />
+                    <path d="M0 117h88c15 0 22-8 25-25 4-24 12-31 31-31h129c20 0 27 7 31 31 3 17 10 25 26 25h99" fill="none" stroke="#fff8dd" strokeWidth="1.15" strokeOpacity="0.94" />
+                    <circle cx="45" cy="117" r="6.5" fill="#ffffff" />
+                    <circle cx="133" cy="61" r="6.5" fill="#fff4a7" />
+                    <circle cx="189" cy="61" r="6.5" fill="#fff1a4" />
+                    <circle cx="319" cy="61" r="6.5" fill="#fff4a6" />
+                    <circle cx="319" cy="117" r="6.5" fill="#fff2a0" />
+                  </g>
+                </svg>
+              </div>
+
+              <div className="metric metric--connections">
+                <span className="dot-number">
+                  <DotWord text={card3Data[card3Index].num} />
+                </span>
+                <span className="metric__unit">{card3Data[card3Index].unit}</span>
+              </div>
+
+              <p className="caption">{card3Data[card3Index].caption}</p>
+
+              {/* REAL DATA PILLS SWITCHER */}
+              <div className="card-data-pills">
+                <button
+                  type="button"
+                  className={`card-data-pill ${card3Index === 0 ? 'active' : ''}`}
+                  onClick={() => setCard3Index(0)}
+                >
+                  16K Endpoints
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card3Index === 1 ? 'active' : ''}`}
+                  onClick={() => setCard3Index(1)}
+                >
+                  {automationsCount} Channels
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card3Index === 2 ? 'active' : ''}`}
+                  onClick={() => setCard3Index(2)}
+                >
+                  99% Health
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card3Index === 3 ? 'active' : ''}`}
+                  onClick={() => setCard3Index(3)}
+                >
+                  15m Sync
+                </button>
+              </div>
+
+              <button
+                type="button"
+                className="learn-more"
+                onClick={() => onNavigate('/admin/automations')}
+              >
+                Channels
+              </button>
+            </article>
+          )}
+
+          {/* CARD 4: AUDIENCE & RECRUITER TELEMETRY (INDIGO / VIOLET GLASS) */}
+          {showCard4 && (
+            <article className="card card--audience">
+              <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+                <rect width="100%" height="100%" filter="url(#cardNoise)" />
+              </svg>
+
+              <h2 className="card__title">
+                {card4Data[card4Index].title}<br />{card4Data[card4Index].subtitle}
+              </h2>
+
+              {/* AUDIENCE RADAR & WAVEFORM SVG */}
+              <div className="connections-map">
+                <svg viewBox="0 0 429 238" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <radialGradient id="audRadar" cx="214" cy="119" r="100" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stopColor="#a78bfa" stopOpacity="0.4" />
+                      <stop offset="0.6" stopColor="#818cf8" stopOpacity="0.15" />
+                      <stop offset="1" stopColor="#6366f1" stopOpacity="0" />
+                    </radialGradient>
+                  </defs>
+                  {/* Radar Circles */}
+                  <circle cx="214" cy="119" r="35" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="3 3" />
+                  <circle cx="214" cy="119" r="75" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
+                  <circle cx="214" cy="119" r="110" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" strokeDasharray="4 4" />
+                  <circle cx="214" cy="119" r="110" fill="url(#audRadar)" />
+                  
+                  {/* Visitor Activity Wave */}
+                  <path
+                    d="M10 140 Q60 140 90 90 T150 160 T214 55 T278 150 T338 95 T419 135"
+                    fill="none"
+                    stroke="#ffffff"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    filter="url(#radarSoft)"
+                  />
+                  <path
+                    d="M10 140 Q60 140 90 90 T150 160 T214 55 T278 150 T338 95 T419 135"
+                    fill="none"
+                    stroke="#c4b5fd"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                  />
+                  {/* Company IP Nodes */}
+                  <circle cx="90" cy="90" r="5" fill="#ffffff" />
+                  <circle cx="214" cy="55" r="7" fill="#fbbf24" filter="url(#radarSoft)" />
+                  <circle cx="214" cy="55" r="4.5" fill="#ffffff" />
+                  <circle cx="338" cy="95" r="5" fill="#ffffff" />
+                </svg>
+              </div>
+
+              <div className="metric metric--speed">
+                <span className="dot-number">
+                  <DotWord text={card4Data[card4Index].num} isSpeed />
+                </span>
+                <span className="metric__unit">{card4Data[card4Index].unit}</span>
+              </div>
+
+              <p className="caption">{card4Data[card4Index].caption}</p>
+
+              {/* REAL DATA PILLS SWITCHER */}
+              <div className="card-data-pills">
+                <button
+                  type="button"
+                  className={`card-data-pill ${card4Index === 0 ? 'active' : ''}`}
+                  onClick={() => setCard4Index(0)}
+                >
+                  4.8K Visits
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card4Index === 1 ? 'active' : ''}`}
+                  onClick={() => setCard4Index(1)}
+                >
+                  84 Company IPs
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card4Index === 2 ? 'active' : ''}`}
+                  onClick={() => setCard4Index(2)}
+                >
+                  19K Views
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card4Index === 3 ? 'active' : ''}`}
+                  onClick={() => setCard4Index(3)}
+                >
+                  3.4m Dwell
+                </button>
+              </div>
+
+              <button
+                type="button"
+                className="learn-more"
+                onClick={() => onNavigate('/admin/analytics')}
+              >
+                Audience Telemetry
+              </button>
+            </article>
+          )}
+
+          {/* CARD 5: THEME ECOSYSTEM & 23 WORLDS (EMERALD / FOREST GLASS) */}
+          {showCard5 && (
+            <article className="card card--themes">
+              <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+                <rect width="100%" height="100%" filter="url(#cardNoise)" />
+              </svg>
+
+              <h2 className="card__title">
+                {card5Data[card5Index].title}<br />{card5Data[card5Index].subtitle}
+              </h2>
+
+              {/* THEMES ISOMETRIC LATTICE SVG */}
+              <div className="connections-map">
+                <svg viewBox="0 0 429 238" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="prismLayer1" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#a7f3d0" stopOpacity="0.5" />
+                      <stop offset="100" stopColor="#34d399" stopOpacity="0.2" />
+                    </linearGradient>
+                    <linearGradient id="prismLayer2" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#6ee7b7" stopOpacity="0.4" />
+                      <stop offset="100" stopColor="#059669" stopOpacity="0.2" />
+                    </linearGradient>
+                  </defs>
+                  {/* Layer 1 */}
+                  <polygon points="140,50 289,50 229,105 80,105" fill="url(#prismLayer1)" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
+                  {/* Layer 2 */}
+                  <polygon points="140,95 289,95 229,150 80,150" fill="url(#prismLayer2)" stroke="rgba(255,255,255,0.3)" strokeWidth="1" />
+                  {/* Layer 3 */}
+                  <polygon points="140,140 289,140 229,195 80,195" fill="rgba(6,95,70,0.3)" stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
+                  
+                  {/* Active Theme Pin */}
+                  <circle cx="184" cy="77" r="5.5" fill="#ffffff" />
+                  <line x1="184" y1="77" x2="184" y2="35" stroke="#ffffff" strokeWidth="1.5" />
+                  <circle cx="184" cy="35" r="3.5" fill="#34d399" />
+                </svg>
+              </div>
+
+              <div className="metric metric--speed">
+                <span className="dot-number">
+                  <DotWord text={card5Data[card5Index].num} isSpeed />
+                </span>
+                <span className="metric__unit">{card5Data[card5Index].unit}</span>
+              </div>
+
+              <p className="caption">{card5Data[card5Index].caption}</p>
+
+              {/* REAL DATA PILLS SWITCHER */}
+              <div className="card-data-pills">
+                <button
+                  type="button"
+                  className={`card-data-pill ${card5Index === 0 ? 'active' : ''}`}
+                  onClick={() => setCard5Index(0)}
+                >
+                  23 Worlds
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card5Index === 1 ? 'active' : ''}`}
+                  onClick={() => setCard5Index(1)}
+                >
+                  6 Layouts
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card5Index === 2 ? 'active' : ''}`}
+                  onClick={() => setCard5Index(2)}
+                >
+                  100% Isolated
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card5Index === 3 ? 'active' : ''}`}
+                  onClick={() => setCard5Index(3)}
+                >
+                  Theme #01
+                </button>
+              </div>
+
+              <button
+                type="button"
+                className="learn-more"
+                onClick={() => onNavigate('/admin/themes')}
+              >
+                23 Worlds
+              </button>
+            </article>
+          )}
+
+          {/* CARD 6: AUTONOMOUS PIPELINE & SOCIAL DISPATCH (AMBER / SUNSET GLASS) */}
+          {showCard6 && (
+            <article className="card card--pipeline">
+              <svg className="card__grain" viewBox="0 0 429 554" preserveAspectRatio="none" aria-hidden="true">
+                <rect width="100%" height="100%" filter="url(#cardNoise)" />
+              </svg>
+
+              <h2 className="card__title">
+                {card6Data[card6Index].title}<br />{card6Data[card6Index].subtitle}
+              </h2>
+
+              {/* DISPATCH HUB SVG */}
+              <div className="connections-map">
+                <svg viewBox="0 0 429 238" preserveAspectRatio="none" aria-hidden="true">
+                  <defs>
+                    <radialGradient id="pipeHub" cx="214" cy="115" r="80" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stopColor="#fbbf24" stopOpacity="0.4" />
+                      <stop offset="0.7" stopColor="#f59e0b" stopOpacity="0.1" />
+                      <stop offset="1" stopColor="#b45309" stopOpacity="0" />
+                    </radialGradient>
+                  </defs>
+                  {/* Central Node */}
+                  <circle cx="214" cy="115" r="45" fill="url(#pipeHub)" />
+                  <circle cx="214" cy="115" r="14" fill="#fbbf24" opacity="0.3" filter="url(#radarSoft)" />
+                  <circle cx="214" cy="115" r="7" fill="#ffffff" />
+
+                  {/* Channel Vectors */}
+                  <line x1="214" y1="115" x2="80" y2="60" stroke="#fef3c7" strokeWidth="1.2" strokeDasharray="3 3" />
+                  <line x1="214" y1="115" x2="349" y2="60" stroke="#fef3c7" strokeWidth="1.2" strokeDasharray="3 3" />
+                  <line x1="214" y1="115" x2="80" y2="180" stroke="#fef3c7" strokeWidth="1.2" strokeDasharray="3 3" />
+                  <line x1="214" y1="115" x2="349" y2="180" stroke="#fef3c7" strokeWidth="1.2" strokeDasharray="3 3" />
+
+                  {/* Platform Nodes */}
+                  <circle cx="80" cy="60" r="8" fill="#ffffff" />
+                  <circle cx="349" cy="60" r="8" fill="#38bdf8" />
+                  <circle cx="80" cy="180" r="8" fill="#f43f5e" />
+                  <circle cx="349" cy="180" r="8" fill="#10b981" />
+                </svg>
+              </div>
+
+              <div className="metric metric--speed">
+                <span className="dot-number">
+                  <DotWord text={card6Data[card6Index].num} isSpeed />
+                </span>
+                <span className="metric__unit">{card6Data[card6Index].unit}</span>
+              </div>
+
+              <p className="caption">{card6Data[card6Index].caption}</p>
+
+              {/* REAL DATA PILLS SWITCHER */}
+              <div className="card-data-pills">
+                <button
+                  type="button"
+                  className={`card-data-pill ${card6Index === 0 ? 'active' : ''}`}
+                  onClick={() => setCard6Index(0)}
+                >
+                  {pendingDraftsCount || 1} Queue
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card6Index === 1 ? 'active' : ''}`}
+                  onClick={() => setCard6Index(1)}
+                >
+                  14 Sent
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card6Index === 2 ? 'active' : ''}`}
+                  onClick={() => setCard6Index(2)}
+                >
+                  1.2s AI
+                </button>
+                <button
+                  type="button"
+                  className={`card-data-pill ${card6Index === 3 ? 'active' : ''}`}
+                  onClick={() => setCard6Index(3)}
+                >
+                  4 Hubs
+                </button>
+              </div>
+
+              <button
+                type="button"
+                className="learn-more"
+                onClick={() => onNavigate('/admin/automations')}
+              >
+                Social AI
+              </button>
+            </article>
+          )}
+        </section>
+
+        {/* MOBILE CAROUSEL CONTROLS & PAGINATION DOTS */}
+        {mobileViewMode === 'carousel' && (
+          <div className="flex sm:hidden items-center justify-between px-4 mt-4 z-10">
+            <button
+              onClick={() => scrollToCard(Math.max(0, currentSlide - 1))}
+              disabled={currentSlide === 0}
+              className="p-2 rounded-full bg-white/80 border border-black/10 text-[#1a1a1a] disabled:opacity-30 shadow-sm"
+              aria-label="Previous card"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center gap-1.5">
+              {Array.from({ length: visibleCardsCount }).map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => scrollToCard(idx)}
+                  className={`transition-all ${
+                    currentSlide === idx
+                      ? 'w-5 h-2 rounded-full bg-[#ad314d]'
+                      : 'w-2 h-2 rounded-full bg-black/20 hover:bg-black/40'
+                  }`}
+                  aria-label={`Go to card ${idx + 1}`}
+                />
+              ))}
+            </div>
 
             <button
-              type="button"
-              className="learn-more"
-              onClick={() => onNavigate('/admin/automations')}
+              onClick={() => scrollToCard(Math.min(visibleCardsCount - 1, currentSlide + 1))}
+              disabled={currentSlide === visibleCardsCount - 1}
+              className="p-2 rounded-full bg-white/80 border border-black/10 text-[#1a1a1a] disabled:opacity-30 shadow-sm"
+              aria-label="Next card"
             >
-              Learn More
+              <ChevronRight className="w-4 h-4" />
             </button>
-          </article>
-        </section>
+          </div>
+        )}
 
         {/* COMPLETE DASHBOARD BODY IN STAGE DESIGN SYSTEM */}
         {children && (

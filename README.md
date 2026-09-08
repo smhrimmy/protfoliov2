@@ -49,15 +49,19 @@
 
 ## 🎛️ The Intelligent Stage Admin OS
 
-Accessed via `/admin`, the portfolio operating system provides an executive control room equipped with deep site instrumentation:
+Accessed via `/admin`, the portfolio operating system provides an executive control room equipped with deep site telemetry and 6 live glass metric cards:
 
-![Intelligent Stage Scrolled View](docs/images/admin_intelligent_stage_scrolled.png)
+![Intelligent Stage Desktop Live](docs/images/admin_intelligent_stage_desktop_live.png)
 
-### Key Modules:
-1. **Site Performance Metric (118ms)**: Live SVG radial gauge tracking response latency, Core Web Vitals (LCP, FID, CLS), TTFB, and server health.
-2. **Content Index (8.0M nodes)**: Dynamic animated tile-wall showcasing active assets, indexed project nodes, cache hit ratios, and real-time ingestion counters.
-3. **Connected Channels (16K endpoints)**: Dynamic SVG curve topology mapping live social networks, syndication feeds, webhooks, and analytics streams.
-4. **Quick Command Center**: Single-click access to the Visual Editor, Blog Composer, Project Manager, SEO Suite, and System Diagnostics.
+### The 6 Live System Cards:
+1. **Site Performance Metric (118ms / 98% Health / 0.8s LCP / 42ms TTFB)**: Live SVG radial gauge tracking response latency, Core Web Vitals, and server health with interactive multi-metric switching pills.
+2. **Content Library Index (8.0M Nodes / 8 Published Items / 6 Projects / 14.8K Words)**: Dynamic animated tile-wall showcasing active assets, indexed project nodes, cache hit ratios, and real-time ingestion counters.
+3. **Connected Channels (16K Endpoints / 3 Channels / 99% Health / 15m Sync)**: Dynamic SVG curve topology mapping live social networks, syndication feeds, webhooks, and analytics streams.
+4. **Audience Telemetry (4.8K Weekly Visits / 84 Target Company IPs / 19K Reach / 3.4m Dwell)**: Interactive radar waveform visualizer capturing verified developer and recruiter traffic across Fortune 500 employer networks.
+5. **Theme Ecosystem (23 Isolated Architectures / 6 Layout Paradigms / 100% Style Isolation / Active Theme #01)**: Isometric 3D architectural prism monitoring theme runtime sandboxing and DOM rendering health.
+6. **Autonomous Social Pipeline (1 Review Queue / 14 Sent Broadcasts / 1.2s AI Velocity / 4 Distribution Hubs)**: Human-in-the-loop social syndication engine with neural dispatch constellation for LinkedIn, Telegram, and RSS feeds.
+
+![Intelligent Stage Row 2](docs/images/admin_stage_row2_fixed.png)
 
 ---
 
@@ -148,12 +152,18 @@ Monitor portfolio traffic, optimize discoverability, and verify system integrity
 
 ## 📱 Mobile-First Architecture
 
-The entire Portfolio OS—both the public portfolio and the admin management suite—is engineered with touch-first ergonomics and fluid responsiveness:
+The entire Portfolio OS—both the public portfolio and the admin management suite—is engineered with touch-first ergonomics, fluid responsiveness, and full mobile multi-data access:
 
-| **Mobile Intelligent Stage** | **Mobile Grouped Settings** |
+| **Mobile Touch Snap Carousel** | **Multi-Metric Interactive Card Switching** |
 |:---:|:---:|
-| ![Mobile Admin Stage](docs/images/admin_intelligent_stage_mobile.png) | ![Mobile Settings](docs/images/admin_settings_grouped.png) |
-| *Adaptive vertical metric stack with floating glass mobile bottom dock navigation.* | *Collapsible settings groups optimized for one-handed thumb interaction on mobile devices.* |
+| ![Mobile Touch Carousel](docs/images/admin_mobile_card1_view.png) | ![Mobile Card 2 Switcher](docs/images/admin_mobile_card2_view.png) |
+| *Horizontal touch-snap carousel with live pagination indicators (`● ○ ○ ○ ○ ○`) and prev/next controls.* | *Direct touch pills to switch between 4 live data points per card without scrolling or page reloads.* |
+
+### Mobile Enhancements:
+- **Swipe vs Stack Toggle**: Instantly switch between single-card horizontal swipe carousel and vertical stacked layout.
+- **Dynamic Category Filtering**: Quick filter pills (`All 6 Cards`, `Core Triad`, `Intelligence Suite`) to focus on specific operational areas.
+- **Fixed Mobile Dock**: Persistent bottom navigation bar (`Dash`, `Projects`, `Editor`, `Themes`, `More`) for effortless one-handed thumb navigation.
+- **Rigid Responsive Scaling**: Rigid 429×554 ratio maintained across all phone viewports with zero text truncation or SVG clipping.
 
 ---
 
