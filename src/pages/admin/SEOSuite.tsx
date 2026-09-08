@@ -34,8 +34,8 @@ export const SEOSuite: React.FC = () => {
     '/about': {
       title: 'Engineering Biography & Core Tenets — Prajwal DL',
       description: 'Background, architectural philosophy, and track record across distributed systems and modern frontend architectures.',
-      keywords: 'Biography, Staff Engineer, Philosophy, SILVERSTEN',
-      canonical: 'https://portfolio.prajwaldl.com/about'
+      keywords: 'Prajwal DL, Full Stack Developer, WordPress Support, DNS Management, Mangalore',
+      canonical: 'https://praxel.space/about'
     },
     '/contact': {
       title: 'Initiate Direct Dispatch — Prajwal DL',
@@ -264,7 +264,7 @@ export const SEOSuite: React.FC = () => {
                   P
                 </div>
                 <div>
-                  <p className="text-[#202124] text-xs font-medium leading-tight">Prajwal DL // SILVERSTEN</p>
+                  <p className="text-[#202124] text-xs font-medium leading-tight">Prajwal DL · Web Advisor</p>
                   <p className="text-[#5f6368] text-[11px] font-mono leading-tight">{currentSEO.canonical}</p>
                 </div>
               </div>
@@ -281,7 +281,7 @@ export const SEOSuite: React.FC = () => {
           {previewPlatform === 'twitter' && (
             <div className="bg-black border border-[#2f3336] rounded-2xl overflow-hidden shadow-lg select-text font-sans">
               <div className="h-44 bg-gradient-to-tr from-blue-900 via-indigo-900 to-purple-900 p-6 flex flex-col justify-end">
-                <span className="text-xs font-mono text-blue-300 uppercase font-bold">SILVERSTEN.DEV</span>
+                <span className="text-xs font-mono text-blue-300 uppercase font-bold">PRAXEL.SPACE</span>
                 <h4 className="text-xl font-bold text-white tracking-tight">{currentSEO.title}</h4>
               </div>
               <div className="p-4 space-y-1">

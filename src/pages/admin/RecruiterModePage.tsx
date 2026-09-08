@@ -11,7 +11,7 @@ export const RecruiterModePage: React.FC<RecruiterModePageProps> = ({ onNavigate
   const [hoursValid, setHoursValid] = useState(48);
   const [generatedToken, setGeneratedToken] = useState('recruiter_token_94f8a2c1');
 
-  const shareableUrl = `https://silversten.dev/preview/${generatedToken}`;
+  const shareableUrl = `https://praxel.space/preview/${generatedToken}`;
 
   const copyLink = () => {
     navigator.clipboard?.writeText(shareableUrl);

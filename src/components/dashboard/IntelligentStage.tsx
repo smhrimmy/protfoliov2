@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { mockStorage } from '@/data/mockStorage';
+import { githubService } from '@/services/githubService';
 import { ThemeManifest } from '@/types/theme';
 import { 
   Activity, Zap, ShieldCheck, FolderGit2, FileText, Send, 
-  GitBranch, Palette, Users, ChevronLeft, ChevronRight, Sliders, Layers,
+  GitBranch, Palette, Users, ChevronLeft, ChevronRight, Sliders, Layers, Briefcase, Mail, Phone,
   ExternalLink, Plus, Eye, CheckCircle2, RefreshCw, Check
 } from 'lucide-react';
 
@@ -147,52 +148,55 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
     localStorage.setItem('pdl_ambient_motion', String(next));
   };
 
-  // Card 1: Site Performance Data Options
+  // Real GitHub data from githubService
+  const ghUser = githubService.getUser();
+
+  // Card 1: GitHub Account & Live Telemetry
   const card1Data = [
-    { num: '118', unit: 'ms', label: 'Site Performance', subtitle: 'Edge Latency', caption: 'Average global edge response latency', link: '/admin/site-health' },
-    { num: '98', unit: '%', label: 'Audit Score', subtitle: 'Lighthouse Health', caption: 'Passing Core Web Vitals audit score', link: '/admin/site-health' },
-    { num: '0.8', unit: 's', label: 'Visual Stability', subtitle: 'Largest Paint (LCP)', caption: 'Instant hero render without layout shift', link: '/admin/site-health' },
-    { num: '42', unit: 'ms', label: 'Server Response', subtitle: 'Time to First Byte', caption: 'Global CDN edge cache hit ratio 99.4%', link: '/admin/site-health' }
+    { num: String(ghUser.publicRepos || 36), unit: 'Repos', label: 'GitHub Repositories', subtitle: '@smhrimmy', caption: 'Public open-source repositories by Prajwal DL', link: '/admin/github' },
+    { num: 'Nov', unit: '2025', label: 'Active Since', subtitle: 'Account Created', caption: 'Continuous engineering and commit activity', link: '/admin/github' },
+    { num: '76.5', unit: '%', label: 'Primary Language', subtitle: 'TypeScript', caption: 'Full-stack TypeScript, React, and REST APIs', link: '/admin/github' },
+    { num: '100', unit: '%', label: 'GitHub Live API', subtitle: 'Sync Active', caption: 'Real-time telemetry stream from GitHub API', link: '/admin/github' }
   ];
 
-  // Card 2: Content Library Data Options
+  // Card 2: Production Works & Case Studies
   const card2Data = [
-    { num: '8.0', unit: 'M', label: 'Content Library', subtitle: 'Index Volume', caption: 'Total tokens indexed across knowledge base', link: '/admin/projects' },
-    { num: String(projectsCount + postsCount), unit: 'Items', label: 'Content Corpus', subtitle: 'Published Nodes', caption: `${projectsCount} case studies & ${postsCount} published articles`, link: '/admin/projects' },
-    { num: String(projectsCount), unit: 'Projects', label: 'Engineered Works', subtitle: 'Production Systems', caption: 'Full-stack & 3D WebGL architectures', link: '/admin/projects' },
-    { num: '14.8', unit: 'K', label: 'Written Articles', subtitle: 'Total Words', caption: 'Technical essays & architectural breakdowns', link: '/admin/blog' }
+    { num: String(projectsCount), unit: 'Projects', label: 'Featured Systems', subtitle: 'Live Showcases', caption: 'SupportOS, OptiTalent, Finverse, Cashflow, FictionZone', link: '/admin/projects' },
+    { num: '8', unit: 'Demos', label: 'Live Deployments', subtitle: 'Vercel Hosted', caption: 'High-speed live web applications deployed on Vercel', link: '/admin/projects' },
+    { num: '100', unit: '%', label: 'Open Source', subtitle: 'Public Codebases', caption: 'All repositories accessible on GitHub', link: '/admin/projects' },
+    { num: String(postsCount), unit: 'Posts', label: 'Technical Guides', subtitle: 'Articles', caption: 'DNS management & React engineering practices', link: '/admin/blog' }
   ];
 
-  // Card 3: Connected Channels Data Options
+  // Card 3: Verified Technical Experience
   const card3Data = [
-    { num: '16', unit: 'K', label: 'Connected Channels', subtitle: 'Active Endpoints', caption: 'Connected data sources & sync pipelines', link: '/admin/automations' },
-    { num: String(automationsCount || 3), unit: 'Hubs', label: 'Active Pipelines', subtitle: 'Enabled Automations', caption: 'Live social, telegram & webhook monitors', link: '/admin/automations' },
-    { num: '99', unit: '%', label: 'Pipeline Uptime', subtitle: 'Sync Reliability', caption: 'Zero failed webhooks in trailing 30 days', link: '/admin/automations' },
-    { num: '15', unit: 'm', label: 'Sync Cadence', subtitle: 'Interval Polling', caption: 'Real-time telemetry and cache invalidation', link: '/admin/automations' }
+    { num: '4', unit: 'Roles', label: 'Career Positions', subtitle: 'Industry Experience', caption: 'Unifycx, Freelancer, Glowtouch, Vitvara', link: '/admin/experience' },
+    { num: 'Web', unit: 'Advisor', label: 'Current Role', subtitle: 'Unifycx (2025-Pres)', caption: 'Website migrations, SSL, DNS, WordPress & hosting', link: '/admin/experience' },
+    { num: '2024', unit: 'Grad', label: 'Karnataka Polytechnic', subtitle: 'Full Stack Diploma', caption: 'Full Stack Development Diploma completed May 2024', link: '/admin/education' },
+    { num: '100', unit: '%', label: 'Client Delivery', subtitle: 'Web Solutions', caption: 'Troubleshooting, cPanel, email routing, and support', link: '/admin/experience' }
   ];
 
-  // Card 4: Audience Intelligence Data Options
+  // Card 4: Technical Skills & Infrastructure
   const card4Data = [
-    { num: '4.8', unit: 'K', label: 'Audience Intelligence', subtitle: 'Weekly Visits', caption: 'Verified developer & recruiter traffic (+18%)', link: '/admin/analytics' },
-    { num: '84', unit: 'IPs', label: 'Recruiter Traffic', subtitle: 'Company Networks', caption: 'Fortune 500 & tech firm employer visits', link: '/admin/analytics' },
-    { num: '19', unit: 'K', label: 'Global Impressions', subtitle: 'Monthly Reach', caption: 'Portfolio page impressions across 23 themes', link: '/admin/analytics' },
-    { num: '3.4', unit: 'm', label: 'Dwell Duration', subtitle: 'Average Session', caption: 'High-intent technical reader engagement', link: '/admin/analytics' }
+    { num: '19', unit: 'Skills', label: 'Core Competencies', subtitle: 'Verified Stack', caption: 'Troubleshooting, WordPress, DNS, Frontend, MySQL', link: '/admin/skills' },
+    { num: '96', unit: '%', label: 'Troubleshooting', subtitle: 'DNS & Hosting', caption: 'Domain records, SSL handshakes, and cPanel configuration', link: '/admin/skills' },
+    { num: '95', unit: '%', label: 'WordPress', subtitle: 'CMS & Migration', caption: 'Hosting migrations, plugin configs, and performance', link: '/admin/skills' },
+    { num: '92', unit: '%', label: 'Frontend Dev', subtitle: 'React & JavaScript', caption: 'Building responsive user-centric web applications', link: '/admin/skills' }
   ];
 
-  // Card 5: Theme Ecosystem Data Options
+  // Card 5: Theme Ecosystem
   const card5Data = [
-    { num: '23', unit: 'Worlds', label: 'Theme Ecosystem', subtitle: 'Isolated Themes', caption: '23 structurally distinct production themes', link: '/admin/themes' },
-    { num: '6', unit: 'Types', label: 'Design Paradigms', subtitle: 'DOM Architectures', caption: 'IDE, Swiss Canvas, 3D, Zine, OS, Collage', link: '/admin/themes' },
-    { num: '100', unit: '%', label: 'Isolation Score', subtitle: 'Style Sandboxing', caption: 'Strict CSS scoped component isolation', link: '/admin/themes' },
-    { num: activeManifest ? activeManifest.number : '01', unit: 'Active', label: 'Live Theme', subtitle: activeManifest ? activeManifest.name : 'Developer Portfolio', caption: 'Currently serving all incoming visitors', link: '/admin/themes' }
+    { num: '23', unit: 'Themes', label: 'Theme Ecosystem', subtitle: 'Isolated Themes', caption: '23 structurally distinct production themes', link: '/admin/themes' },
+    { num: '6', unit: 'Paradigms', label: 'Design Styles', subtitle: 'DOM Frameworks', caption: 'IDE, Swiss Minimal, 3D WebGL, Retro OS, Paper Collage', link: '/admin/themes' },
+    { num: '100', unit: '%', label: 'Isolation Score', subtitle: 'Style Sandboxing', caption: 'Strict component & CSS style encapsulation', link: '/admin/themes' },
+    { num: activeManifest ? activeManifest.number : '01', unit: 'Active', label: 'Live Theme', subtitle: activeManifest ? activeManifest.name : 'Minimal Editorial', caption: 'Currently serving all incoming visitors', link: '/admin/themes' }
   ];
 
-  // Card 6: Autonomous Pipeline Data Options
+  // Card 6: Direct Verification & Contact
   const card6Data = [
-    { num: String(Math.max(1, pendingDraftsCount)), unit: 'Queue', label: 'Autonomous Pipeline', subtitle: 'Review Queue', caption: 'Telegram & LinkedIn drafts awaiting approval', link: '/admin/automations' },
-    { num: '14', unit: 'Sent', label: 'Broadcast Engine', subtitle: 'Dispatched Posts', caption: 'Syndicated articles & project spotlights', link: '/admin/automations' },
-    { num: '1.2', unit: 's', label: 'AI Drafter Speed', subtitle: 'Generation Velocity', caption: 'Autonomous markdown-to-social conversion', link: '/admin/automations' },
-    { num: '4', unit: 'Hubs', label: 'Social Channels', subtitle: 'Distribution Nodes', caption: 'LinkedIn, Telegram, X and RSS syndication', link: '/admin/automations' }
+    { num: '+91', unit: '81055', label: 'Direct Phone', subtitle: '+918105561638', caption: 'Direct mobile line for recruitment and consulting', link: '/admin/settings' },
+    { num: 'pdl', unit: 'kpt', label: 'Verified Email', subtitle: 'pdlkpt@gmail.com', caption: 'Primary technical and professional inquiry inbox', link: '/admin/settings' },
+    { num: 'Mangalore', unit: 'KA', label: 'Location', subtitle: 'Karnataka, India', caption: 'Available for on-site and remote technical roles', link: '/admin/settings' },
+    { num: 'praxel', unit: '.space', label: 'Web Domain', subtitle: 'https://praxel.space', caption: 'Verified web presence and portfolio deployment', link: '/admin/settings' }
   ];
 
   // Filter cards based on category
@@ -270,7 +274,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                 <span>Performance</span>
               </h1>
               <p className="text-sm sm:text-base text-[#55555e] leading-relaxed">
-                Operating Command Center for Prajwal DL. Real-time telemetry, 23 structurally isolated theme architectures, and autonomous social distribution engine.
+                Operating Command Center for Prajwal DL. Real-time GitHub telemetry (@smhrimmy), production repositories, verified resume history, and 23 isolated theme architectures.
               </p>
             </div>
 
@@ -328,7 +332,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                   : 'text-[#666670] hover:text-[#1a1a1a]'
               }`}
             >
-              Core Triad (Health, Index, Nodes)
+              Core Triad (GitHub, Projects, Experience)
             </button>
             <button
               onClick={() => setActiveCategory('intelligence')}
@@ -338,7 +342,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                   : 'text-[#666670] hover:text-[#1a1a1a]'
               }`}
             >
-              Intelligence Suite (Audience, Themes, AI)
+              Architecture & Contact (Skills, Themes, Contact)
             </button>
           </div>
 
@@ -396,7 +400,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                   onClick={() => onNavigate(card1Data[card1Index].link)}
                   className="text-xs text-white/80 hover:text-white font-medium flex items-center gap-1 group"
                 >
-                  <span>Inspect</span>
+                  <span>GitHub</span>
                   <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
               </div>
@@ -541,7 +545,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                   onClick={() => onNavigate(card3Data[card3Index].link)}
                   className="text-xs text-white/80 hover:text-white font-medium flex items-center gap-1 group"
                 >
-                  <span>Channels</span>
+                  <span>Experience</span>
                   <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
               </div>
@@ -609,7 +613,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                   onClick={() => onNavigate(card4Data[card4Index].link)}
                   className="text-xs text-white/80 hover:text-white font-medium flex items-center gap-1 group"
                 >
-                  <span>Analytics</span>
+                  <span>Skills</span>
                   <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
               </div>
@@ -732,7 +736,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
 
               <div className="flex items-center justify-between z-10">
                 <div className="flex items-center gap-2">
-                  <Send className="w-4 h-4 text-white/90" />
+                  <Mail className="w-4 h-4 text-white/90" />
                   <span className="text-xs font-semibold text-white/90 tracking-wide">
                     {card6Data[card6Index].label}
                   </span>
@@ -741,7 +745,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                   onClick={() => onNavigate(card6Data[card6Index].link)}
                   className="text-xs text-white/80 hover:text-white font-medium flex items-center gap-1 group"
                 >
-                  <span>Pipeline</span>
+                  <span>Contact</span>
                   <span className="group-hover:translate-x-0.5 transition-transform">→</span>
                 </button>
               </div>

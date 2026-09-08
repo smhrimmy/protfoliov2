@@ -88,7 +88,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
               </div>
               <div className={`p-4 ${neuInner} text-center`}>
                 <span className="text-2xl font-black text-indigo-600">{identity.stats.revenueInfluenced}</span>
-                <span className="block text-[11px] font-semibold text-slate-500 mt-0.5">Revenue Influenced</span>
+                <span className="block text-[11px] font-semibold text-slate-500 mt-0.5">Delivery Rate</span>
               </div>
               <div className={`p-4 ${neuInner} text-center`}>
                 <span className="text-2xl font-black text-indigo-600">0</span>

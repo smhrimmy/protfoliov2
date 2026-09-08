@@ -7,8 +7,8 @@
 [![Three.js](https://img.shields.io/badge/Three.js-WebGL-black?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-> **A cutting-edge, frontend-first personal portfolio operating system engineered for Prajwal DL (SILVERSTEN).**  
-> Combines 23 structurally unique public themes, an executive **Intelligent Stage** admin dashboard, a live visual page editor, comprehensive CMS, automated social pipelines, and deep telemetry.
+> **A cutting-edge, frontend-first personal portfolio operating system engineered for Prajwal DL.**  
+> Combines 23 structurally unique public themes, an executive **Intelligent Stage** admin dashboard, live GitHub telemetry (@smhrimmy), a live visual page editor, comprehensive CMS, automated social pipelines, and deep telemetry.
 
 ---
 
@@ -39,10 +39,11 @@
 ## ✨ Core Highlights
 
 - **23 Structurally Distinct Public Themes**: Not merely color swaps—each theme features dedicated layouts, typography stacks, DOM structures, and signature interaction mechanics (from 3D WebGL to terminal command prompts to paper collage).
-- **"Intelligent Stage" Admin System**: Pixel-crafted telemetry center with 3 glass metric modules, SVG gauges, animated channel network topologies, and ambient motion controls.
+- **"Intelligent Stage" Admin System**: Pixel-crafted telemetry center with 6 live glass Bento metric modules, SVG gauges, animated channel network topologies, and ambient motion controls.
+- **Live GitHub Telemetry (@smhrimmy)**: Live GitHub integration tracking 36 public repositories, active since date (November 2025), primary stack (TypeScript 88%+), live Vercel deployments, and commit history.
 - **WYSIWYG Visual Site Editor**: Canvas editor with live responsive device previews (Desktop, Tablet, Mobile), instant drag-and-drop block ordering, and design system token overrides.
 - **Full-Spectrum Headless CMS**: Built-in managers for Projects, Markdown Case Studies, Blog Articles, Testimonials, Experience Timelines, and Skills.
-- **Recruiter Mode & Interactive Resume**: Instant recruiter-targeted view with skill endorsement matrices, project highlights, and one-click PDF generation.
+- **Recruiter Mode & Interactive Resume**: Instant recruiter-targeted view with skill endorsement matrices, project highlights, and one-click PDF generation matching Prajwal DL's verified CV.
 - **Zero Backend Required**: Fully functional in-browser with persistent LocalStorage state, JSON database migration import/export, and zero complex server setup.
 
 ---
@@ -54,12 +55,12 @@ Accessed via `/admin`, the portfolio operating system provides an executive cont
 ![Intelligent Stage Dashboard Desktop](docs/images/admin_stage_dashboard_desktop.png)
 
 ### The 6 Live System Cards:
-1. **Site Performance Metric (118ms / 98% Health / 0.8s LCP / 42ms TTFB)**: Live SVG radial gauge tracking response latency, Core Web Vitals, and server health with interactive multi-metric switching pills.
-2. **Content Library Index (8.0M Nodes / 8 Published Items / 6 Projects / 14.8K Words)**: Dynamic animated tile-wall showcasing active assets, indexed project nodes, cache hit ratios, and real-time ingestion counters.
-3. **Connected Channels (16K Endpoints / 3 Channels / 99% Health / 15m Sync)**: Dynamic SVG curve topology mapping live social networks, syndication feeds, webhooks, and analytics streams.
-4. **Audience Telemetry (4.8K Weekly Visits / 84 Target Company IPs / 19K Reach / 3.4m Dwell)**: Interactive radar waveform visualizer capturing verified developer and recruiter traffic across Fortune 500 employer networks.
-5. **Theme Ecosystem (23 Isolated Architectures / 6 Layout Paradigms / 100% Style Isolation / Active Theme #01)**: Isometric 3D architectural prism monitoring theme runtime sandboxing and DOM rendering health.
-6. **Autonomous Social Pipeline (1 Review Queue / 14 Sent Broadcasts / 1.2s AI Velocity / 4 Distribution Hubs)**: Human-in-the-loop social syndication engine with neural dispatch constellation for LinkedIn, Telegram, and RSS feeds.
+1. **GitHub Telemetry (@smhrimmy / 36 Repos / Active Since Nov 2025 / 76.5% TypeScript)**: Live telemetry syncing public repositories, account creation date, language distribution, and real-time commit activity.
+2. **Production Systems & Case Studies (8 Projects / 8 Live Vercel Demos / 100% Open Codebases)**: Live showcase including SupportOS, OptiTalent HRMS, Finverse Financial OS, Cashflow Wealth OS, and FictionZone.
+3. **Verified Career Positions (4 Industry Roles / Web Advisor @ Unifycx / Glowtouch / Vitvara / Freelancer)**: Chronological industry timeline with bullet accomplishments from Prajwal DL's verified resume.
+4. **Technical Skills & Infrastructure (19 Skills / WordPress / DNS / Cloud Hosting / React / PHP / MySQL)**: Core competencies radar with category breakdowns and hosting troubleshooting specialization.
+5. **Theme Ecosystem (23 Structurally Distinct Themes / 6 UI Paradigms / 100% Style Sandboxing)**: Isolated multi-theme architecture with one-click live theme switching.
+6. **Direct Communication & Contact (+918105561638 / pdlkpt@gmail.com / praxel.space / Mangalore, KA)**: Direct telephone, email, domain, and LinkedIn contact credentials.
 
 ### 🏛️ Unified Intelligent Stage Across All Subpages
 
@@ -323,5 +324,5 @@ pdl-portfolio-os/
 
 ## 📜 License
 
-Created and maintained by **Prajwal DL (SILVERSTEN)**.  
+Created and maintained by **Prajwal DL**.  
 Distributed under the **MIT License**. See `LICENSE` for more information.

@@ -178,5 +178,6 @@ export interface PortfolioIdentity {
     twitter: string;
     email: string;
     website: string;
+    phone?: string;
   };
 }

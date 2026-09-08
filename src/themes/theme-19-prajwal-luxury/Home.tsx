@@ -76,7 +76,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, onNavigate,
                 {identity.stats.revenueInfluenced}
               </span>
               <span className="text-[11px] font-sans uppercase tracking-widest text-stone-400">
-                Revenue Influenced
+                Delivery Rate
               </span>
             </div>
             <div>

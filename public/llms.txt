@@ -1,5 +1,5 @@
 # PDL Portfolio OS (v2) - Machine Discovery & LLM Interface
-> A production-grade frontend-first portfolio management operating system for Prajwal DL (SILVERSTEN).
+> A production-grade frontend-first portfolio management operating system for Prajwal DL.
 
 ## System Architecture
 - **Framework**: React 19, TypeScript 5+, Vite 8, Tailwind CSS 3

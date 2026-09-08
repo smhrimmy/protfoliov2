@@ -16,12 +16,12 @@ export class ContentPipelineService {
     if (isPost && post) {
       hookHeadline = `Why ${post.title.toLowerCase()} matters for high-growth tech teams:`;
       summary = `${post.excerpt} We broke down the end-to-end architecture, from technical trade-offs to production benchmarks.`;
-      canonicalUrl = `https://silversten.dev/blog/${post.slug}`;
+      canonicalUrl = `https://praxel.space/blog/${post.slug}`;
       hashtags = post.tags.map(t => `#${t.replace(/\s+/g, '')}`).concat(['#TechLeadership', '#SoftwareArchitecture']);
     } else if (proj) {
       hookHeadline = `Just shipped: ${proj.title} — ${proj.summary}`;
       summary = `${proj.caseStudyBody.slice(0, 180)}... Built using ${proj.technologies.slice(0, 4).join(', ')}.`;
-      canonicalUrl = `https://silversten.dev/projects/${proj.slug}`;
+      canonicalUrl = `https://praxel.space/projects/${proj.slug}`;
       hashtags = proj.technologies.slice(0, 4).map(t => `#${t.replace(/\s+/g, '')}`).concat(['#FullStack', '#Engineering']);
     }
 

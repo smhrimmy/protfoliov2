@@ -32,39 +32,39 @@ const STORAGE_KEYS = {
 const initialMediaAssets: MediaAsset[] = [
   {
     id: 'med-1',
-    name: 'nova-hero.webp',
-    url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80',
+    name: 'supportos-hero.webp',
+    url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80',
     sizeBytes: 184320,
     dimensions: { width: 1920, height: 1080 },
-    altText: 'Nova Clinics triage interface mockup',
+    altText: 'SupportOS customer support interface mockup',
     folder: 'Projects',
-    tags: ['healthcare', 'ui', 'hero'],
-    usedIn: [{ entityType: 'project', id: 'proj-1', title: 'Nova Clinics' }],
-    createdAt: '2024-02-10'
+    tags: ['support', 'ui', 'hero'],
+    usedIn: [{ entityType: 'project', id: 'proj-1', title: 'SupportOS' }],
+    createdAt: '2026-02-10'
   },
   {
     id: 'med-2',
-    name: 'alto-mockup.webp',
-    url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80',
+    name: 'optitalent-mockup.webp',
+    url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=80',
     sizeBytes: 245760,
     dimensions: { width: 1920, height: 1080 },
-    altText: 'Alto Commerce headless storefront on mobile and desktop',
+    altText: 'OptiTalent HRMS workforce management on mobile and desktop',
     folder: 'Projects',
-    tags: ['ecommerce', 'headless'],
-    usedIn: [{ entityType: 'project', id: 'proj-2', title: 'Alto Commerce' }],
-    createdAt: '2024-02-14'
+    tags: ['hrms', 'workforce'],
+    usedIn: [{ entityType: 'project', id: 'proj-2', title: 'OptiTalent HRMS' }],
+    createdAt: '2026-02-14'
   },
   {
     id: 'med-3',
     name: 'avatar-prajwal.webp',
-    url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
+    url: 'https://avatars.githubusercontent.com/u/244284914?v=4',
     sizeBytes: 92160,
     dimensions: { width: 800, height: 800 },
     altText: 'Prajwal DL profile portrait',
     folder: 'General',
     tags: ['profile', 'author'],
     usedIn: [{ entityType: 'identity', id: 'identity', title: 'Prajwal DL' }],
-    createdAt: '2024-01-05'
+    createdAt: '2026-01-05'
   }
 ];
 
@@ -78,7 +78,7 @@ const initialAutomations: AutomationRule[] = [
     status: 'connected',
     enabled: true,
     conditions: { featuredOnly: false },
-    lastRun: '2024-03-15T10:30:00Z',
+    lastRun: '2026-03-15T10:30:00Z',
     successCount: 12,
     failCount: 0
   },
@@ -89,7 +89,7 @@ const initialAutomations: AutomationRule[] = [
     platform: 'twitter',
     status: 'connected',
     enabled: true,
-    lastRun: '2024-02-28T14:15:00Z',
+    lastRun: '2026-02-28T14:15:00Z',
     successCount: 8,
     failCount: 0
   },
@@ -100,7 +100,7 @@ const initialAutomations: AutomationRule[] = [
     platform: 'github_sync',
     status: 'connected',
     enabled: true,
-    lastRun: '2024-03-18T08:00:00Z',
+    lastRun: '2026-03-18T08:00:00Z',
     successCount: 45,
     failCount: 0
   },
@@ -122,15 +122,15 @@ const initialSocialDrafts: SocialDraft[] = [
     id: 'draft-1',
     sourceId: 'post-1',
     sourceType: 'post',
-    sourceTitle: 'Architecting Multi-Theme Operating Systems in Pure React',
+    sourceTitle: 'A Practical Guide to DNS Management and Zero-Downtime Website Migrations',
     platform: 'linkedin',
-    hookHeadline: 'Why most "multi-theme" portfolios fail — and how we achieved strict component isolation across 19 radical designs.',
-    summary: 'Swapping CSS colors is a skin, not a theme. In our latest engineering breakdown, I show how to build an OS-grade theme engine with WordPress-inspired template resolution and zero layout leakage.',
-    canonicalUrl: 'https://silversten.dev/blog/architecting-multi-theme-operating-systems',
-    hashtags: ['#React', '#SystemArchitecture', '#WebDevelopment', '#Frontend', '#DesignSystems'],
-    mediaUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80',
+    hookHeadline: 'How to plan DNS transitions, manage TTL thresholds, and migrate websites with zero downtime.',
+    summary: 'Practical guide to managing DNS, SSL certificates, and hosting migrations across shared, cloud, and VPS environments.',
+    canonicalUrl: 'https://praxel.space/blog/mastering-dns-and-hosting-migrations',
+    hashtags: ['#DNS', '#WebDevelopment', '#Hosting', '#WordPress', '#Infrastructure'],
+    mediaUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80',
     status: 'pending_approval',
-    createdAt: '2024-03-15T11:00:00Z'
+    createdAt: '2026-03-15T11:00:00Z'
   }
 ];
 
@@ -139,7 +139,7 @@ const initialNotifications: NotificationItem[] = [
   {
     id: 'notif-1',
     title: 'LinkedIn Draft Ready for Review',
-    message: 'A new social draft for "Architecting Multi-Theme Operating Systems" is waiting in the approval queue.',
+    message: 'A new social draft for "DNS Management and Website Migrations" is waiting in the approval queue.',
     type: 'info',
     timestamp: '10 minutes ago',
     read: false,
@@ -148,7 +148,7 @@ const initialNotifications: NotificationItem[] = [
   {
     id: 'notif-2',
     title: 'Autosave Completed',
-    message: 'Nova Clinics project was autosaved successfully.',
+    message: 'SupportOS project was autosaved successfully.',
     type: 'success',
     timestamp: '1 hour ago',
     read: true,
@@ -173,6 +173,23 @@ class MockStorageService {
   }
 
   private initDefaults() {
+    const STORAGE_VERSION = 'v2.6_resume_sync_final';
+    const currentVersion = localStorage.getItem('pdl_storage_sync_ver');
+    if (currentVersion !== STORAGE_VERSION) {
+      localStorage.setItem(STORAGE_KEYS.IDENTITY, JSON.stringify(initialIdentity));
+      localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(initialProjects));
+      localStorage.setItem(STORAGE_KEYS.POSTS, JSON.stringify(initialBlogPosts));
+      localStorage.setItem(STORAGE_KEYS.EXPERIENCE, JSON.stringify(initialExperience));
+      localStorage.setItem(STORAGE_KEYS.SKILLS, JSON.stringify(initialSkills));
+      localStorage.setItem(STORAGE_KEYS.EDUCATION, JSON.stringify(initialEducation));
+      localStorage.setItem(STORAGE_KEYS.CERTIFICATIONS, JSON.stringify(initialCertifications));
+      localStorage.setItem(STORAGE_KEYS.TESTIMONIALS, JSON.stringify(initialTestimonials));
+      localStorage.setItem(STORAGE_KEYS.PAGES, JSON.stringify(initialCustomPages));
+      localStorage.setItem(STORAGE_KEYS.COMMENTS, JSON.stringify(initialBlogComments));
+      localStorage.setItem(STORAGE_KEYS.BACKUPS, JSON.stringify(initialBackups));
+      localStorage.setItem('pdl_storage_sync_ver', STORAGE_VERSION);
+    }
+
     if (!localStorage.getItem(STORAGE_KEYS.IDENTITY)) {
       localStorage.setItem(STORAGE_KEYS.IDENTITY, JSON.stringify(initialIdentity));
     }

@@ -53,11 +53,11 @@ export const AnalyticsPage: React.FC = () => {
   ];
 
   const topPages = [
-    { path: '/projects/nova-clinics', title: 'Nova Clinics AI Triage', views: 1840, time: '3m 42s', bounce: '18%' },
-    { path: '/blog/architecting-multi-theme-operating-systems', title: 'Architecting Multi-Theme OS', views: 1420, time: '5m 10s', bounce: '14%' },
-    { path: '/projects/aster-ai', title: 'Aster AI Workflows', views: 980, time: '2m 55s', bounce: '21%' },
+    { path: '/projects/supportos', title: 'SupportOS — AI Support OS', views: 1840, time: '3m 42s', bounce: '18%' },
+    { path: '/projects/optitalent-hrms', title: 'OptiTalent HRMS Workforce', views: 1420, time: '4m 10s', bounce: '14%' },
+    { path: '/projects/finverse-financial-os', title: 'Finverse Financial Platform', views: 980, time: '2m 55s', bounce: '21%' },
     { path: '/resume', title: 'Interactive Resume & Print', views: 820, time: '1m 20s', bounce: '12%' },
-    { path: '/projects/screenverse-x', title: 'ScreenVerse X 3D Canvas', views: 640, time: '3m 18s', bounce: '19%' }
+    { path: '/projects/cashflow-wealth-os', title: 'Wealth OS / Cashflow', views: 640, time: '3m 18s', bounce: '19%' }
   ];
 
   const countries = [

@@ -20,20 +20,21 @@ export const SettingsPage: React.FC = () => {
   const [settings, setSettings] = useState({
     // General
     siteTitle: 'PDL Portfolio OS',
-    tagline: 'Engineering systems that print — not just look good.',
+    tagline: 'Specializing in Full Stack Web Development, WordPress, DNS, and Cloud Hosting Infrastructure.',
     language: 'en-US',
     timezone: 'UTC+05:30 (IST)',
-    copyright: '© 2026 Prajwal DL (SILVERSTEN). All rights reserved.',
+    copyright: '© 2026 Prajwal DL. All rights reserved.',
     maintenanceMode: false,
 
     // Profile
     fullName: 'Prajwal DL',
-    brandAlias: 'SILVERSTEN',
-    primaryRole: 'Systems Architect & 3D Creative Engineer',
-    bio: 'Systems Architect and 3D Creative Engineer building bespoke AI automations, robust edge platforms, and interactive WebGL environments.',
-    location: 'Bangalore, India / Global Remote',
+    brandAlias: 'pdl',
+    primaryRole: 'Web Advisor & Full Stack Web Developer',
+    bio: 'Dedicated and adaptable professional with a proactive attitude and the ability to learn quickly. Strong work ethic and effective communication skills. Eager to contribute to a dynamic team and support organizational goals.',
+    location: 'Mangalore, Karnataka, India',
     availableForHire: true,
-    avatarUrl: '/assets/hero.png',
+    avatarUrl: 'https://avatars.githubusercontent.com/u/244284914?v=4',
+    phone: '+918105561638',
 
     // Appearance
     defaultTheme: mockStorage.getActiveTheme(),
@@ -63,18 +64,18 @@ export const SettingsPage: React.FC = () => {
     enableFeaturedProjects: true,
     enableExperience: true,
     enableSkills: true,
-    enableTestimonials: true,
+    enableTestimonials: false,
     enableContact: true,
 
     // Social
     github: 'https://github.com/smhrimmy',
-    linkedin: 'https://linkedin.com/in/prajwaldl',
-    twitter: 'https://twitter.com/silversten',
-    email: 'prajwal@silversten.dev',
-    telegram: '@silversten_arch',
+    linkedin: 'https://linkedin.com/in/prajwal-d-l-118198370/',
+    twitter: 'https://twitter.com/prajwaldl',
+    email: 'pdlkpt@gmail.com',
+    telegram: '@prajwaldl',
 
     // Domain
-    customDomain: 'portfolio.prajwaldl.com',
+    customDomain: 'praxel.space',
     forceHttps: true,
     cnameTarget: 'cname.vercel-dns.com',
 

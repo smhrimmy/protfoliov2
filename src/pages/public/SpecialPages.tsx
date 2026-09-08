@@ -46,10 +46,10 @@ export const SharedPreviewPage: React.FC<SpecialPageProps> = ({ onNavigate, toke
             onClick={() => onNavigate('/')}
             className="px-4 py-2 bg-white/10 hover:bg-white/15 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5"
           >
-            <Globe className="w-3.5 h-3.5" /> Explore Full 19-Theme Portfolio
+            <Globe className="w-3.5 h-3.5" /> Explore Full 23-Theme Portfolio
           </button>
           <a
-            href="mailto:prajwal@silversten.dev"
+            href="mailto:pdlkpt@gmail.com"
             className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold"
           >
             Contact Prajwal

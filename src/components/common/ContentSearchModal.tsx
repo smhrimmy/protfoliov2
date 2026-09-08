@@ -47,7 +47,7 @@ export const ContentSearchModal: React.FC<ContentSearchModalProps> = ({ isOpen, 
         <div className="max-h-96 overflow-y-auto p-4 space-y-4">
           {!query.trim() && (
             <p className="text-center text-xs text-gray-500 py-8 font-mono">
-              Type keywords such as "React", "AI", "Nova Clinics", "Triage", or "Three.js"...
+              Type keywords such as "React", "TypeScript", "SupportOS", "DNS", or "WordPress"...
             </p>
           )}
 

@@ -600,7 +600,7 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ postId, onNavigate }) =>
               <div className="bg-[#0e131f] p-5 rounded-2xl border border-white/5 space-y-4 font-sans">
                 <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider">Live Google Search Preview</h3>
                 <div className="bg-white p-3.5 rounded-xl text-left font-sans space-y-1 text-xs">
-                  <p className="text-gray-500 text-[11px] truncate">https://silversten.dev › blog › {slug || 'article-slug'}</p>
+                  <p className="text-gray-500 text-[11px] truncate">https://praxel.space › blog › {slug || 'article-slug'}</p>
                   <p className="text-[#1a0dab] font-medium text-sm leading-tight line-clamp-1">{title || 'Your Article Title Goes Here'}</p>
                   <p className="text-[#4d5156] text-xs leading-relaxed line-clamp-2">{excerpt || 'Your article summary and meta description will appear here in Google SERP results.'}</p>
                 </div>
@@ -611,7 +611,7 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ postId, onNavigate }) =>
                     <img src={coverImage} alt="Cover" className="w-full h-full object-cover" />
                   </div>
                   <div className="p-3 space-y-1">
-                    <p className="text-[10px] text-gray-400 font-mono uppercase">SILVERSTEN.DEV</p>
+                    <p className="text-[10px] text-gray-400 font-mono uppercase">PRAXEL.SPACE</p>
                     <p className="text-white font-bold line-clamp-1">{title || 'Untitled Post'}</p>
                     <p className="text-gray-400 line-clamp-1 text-[11px]">{excerpt || 'Article summary description...'}</p>
                   </div>

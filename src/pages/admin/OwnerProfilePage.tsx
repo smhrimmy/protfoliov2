@@ -154,7 +154,7 @@ export const OwnerProfilePage: React.FC = () => {
               />
             </div>
             <div>
-              <label className="text-gray-400 block mb-1 font-mono">Revenue Influenced</label>
+              <label className="text-gray-400 block mb-1 font-mono">Delivery Success Rate</label>
               <input
                 type="text"
                 value={identity.stats.revenueInfluenced}
@@ -206,21 +206,22 @@ export const OwnerProfilePage: React.FC = () => {
               />
             </div>
             <div>
-              <label className="text-gray-400 block mb-1 font-mono">Twitter / X Handle</label>
-              <input
-                type="text"
-                value={identity.socialLinks.twitter}
-                onChange={e => setIdentity({ ...identity, socialLinks: { ...identity.socialLinks, twitter: e.target.value } })}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white"
-              />
-            </div>
-            <div>
               <label className="text-gray-400 block mb-1 font-mono">Direct Work Email</label>
               <input
                 type="email"
                 value={identity.socialLinks.email}
                 onChange={e => setIdentity({ ...identity, socialLinks: { ...identity.socialLinks, email: e.target.value } })}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white"
+              />
+            </div>
+            <div>
+              <label className="text-gray-400 block mb-1 font-mono">Direct Phone Number</label>
+              <input
+                type="text"
+                value={identity.socialLinks.phone || ''}
+                onChange={e => setIdentity({ ...identity, socialLinks: { ...identity.socialLinks, phone: e.target.value } })}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white"
+                placeholder="+918105561638"
               />
             </div>
           </div>

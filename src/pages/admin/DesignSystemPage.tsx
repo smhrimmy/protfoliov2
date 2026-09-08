@@ -499,9 +499,9 @@ module.exports = {
                     <span className="text-[10px] font-mono uppercase font-bold" style={{ color: accent }}>FEATURED WORK</span>
                     <span className="text-xs text-gray-500">2026</span>
                   </div>
-                  <h3 className="text-base font-bold text-white">Nova Clinics System</h3>
+                  <h3 className="text-base font-bold text-white">SupportOS System</h3>
                   <p className="text-xs text-gray-400 leading-relaxed">
-                    AI-native clinical triage engine handling over 14,000 weekly appointment dispatches.
+                    AI-native customer support operating system with ticket triage and real-time response telemetry.
                   </p>
                   <div className="pt-2 flex items-center justify-between text-xs font-semibold" style={{ color: accent }}>
                     <span>Explore Case Study</span>
@@ -666,21 +666,21 @@ module.exports = {
                   </thead>
                   <tbody className="divide-y divide-white/5">
                     <tr>
-                      <td className="p-3 font-bold text-white">Nova Clinics</td>
-                      <td className="p-3 text-gray-400">Full Stack Lead</td>
+                      <td className="p-3 font-bold text-white">SupportOS (IT Support Portal)</td>
+                      <td className="p-3 text-gray-400">Technical Lead</td>
                       <td className="p-3"><span className="text-emerald-400 font-mono text-[11px]">● Live</span></td>
                       <td className="p-3 text-right"><span style={{ color: accent }} className="font-semibold cursor-pointer">Inspect</span></td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-bold text-white">Alto Commerce</td>
-                      <td className="p-3 text-gray-400">Systems Architect</td>
+                      <td className="p-3 font-bold text-white">OptiTalent HRMS</td>
+                      <td className="p-3 text-gray-400">Full Stack Developer</td>
                       <td className="p-3"><span className="text-emerald-400 font-mono text-[11px]">● Live</span></td>
                       <td className="p-3 text-right"><span style={{ color: accent }} className="font-semibold cursor-pointer">Inspect</span></td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-bold text-white">ScreenVerse X</td>
-                      <td className="p-3 text-gray-400">3D Creative Eng</td>
-                      <td className="p-3"><span className="text-blue-400 font-mono text-[11px]">● Active</span></td>
+                      <td className="p-3 font-bold text-white">Finverse Financial OS</td>
+                      <td className="p-3 text-gray-400">Frontend Engineer</td>
+                      <td className="p-3"><span className="text-emerald-400 font-mono text-[11px]">● Live</span></td>
                       <td className="p-3 text-right"><span style={{ color: accent }} className="font-semibold cursor-pointer">Inspect</span></td>
                     </tr>
                   </tbody>

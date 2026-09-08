@@ -103,7 +103,7 @@ export const PublicLayout: React.FC<{
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center sm:text-left">
             <p className="text-gray-300 font-semibold">{identity.name} · {identity.alias}</p>
-            <p className="text-[11px]">Architecting resilient distributed systems and spatial interfaces.</p>
+            <p className="text-[11px]">Web Advisor & Full Stack Developer · Technical Troubleshooting Specialist</p>
           </div>
 
           <div className="flex items-center gap-5 text-gray-400">
@@ -721,18 +721,31 @@ export const PublicResumePage: React.FC<PublicPageProps> = ({ onNavigate }) => {
   const experience = mockStorage.getExperience();
   const skills = mockStorage.getSkills();
   const education = mockStorage.getEducation();
-  const certs = mockStorage.getCertifications();
 
   const [showQrModal, setShowQrModal] = useState(false);
+
+  // Resume flat skills list matching resume exactly
+  const resumeSkills = [
+    'Technical Troubleshooting',
+    'WordPress Support',
+    'DNS Management',
+    'Frontend Development',
+    'UI/UX Design',
+    'Problem-Solving',
+    'Communication',
+    'Multitasking',
+    'Quick Learner',
+    'Microsoft Excel'
+  ];
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/resume">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-mono uppercase tracking-widest text-blue-400">Curriculum Vitae</span>
-            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-1">Executive Resume</h1>
-            <p className="text-xs text-gray-400 mt-1">Verified background for recruiters and enterprise partners.</p>
+            <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">Curriculum Vitae</span>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mt-1">Professional Resume</h1>
+            <p className="text-xs text-gray-400 mt-1">Verified credentials and experience for recruiters and hiring managers.</p>
           </div>
 
           <div className="flex items-center gap-2">
@@ -744,67 +757,98 @@ export const PublicResumePage: React.FC<PublicPageProps> = ({ onNavigate }) => {
             </button>
             <button
               onClick={() => window.print()}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-lg shadow-blue-600/20"
+              className="px-4 py-2 bg-[#ad314d] hover:bg-[#92243d] text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-lg shadow-[#ad314d]/20"
             >
-              <Printer className="w-3.5 h-3.5" /> Print / PDF
+              <Printer className="w-3.5 h-3.5" /> Print / Save PDF
             </button>
           </div>
         </div>
 
-        {/* Paper Container */}
+        {/* Paper Container (Matches Resume PDF) */}
         <div className="bg-white text-gray-950 p-8 sm:p-12 rounded-2xl shadow-2xl space-y-8 font-sans border border-gray-200">
+          {/* Header Row */}
           <div className="border-b-2 border-gray-950 pb-6 flex flex-col sm:flex-row justify-between items-start gap-4">
             <div>
-              <h2 className="text-3xl font-black uppercase tracking-tight">{identity.name}</h2>
-              <p className="text-sm font-bold text-blue-700 uppercase tracking-wider mt-0.5">{identity.role}</p>
-              <p className="text-xs text-gray-600 mt-1">{identity.tagline}</p>
+              <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-gray-950">{identity.name}</h2>
+              <p className="text-sm font-bold text-[#ad314d] uppercase tracking-wider mt-1">{identity.role}</p>
+              <p className="text-xs text-gray-600 mt-0.5">{identity.tagline}</p>
             </div>
-            <div className="text-xs text-gray-600 sm:text-right space-y-0.5 font-mono">
-              <p>{identity.location}</p>
-              <p>{identity.socialLinks.email}</p>
-              <p>{identity.socialLinks.website}</p>
+            <div className="text-xs text-gray-700 sm:text-right space-y-1 font-mono">
+              <p className="font-bold">{identity.socialLinks.phone || '+918105561638'} ☎</p>
+              <p><a href={`mailto:${identity.socialLinks.email}`} className="hover:underline text-blue-600">{identity.socialLinks.email}</a> ✉</p>
+              <p><a href={identity.socialLinks.linkedin} target="_blank" rel="noreferrer" className="hover:underline text-blue-600">linkedin.com/in/prajwal-d-l-118198370/</a> 🔗</p>
+              <p><a href={identity.socialLinks.website} target="_blank" rel="noreferrer" className="hover:underline text-blue-600">{identity.socialLinks.website}</a> 🌐</p>
+              <p className="font-semibold text-gray-900">{identity.location} 📍</p>
             </div>
           </div>
 
+          {/* 1. Summary */}
           <div className="space-y-2">
-            <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Summary</h3>
-            <p className="text-xs text-gray-700 leading-relaxed">{identity.bio}</p>
+            <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 flex items-center gap-1.5">
+              <span>👤</span> Summary
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-800 leading-relaxed">{identity.bio}</p>
           </div>
 
-          <div className="space-y-4">
-            <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Experience</h3>
-            {experience.map(exp => (
-              <div key={exp.id} className="space-y-1">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h4 className="text-sm font-bold text-gray-950">{exp.role}</h4>
-                    <p className="text-xs font-semibold text-blue-700">{exp.company} · {exp.location}</p>
-                  </div>
-                  <span className="text-xs font-mono text-gray-500">{exp.startDate} – {exp.endDate}</span>
-                </div>
-                <p className="text-xs text-gray-700 leading-relaxed">{exp.description}</p>
-              </div>
-            ))}
+          {/* 2. Skills */}
+          <div className="space-y-2.5">
+            <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 flex items-center gap-1.5">
+              <span>📊</span> Skills
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {resumeSkills.map((sk, i) => (
+                <span key={i} className="px-3 py-1 bg-gray-100 border border-gray-300 text-gray-800 text-xs font-medium rounded-md shadow-xs">
+                  {sk}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 border-t border-gray-200">
-            <div className="space-y-2">
-              <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Education</h3>
+          {/* 3. Education */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 flex items-center gap-1.5">
+              <span>🎓</span> Education
+            </h3>
+            <div className="space-y-3">
               {education.map(edu => (
                 <div key={edu.id} className="text-xs space-y-0.5">
-                  <p className="font-bold text-gray-900">{edu.degree}</p>
-                  <p className="text-gray-600">{edu.institution} · {edu.year}</p>
-                  {edu.score && <p className="font-mono text-blue-700">{edu.score}</p>}
+                  <div className="flex justify-between items-start">
+                    <p className="font-bold text-gray-950 uppercase tracking-tight">{edu.institution}</p>
+                    <span className="font-mono text-gray-600 text-[11px]">{edu.year}</span>
+                  </div>
+                  <p className="text-gray-800 font-medium">{edu.degree} · <span className="text-gray-600">{edu.location}</span></p>
                 </div>
               ))}
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Certifications</h3>
-              {certs.map(c => (
-                <div key={c.id} className="text-xs space-y-0.5">
-                  <p className="font-bold text-gray-900">{c.name}</p>
-                  <p className="text-gray-600">{c.issuer} ({c.issueDate})</p>
+          {/* 4. Experience */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 flex items-center gap-1.5">
+              <span>💼</span> Experience
+            </h3>
+            <div className="space-y-5">
+              {experience.map(exp => (
+                <div key={exp.id} className="space-y-1.5">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h4 className="text-sm font-bold text-gray-950">{exp.company}</h4>
+                      <p className="text-xs font-semibold text-[#ad314d]">{exp.role}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-mono text-gray-700 block font-semibold">{exp.startDate} – {exp.endDate}</span>
+                      <span className="text-[11px] text-gray-500 font-mono">{exp.location}</span>
+                    </div>
+                  </div>
+                  <ul className="list-disc list-outside pl-4 text-xs text-gray-800 space-y-1 leading-relaxed">
+                    {exp.achievements && exp.achievements.length > 0 ? (
+                      exp.achievements.map((ach, idx) => (
+                        <li key={idx}>{ach}</li>
+                      ))
+                    ) : (
+                      <li>{exp.description}</li>
+                    )}
+                  </ul>
                 </div>
               ))}
             </div>
@@ -855,8 +899,19 @@ export const PublicResumePrintPage: React.FC<PublicPageProps> = ({ onNavigate })
   const identity = mockStorage.getIdentity();
   const experience = mockStorage.getExperience();
   const education = mockStorage.getEducation();
-  const certs = mockStorage.getCertifications();
-  const skills = mockStorage.getSkills();
+
+  const resumeSkills = [
+    'Technical Troubleshooting',
+    'WordPress Support',
+    'DNS Management',
+    'Frontend Development',
+    'UI/UX Design',
+    'Problem-Solving',
+    'Communication',
+    'Multitasking',
+    'Quick Learner',
+    'Microsoft Excel'
+  ];
 
   return (
     <div className="bg-white text-gray-950 p-8 sm:p-14 max-w-4xl mx-auto space-y-8 font-sans print:p-0 print:max-w-none">
@@ -864,63 +919,85 @@ export const PublicResumePrintPage: React.FC<PublicPageProps> = ({ onNavigate })
         <button onClick={() => onNavigate('/resume')} className="text-xs text-blue-600 hover:underline flex items-center gap-1">
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Resume View
         </button>
-        <button onClick={() => window.print()} className="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg shadow">
+        <button onClick={() => window.print()} className="px-4 py-2 bg-[#ad314d] text-white text-xs font-semibold rounded-lg shadow">
           Print Document
         </button>
       </div>
 
+      {/* Header */}
       <div className="border-b-2 border-gray-950 pb-6 flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-tight">{identity.name}</h1>
-          <p className="text-sm font-bold text-blue-700 uppercase tracking-wider">{identity.role}</p>
-          <p className="text-xs text-gray-600 mt-1">{identity.tagline}</p>
+          <h1 className="text-3xl font-black uppercase tracking-tight text-gray-950">{identity.name}</h1>
+          <p className="text-sm font-bold text-[#ad314d] uppercase tracking-wider">{identity.role}</p>
         </div>
-        <div className="text-xs text-gray-600 text-right space-y-0.5 font-mono">
-          <p>{identity.location}</p>
+        <div className="text-xs text-gray-700 text-right space-y-0.5 font-mono">
+          <p className="font-bold">{identity.socialLinks.phone || '+918105561638'}</p>
           <p>{identity.socialLinks.email}</p>
+          <p>linkedin.com/in/prajwal-d-l-118198370/</p>
           <p>{identity.socialLinks.website}</p>
+          <p className="font-semibold">{identity.location}</p>
         </div>
       </div>
 
+      {/* Summary */}
       <div className="space-y-2">
         <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Summary</h2>
-        <p className="text-xs text-gray-700 leading-relaxed">{identity.bio}</p>
+        <p className="text-xs text-gray-800 leading-relaxed">{identity.bio}</p>
       </div>
 
-      <div className="space-y-4">
-        <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Experience</h2>
-        {experience.map(exp => (
-          <div key={exp.id} className="space-y-1">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-sm font-bold text-gray-950">{exp.role}</h3>
-                <p className="text-xs font-semibold text-blue-700">{exp.company} · {exp.location}</p>
-              </div>
-              <span className="text-xs font-mono text-gray-500">{exp.startDate} – {exp.endDate}</span>
-            </div>
-            <p className="text-xs text-gray-700 leading-relaxed">{exp.description}</p>
-          </div>
-        ))}
+      {/* Skills */}
+      <div className="space-y-2">
+        <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Skills</h2>
+        <div className="flex flex-wrap gap-1.5">
+          {resumeSkills.map((sk, i) => (
+            <span key={i} className="px-2.5 py-0.5 bg-gray-100 border border-gray-300 text-gray-800 text-[11px] font-medium rounded">
+              {sk}
+            </span>
+          ))}
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-6 pt-2 border-t border-gray-200">
+      {/* Education */}
+      <div className="space-y-2.5">
+        <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Education</h2>
         <div className="space-y-2">
-          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Education</h2>
           {education.map(edu => (
-            <div key={edu.id} className="text-xs space-y-0.5">
-              <p className="font-bold text-gray-900">{edu.degree}</p>
-              <p className="text-gray-600">{edu.institution} · {edu.year}</p>
-              {edu.score && <p className="font-mono text-blue-700">{edu.score}</p>}
+            <div key={edu.id} className="text-xs">
+              <div className="flex justify-between items-start font-bold text-gray-950">
+                <span>{edu.institution}</span>
+                <span className="font-mono text-gray-600 font-normal">{edu.year}</span>
+              </div>
+              <p className="text-gray-800">{edu.degree} · {edu.location}</p>
             </div>
           ))}
         </div>
+      </div>
 
-        <div className="space-y-2">
-          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Certifications</h2>
-          {certs.map(c => (
-            <div key={c.id} className="text-xs space-y-0.5">
-              <p className="font-bold text-gray-900">{c.name}</p>
-              <p className="text-gray-600">{c.issuer} ({c.issueDate})</p>
+      {/* Experience */}
+      <div className="space-y-3">
+        <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Experience</h2>
+        <div className="space-y-4">
+          {experience.map(exp => (
+            <div key={exp.id} className="space-y-1">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-sm font-bold text-gray-950">{exp.company}</h3>
+                  <p className="text-xs font-semibold text-[#ad314d]">{exp.role}</p>
+                </div>
+                <div className="text-right text-xs font-mono text-gray-600">
+                  <span>{exp.startDate} – {exp.endDate}</span>
+                  <p className="text-[11px] text-gray-500">{exp.location}</p>
+                </div>
+              </div>
+              <ul className="list-disc list-outside pl-4 text-xs text-gray-800 space-y-0.5 leading-relaxed">
+                {exp.achievements && exp.achievements.length > 0 ? (
+                  exp.achievements.map((ach, idx) => (
+                    <li key={idx}>{ach}</li>
+                  ))
+                ) : (
+                  <li>{exp.description}</li>
+                )}
+              </ul>
             </div>
           ))}
         </div>
@@ -929,9 +1006,6 @@ export const PublicResumePrintPage: React.FC<PublicPageProps> = ({ onNavigate })
   );
 };
 
-// ----------------------------------------------------
-// 7. PublicBlogListPage (/blog)
-// ----------------------------------------------------
 export const PublicBlogListPage: React.FC<PublicPageProps> = ({ onNavigate }) => {
   const posts = mockStorage.getPosts().filter(p => p.status === 'published');
   const [search, setSearch] = useState('');
@@ -1306,7 +1380,7 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
                 <div>
                   <span className="text-gray-500 block text-[11px]">GITHUB</span>
                   <a href={identity.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">
-                    github.com/silversten
+                    github.com/smhrimmy
                   </a>
                 </div>
                 <div>
@@ -1548,7 +1622,7 @@ export const PublicTermsPage: React.FC<PublicPageProps> = ({ onNavigate }) => {
         <h1 className="text-3xl font-black text-white tracking-tight">Terms of Service</h1>
         <p className="text-gray-500 font-mono">Last updated: March 2024</p>
         <p>
-          All source code architectures, 3D WebGL scenes, design systems, and written case studies presented on this site are the intellectual property of Prajwal DL / SILVERSTEN or their respective client entities.
+          All source code architectures, 3D WebGL scenes, design systems, and written case studies presented on this site are the intellectual property of Prajwal DL or their respective open-source repositories.
         </p>
         <p>
           Visitors are permitted to evaluate the candidate brief for employment, engineering contracting, or architectural advisory purposes. Unauthorized mirroring is prohibited.
@@ -1732,7 +1806,7 @@ export const PublicRSSFeedPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
     return `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
   <channel>
-    <title>Prajwal DL / SILVERSTEN — Engineering Journal</title>
+    <title>Prajwal DL — Engineering Notes</title>
     <link>${window.location.origin}/blog</link>
     <description>Systems Architecture, 3D Graphics, and High-Throughput Engineering</description>
     <language>en-us</language>

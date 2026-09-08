@@ -69,63 +69,71 @@ export const ResumeManagerPage: React.FC<ResumeManagerPageProps> = ({ onNavigate
         <div className="border-b-2 border-gray-900 pb-6 flex flex-col sm:flex-row justify-between items-start gap-4">
           <div>
             <h1 className="text-3xl font-black tracking-tight text-gray-950 uppercase">{identity.name}</h1>
-            <p className="text-sm font-bold text-blue-700 mt-1 uppercase tracking-wider">{identity.role} · {identity.subRole}</p>
+            <p className="text-sm font-bold text-[#ad314d] mt-1 uppercase tracking-wider">{identity.role}</p>
             <p className="text-xs text-gray-600 mt-1">{identity.tagline}</p>
           </div>
-          <div className="text-xs text-gray-600 sm:text-right space-y-0.5 font-mono">
-            <p>{identity.location}</p>
+          <div className="text-xs text-gray-700 sm:text-right space-y-0.5 font-mono">
+            <p className="font-bold text-gray-900">{identity.socialLinks.phone || '+918105561638'}</p>
             <p>{identity.socialLinks.email}</p>
+            <p>linkedin.com/in/prajwal-d-l-118198370/</p>
             <p>{identity.socialLinks.website}</p>
-            <p>{identity.socialLinks.github}</p>
+            <p className="font-semibold text-gray-900">{identity.location}</p>
           </div>
         </div>
 
         {/* Summary */}
         <div className="space-y-2">
-          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Executive Summary</h2>
+          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Summary</h2>
           <p className="text-xs text-gray-700 leading-relaxed">{identity.bio}</p>
         </div>
 
-        {/* Experience */}
-        <div className="space-y-4">
-          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Professional Experience</h2>
-          <div className="space-y-4">
-            {experience.map(exp => (
-              <div key={exp.id} className="space-y-1.5">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-sm font-bold text-gray-950">{exp.role}</h3>
-                    <p className="text-xs font-semibold text-blue-700">{exp.company} · {exp.location}</p>
-                  </div>
-                  <span className="text-xs font-mono text-gray-500">{exp.startDate} – {exp.endDate}</span>
-                </div>
-                <p className="text-xs text-gray-700 leading-relaxed">{exp.description}</p>
-                <div className="flex flex-wrap gap-1 pt-1">
-                  {exp.technologies.map((t, idx) => (
-                    <span key={idx} className="text-[10px] bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-200 font-mono">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+        {/* Skills */}
+        <div className="space-y-2.5">
+          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Skills</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              'Technical Troubleshooting',
+              'WordPress Support',
+              'DNS Management',
+              'Frontend Development',
+              'UI/UX Design',
+              'Problem-Solving',
+              'Communication',
+              'Multitasking',
+              'Quick Learner',
+              'Microsoft Excel'
+            ].map((sk, i) => (
+              <span key={i} className="px-3 py-1 bg-gray-100 border border-gray-300 text-gray-800 text-xs font-medium rounded-md shadow-xs">
+                {sk}
+              </span>
             ))}
           </div>
         </div>
 
-        {/* Skills */}
-        <div className="space-y-3">
-          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Technical Core Competencies</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {skills.map(cat => (
-              <div key={cat.id} className="space-y-1">
-                <h3 className="text-xs font-bold text-gray-900 uppercase">{cat.category}</h3>
-                <ul className="text-xs text-gray-700 space-y-0.5">
-                  {cat.skills.map((s, idx) => (
-                    <li key={idx} className="flex justify-between">
-                      <span>{s.name}</span>
-                      <span className="text-gray-400 font-mono">{s.level}%</span>
-                    </li>
-                  ))}
+        {/* Experience */}
+        <div className="space-y-4">
+          <h2 className="text-xs font-black uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1">Experience</h2>
+          <div className="space-y-5">
+            {experience.map(exp => (
+              <div key={exp.id} className="space-y-1.5">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-950">{exp.company}</h3>
+                    <p className="text-xs font-semibold text-[#ad314d]">{exp.role}</p>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-mono text-gray-700 block font-semibold">{exp.startDate} – {exp.endDate}</span>
+                    <span className="text-[11px] text-gray-500 font-mono">{exp.location}</span>
+                  </div>
+                </div>
+                <ul className="list-disc list-outside pl-4 text-xs text-gray-800 space-y-1 leading-relaxed">
+                  {exp.achievements && exp.achievements.length > 0 ? (
+                    exp.achievements.map((ach, idx) => (
+                      <li key={idx}>{ach}</li>
+                    ))
+                  ) : (
+                    <li>{exp.description}</li>
+                  )}
                 </ul>
               </div>
             ))}
