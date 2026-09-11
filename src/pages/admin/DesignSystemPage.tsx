@@ -123,7 +123,7 @@ module.exports = {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8 text-gray-100 font-sans pb-28">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-8 text-[#222222] font-sans pb-28">
       {/* Toast Feedback */}
       {copiedCode && (
         <div className="fixed top-20 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 animate-in fade-in slide-in-from-top-3">
@@ -133,33 +133,36 @@ module.exports = {
       )}
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-            <Palette className="w-6 h-6 text-blue-400" /> Design System Studio & Token Architecture
+          <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+            TOKEN ARCHITECTURE · SYSTEM SPEC
+          </div>
+          <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight flex items-center gap-2">
+            <Palette className="w-6 h-6 text-[#ad314d]" /> Design System Studio & Token Architecture
           </h1>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-[#55555e] mt-1">
             Real-time design token controls that immediately reflect across living UI component instances.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex bg-white/5 p-1 rounded-xl border border-white/5 text-xs">
+          <div className="flex bg-black/5 p-1 rounded-full border border-black/8 text-xs font-mono">
             <button
               onClick={() => setExportFormat('json')}
-              className={`px-3 py-1 rounded-lg font-mono text-[11px] transition-colors ${exportFormat === 'json' ? 'bg-blue-600 text-white' : 'text-gray-400'}`}
+              className={`px-3 py-1 rounded-full text-[11px] transition-colors ${exportFormat === 'json' ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'}`}
             >
               JSON
             </button>
             <button
               onClick={() => setExportFormat('tailwind')}
-              className={`px-3 py-1 rounded-lg font-mono text-[11px] transition-colors ${exportFormat === 'tailwind' ? 'bg-blue-600 text-white' : 'text-gray-400'}`}
+              className={`px-3 py-1 rounded-full text-[11px] transition-colors ${exportFormat === 'tailwind' ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'}`}
             >
               Tailwind
             </button>
             <button
               onClick={() => setExportFormat('css')}
-              className={`px-3 py-1 rounded-lg font-mono text-[11px] transition-colors ${exportFormat === 'css' ? 'bg-blue-600 text-white' : 'text-gray-400'}`}
+              className={`px-3 py-1 rounded-full text-[11px] transition-colors ${exportFormat === 'css' ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'}`}
             >
               CSS Vars
             </button>
@@ -174,7 +177,7 @@ module.exports = {
                 : generateCssVariables();
               copyToClipboard(code, `${exportFormat.toUpperCase()} configuration`);
             }}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-lg shadow-blue-600/20"
+            className="px-4 py-2 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
           >
             <Copy className="w-3.5 h-3.5" /> Copy Config
           </button>
@@ -184,9 +187,9 @@ module.exports = {
       {/* Two-Column Studio Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Token Controls */}
-        <div className="lg:col-span-5 bg-[#0a0e17] border border-white/5 rounded-3xl p-6 space-y-6">
-          <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-white/5">
-            <Sliders className="w-4 h-4 text-blue-400" /> Token Variables
+        <div className="lg:col-span-5 bg-white/85 backdrop-blur-md border border-black/8 rounded-3xl p-6 space-y-6 shadow-xs">
+          <h2 className="text-sm font-bold text-[#1a1a1a] uppercase tracking-wider flex items-center gap-2 pb-3 border-b border-black/8">
+            <Sliders className="w-4 h-4 text-[#ad314d]" /> Token Variables
           </h2>
 
           {/* Color Palette Tokens */}
@@ -314,21 +317,21 @@ module.exports = {
         </div>
 
         {/* Right Column: Live Interactive Component Showcase */}
-        <div className="lg:col-span-7 bg-[#0e131f] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+        <div className="lg:col-span-7 bg-white/85 backdrop-blur-md border border-black/8 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
             <div className="flex items-center gap-2">
-              <Eye className="w-4 h-4 text-emerald-400" />
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider">Live Component Preview</h2>
+              <Eye className="w-4 h-4 text-emerald-600" />
+              <h2 className="text-sm font-bold text-[#1a1a1a] uppercase tracking-wider">Live Component Preview</h2>
             </div>
 
             {/* Component Category Selector */}
-            <div className="flex items-center gap-1 overflow-x-auto pb-1 no-scrollbar text-xs">
+            <div className="flex items-center gap-1 overflow-x-auto pb-1 no-scrollbar text-xs bg-black/5 p-1 rounded-full border border-black/8">
               {(['buttons', 'inputs', 'cards', 'tabs', 'badges', 'tables', 'dialogs'] as const).map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-2.5 py-1 rounded-lg capitalize transition-colors ${
-                    activeTab === tab ? 'bg-blue-600 text-white font-bold' : 'bg-white/5 text-gray-400 hover:text-white'
+                  className={`px-3 py-1 rounded-full capitalize transition-colors ${
+                    activeTab === tab ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'
                   }`}
                 >
                   {tab}

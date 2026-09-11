@@ -28,34 +28,37 @@ export const ResumeManagerPage: React.FC<ResumeManagerPageProps> = ({ onNavigate
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 text-gray-100 font-sans pb-24">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6 text-[#222222] font-sans pb-28">
       {/* Top action bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/8">
         <div>
-          <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-blue-400" />
-            <h1 className="text-2xl font-bold text-white tracking-tight">Executive Resume & Print Suite</h1>
+          <div className="text-[10px] font-mono tracking-widest text-[#ad314d] uppercase font-bold mb-1">
+            CURRICULUM VITAE · CAREER PORTFOLIO
           </div>
-          <p className="text-xs text-gray-400 mt-1">Print-ready ATS curriculum vitae, recruiter links, and interactive QR generator.</p>
+          <div className="flex items-center gap-2">
+            <FileText className="w-5 h-5 text-[#ad314d]" />
+            <h1 className="text-2xl font-black text-[#1a1a1a] tracking-tight">Executive Resume & Print Suite</h1>
+          </div>
+          <p className="text-xs text-[#55555e] mt-1">Print-ready ATS curriculum vitae, recruiter links, and interactive QR generator.</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setShowQrModal(true)}
-            className="px-3.5 py-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
+            className="px-4 py-2 bg-white hover:bg-gray-50 text-[#1a1a1a] border border-black/10 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs"
           >
-            <QrCode className="w-3.5 h-3.5" /> Share QR Code
+            <QrCode className="w-3.5 h-3.5 text-purple-600" /> Share QR Code
           </button>
           <button
             onClick={handlePrint}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-lg shadow-blue-600/20"
+            className="px-4 py-2 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
           >
             <Printer className="w-3.5 h-3.5" /> Print / Save PDF
           </button>
           {onNavigate && (
             <button
               onClick={() => onNavigate('/resume/print')}
-              className="px-3.5 py-2 bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              className="px-4 py-2 bg-white hover:bg-gray-50 text-[#1a1a1a] border border-black/10 rounded-full text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs"
             >
               <ExternalLink className="w-3.5 h-3.5" /> Clean Print View
             </button>
@@ -167,18 +170,18 @@ export const ResumeManagerPage: React.FC<ResumeManagerPageProps> = ({ onNavigate
 
       {/* QR Code Modal (Section 16.8) */}
       {showQrModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0e131f] border border-white/10 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between pb-2 border-b border-white/5">
-              <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
-                <QrCode className="w-4 h-4 text-purple-400" /> Shareable Resume QR
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white/95 backdrop-blur-xl border border-black/10 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-black/8">
+              <h3 className="text-sm font-bold text-[#1a1a1a] flex items-center gap-1.5">
+                <QrCode className="w-4 h-4 text-purple-600" /> Shareable Resume QR
               </h3>
-              <button onClick={() => setShowQrModal(false)} className="text-gray-400 hover:text-white">
+              <button onClick={() => setShowQrModal(false)} className="text-[#666670] hover:text-[#1a1a1a]">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-4 bg-white rounded-2xl w-48 h-48 mx-auto flex items-center justify-center shadow-inner">
+            <div className="p-4 bg-white rounded-2xl w-48 h-48 mx-auto flex items-center justify-center shadow-inner border border-black/8">
               {/* Simulated crisp high-contrast SVG QR matrix */}
               <svg viewBox="0 0 100 100" className="w-full h-full text-gray-950 fill-current">
                 <rect x="10" y="10" width="24" height="24" rx="4" />
@@ -206,13 +209,13 @@ export const ResumeManagerPage: React.FC<ResumeManagerPageProps> = ({ onNavigate
               </svg>
             </div>
 
-            <p className="text-xs text-gray-300">
+            <p className="text-xs text-[#55555e]">
               Scan to inspect {identity.name}'s verified online credentials & portfolio.
             </p>
 
             <button
               onClick={copyResumeLink}
-              className="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+              className="w-full py-2.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
             >
               {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               {copiedLink ? 'Link Copied!' : 'Copy Direct URL'}

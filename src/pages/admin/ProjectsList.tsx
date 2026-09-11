@@ -81,15 +81,15 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-[#0e131f] p-3 rounded-2xl border border-white/5">
-        <div className="flex items-center gap-2 flex-1 min-w-[240px]">
-          <Search className="w-4 h-4 text-gray-400 ml-2" />
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white/85 backdrop-blur-md p-3.5 rounded-2xl border border-black/8 shadow-2xs">
+        <div className="flex items-center gap-2 flex-1 min-w-[220px]">
+          <Search className="w-4 h-4 text-gray-500 ml-1" />
           <input
             type="text"
             placeholder="Search projects by name, summary, tech..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full bg-transparent text-xs text-white placeholder-gray-500 focus:outline-none"
+            className="w-full bg-white border border-black/10 rounded-xl px-3 py-1.5 text-xs text-[#1a1a1a] placeholder-gray-500 focus:outline-none focus:border-[#ad314d]"
           />
         </div>
 
@@ -98,7 +98,7 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
           <select
             value={selectedTech}
             onChange={e => setSelectedTech(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-gray-300 focus:outline-none"
+            className="bg-white border border-black/10 rounded-xl px-3 py-1.5 text-xs text-[#1a1a1a] focus:outline-none"
           >
             <option value="all">All Technologies</option>
             {allTechs.map((t, idx) => (
@@ -107,16 +107,16 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
           </select>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center bg-white/5 p-0.5 rounded-xl border border-white/5">
+          <div className="flex items-center bg-black/5 p-0.5 rounded-xl border border-black/8">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
+              className={`p-1.5 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-[#ad314d] text-white shadow-2xs' : 'text-gray-600 hover:text-black'}`}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
+              className={`p-1.5 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-[#ad314d] text-white shadow-2xs' : 'text-gray-600 hover:text-black'}`}
             >
               <List className="w-4 h-4" />
             </button>
@@ -126,24 +126,24 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
 
       {/* Content Rendering */}
       {filtered.length === 0 ? (
-        <div className="p-12 text-center bg-[#0e131f] rounded-2xl border border-white/5">
+        <div className="p-12 text-center bg-white/80 backdrop-blur-md rounded-2xl border border-black/8">
           <FolderGit2 className="w-8 h-8 text-gray-500 mx-auto mb-2" />
-          <p className="text-sm text-gray-400">No projects matched your criteria.</p>
+          <p className="text-sm text-gray-600 font-medium">No projects matched your criteria.</p>
         </div>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(proj => (
-            <div key={proj.id} className="rounded-2xl bg-[#0e131f] border border-white/5 overflow-hidden flex flex-col group hover:border-white/15 transition-all">
+            <div key={proj.id} className="rounded-2xl bg-white/85 backdrop-blur-md border border-black/8 overflow-hidden flex flex-col group hover:border-black/20 transition-all shadow-2xs hover:shadow-md">
               <div className="relative h-44 w-full bg-slate-900 overflow-hidden">
                 <img src={proj.coverImage} alt={proj.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute top-3 right-3 flex items-center gap-1.5">
                   {proj.featured && (
-                    <span className="bg-amber-500/90 text-black px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
+                    <span className="bg-amber-500 text-black px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1 shadow-xs">
                       <Star className="w-3 h-3 fill-black" /> Featured
                     </span>
                   )}
                   <span className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase ${
-                    proj.status === 'published' ? 'bg-emerald-500/80 text-white' : 'bg-amber-500/80 text-black'
+                    proj.status === 'published' ? 'bg-emerald-600 text-white' : 'bg-amber-500 text-black'
                   }`}>
                     {proj.status}
                   </span>
@@ -152,42 +152,42 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
 
               <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                 <div>
-                  <h3 className="text-base font-bold text-white mb-1">{proj.title}</h3>
-                  <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{proj.summary}</p>
+                  <h3 className="text-base font-bold text-[#1a1a1a] mb-1">{proj.title}</h3>
+                  <p className="text-xs text-[#55555e] line-clamp-2 leading-relaxed">{proj.summary}</p>
                   <div className="flex flex-wrap gap-1.5 mt-3">
                     {proj.technologies.slice(0, 3).map((t, idx) => (
-                      <span key={idx} className="text-[10px] font-mono bg-white/5 text-gray-300 px-2 py-0.5 rounded-md">
+                      <span key={idx} className="text-[10px] font-mono bg-black/5 text-[#55555e] px-2 py-0.5 rounded-md font-semibold">
                         {t}
                       </span>
                     ))}
                     {proj.technologies.length > 3 && (
-                      <span className="text-[10px] font-mono text-gray-500 px-1 py-0.5">
+                      <span className="text-[10px] font-mono text-[#888890] px-1 py-0.5">
                         +{proj.technologies.length - 3}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-white/5 flex items-center justify-between">
+                <div className="pt-3 border-t border-black/8 flex items-center justify-between">
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => handleShowHistory(proj.id)}
                       title="View Revision Diff History"
-                      className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/5"
+                      className="p-1.5 text-gray-600 hover:text-black rounded-lg hover:bg-black/5 transition-colors"
                     >
                       <History className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDuplicate(proj)}
                       title="Duplicate project"
-                      className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/5"
+                      className="p-1.5 text-gray-600 hover:text-black rounded-lg hover:bg-black/5 transition-colors"
                     >
                       <Copy className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(proj.id)}
                       title="Delete project"
-                      className="p-1.5 text-red-400 hover:text-red-300 rounded-lg hover:bg-red-500/10"
+                      className="p-1.5 text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -195,9 +195,9 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
 
                   <button
                     onClick={() => onNavigate(`/admin/projects/${proj.id}/edit`)}
-                    className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    className="px-3 py-1.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
                   >
-                    <Edit className="w-3 h-3" /> Edit
+                    <Edit className="w-3 h-3 text-white" /> Edit
                   </button>
                 </div>
               </div>
@@ -205,35 +205,36 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({ onNavigate }) => {
           ))}
         </div>
       ) : (
-        <div className="bg-[#0e131f] rounded-2xl border border-white/5 overflow-hidden">
-          <div className="divide-y divide-white/5">
+        <div className="bg-white/85 backdrop-blur-md rounded-2xl border border-black/8 overflow-hidden shadow-2xs">
+          <div className="divide-y divide-black/8">
             {filtered.map(proj => (
-              <div key={proj.id} className="p-4 flex items-center justify-between hover:bg-white/2 transition-colors">
-                <div className="flex items-center gap-4">
-                  <img src={proj.coverImage} alt={proj.title} className="w-12 h-12 rounded-xl object-cover" />
-                  <div>
+              <div key={proj.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-black/[0.02] transition-colors">
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <img src={proj.coverImage} alt={proj.title} className="w-12 h-12 rounded-xl object-cover shrink-0 border border-black/8" />
+                  <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-sm font-bold text-white">{proj.title}</h4>
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${
-                        proj.status === 'published' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'
+                      <h4 className="text-sm font-bold text-[#1a1a1a] truncate">{proj.title}</h4>
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold uppercase shrink-0 ${
+                        proj.status === 'published' ? 'bg-emerald-500/15 text-emerald-800' : 'bg-amber-500/20 text-amber-900'
                       }`}>
                         {proj.status}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-400 line-clamp-1">{proj.summary}</p>
+                    <p className="text-xs text-[#55555e] line-clamp-1">{proj.summary}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
                   <button
                     onClick={() => handleShowHistory(proj.id)}
-                    className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-white/5"
+                    title="View History"
+                    className="p-2 text-gray-600 hover:text-black rounded-lg hover:bg-black/5 transition-colors"
                   >
                     <History className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => onNavigate(`/admin/projects/${proj.id}/edit`)}
-                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold"
+                    className="px-3 py-1.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-xl text-xs font-semibold shadow-2xs transition-colors"
                   >
                     Edit
                   </button>

@@ -118,37 +118,37 @@ export const SEOSuite: React.FC = () => {
 
       {/* Audit Score & Crawler Clearance Banner */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-6 rounded-3xl bg-[#0e131f] border border-white/5 flex items-center justify-between">
+        <div className="p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-black/8 flex items-center justify-between shadow-xs">
           <div>
-            <span className="text-xs font-mono text-gray-400 uppercase">Core SEO Health</span>
-            <p className="text-3xl font-black text-white mt-1">{score}/100</p>
-            <span className="text-xs font-mono text-emerald-400 mt-1 flex items-center gap-1">
+            <span className="text-xs font-mono text-[#55555e] uppercase">Core SEO Health</span>
+            <p className="text-3xl font-black text-[#1a1a1a] mt-1">{score}/100</p>
+            <span className="text-xs font-mono text-emerald-700 mt-1 flex items-center gap-1 font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" /> All Checks Passing
             </span>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold font-mono">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold font-mono text-base">
             A+
           </div>
         </div>
 
-        <div className="p-6 rounded-3xl bg-[#0e131f] border border-white/5 flex items-center justify-between">
+        <div className="p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-black/8 flex items-center justify-between shadow-xs">
           <div>
-            <span className="text-xs font-mono text-gray-400 uppercase">AI Agents & LLM Access</span>
-            <p className="text-sm font-bold text-white mt-1">100% Unrestricted</p>
-            <p className="text-[11px] text-emerald-400 mt-1 font-mono">robots.txt & llms.txt active</p>
+            <span className="text-xs font-mono text-[#55555e] uppercase">AI Agents & LLM Access</span>
+            <p className="text-sm font-bold text-[#1a1a1a] mt-1">100% Unrestricted</p>
+            <p className="text-[11px] text-emerald-700 mt-1 font-mono font-semibold">robots.txt & llms.txt active</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center">
             <Zap className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="p-6 rounded-3xl bg-[#0e131f] border border-white/5 flex items-center justify-between">
+        <div className="p-6 rounded-3xl bg-white/85 backdrop-blur-md border border-black/8 flex items-center justify-between shadow-xs">
           <div>
-            <span className="text-xs font-mono text-gray-400 uppercase">Structured JSON-LD</span>
-            <p className="text-sm font-bold text-white mt-1">Schema.org Person & WebSite</p>
-            <p className="text-[11px] text-gray-500 mt-1">Injected into index.html</p>
+            <span className="text-xs font-mono text-[#55555e] uppercase">Structured JSON-LD</span>
+            <p className="text-sm font-bold text-[#1a1a1a] mt-1">Schema.org Person & WebSite</p>
+            <p className="text-[11px] text-[#888890] mt-1 font-mono">Injected into index.html</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center">
             <CheckCircle2 className="w-6 h-6" />
           </div>
         </div>
@@ -157,16 +157,16 @@ export const SEOSuite: React.FC = () => {
       {/* Main Studio: Route Selector + Fields + Previews */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Per-Route Selector & Meta Inputs */}
-        <div className="lg:col-span-6 bg-[#0e131f] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-white/5">
-            <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">Select Route to Configure</span>
-            <div className="flex gap-1 overflow-x-auto text-xs font-mono">
+        <div className="lg:col-span-6 bg-white/85 backdrop-blur-md border border-black/8 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-black/8">
+            <span className="text-xs font-mono text-[#55555e] uppercase tracking-widest font-semibold">Select Route to Configure</span>
+            <div className="flex gap-1 overflow-x-auto text-xs font-mono bg-black/5 p-1 rounded-xl border border-black/8">
               {(['/', '/projects', '/blog', '/about', '/contact'] as const).map(route => (
                 <button
                   key={route}
                   onClick={() => setSelectedRoute(route)}
                   className={`px-2.5 py-1 rounded-lg transition-colors ${
-                    selectedRoute === route ? 'bg-blue-600 text-white font-bold' : 'bg-white/5 text-gray-400 hover:text-white'
+                    selectedRoute === route ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'
                   }`}
                 >
                   {route}
@@ -178,61 +178,61 @@ export const SEOSuite: React.FC = () => {
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <label className="font-mono text-gray-400">Page Meta Title</label>
-                <span className="font-mono text-[10px] text-gray-500">{currentSEO.title.length}/60 chars</span>
+                <label className="font-mono text-[#55555e] font-semibold">Page Meta Title</label>
+                <span className="font-mono text-[10px] text-[#888890]">{currentSEO.title.length}/60 chars</span>
               </div>
               <input
                 type="text"
                 value={currentSEO.title}
                 onChange={e => updateCurrentField('title', e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-black/10 rounded-xl px-3 py-2 text-xs text-[#1a1a1a] focus:outline-none focus:border-[#ad314d]"
               />
             </div>
 
             <div>
               <div className="flex justify-between text-xs mb-1">
-                <label className="font-mono text-gray-400">Meta Description</label>
-                <span className="font-mono text-[10px] text-gray-500">{currentSEO.description.length}/160 chars</span>
+                <label className="font-mono text-[#55555e] font-semibold">Meta Description</label>
+                <span className="font-mono text-[10px] text-[#888890]">{currentSEO.description.length}/160 chars</span>
               </div>
               <textarea
                 rows={3}
                 value={currentSEO.description}
                 onChange={e => updateCurrentField('description', e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-blue-500 resize-none leading-relaxed"
+                className="w-full bg-white border border-black/10 rounded-xl p-3 text-xs text-[#1a1a1a] focus:outline-none focus:border-[#ad314d] resize-none leading-relaxed"
               />
             </div>
 
             <div>
-              <label className="font-mono text-xs text-gray-400 block mb-1">Target Keywords</label>
+              <label className="font-mono text-xs text-[#55555e] font-semibold block mb-1">Target Keywords</label>
               <input
                 type="text"
                 value={currentSEO.keywords}
                 onChange={e => updateCurrentField('keywords', e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                className="w-full bg-white border border-black/10 rounded-xl px-3 py-2 text-xs text-[#1a1a1a] focus:outline-none focus:border-[#ad314d]"
               />
             </div>
 
             <div>
-              <label className="font-mono text-xs text-gray-400 block mb-1">Canonical URL</label>
+              <label className="font-mono text-xs text-[#55555e] font-semibold block mb-1">Canonical URL</label>
               <input
                 type="text"
                 value={currentSEO.canonical}
                 onChange={e => updateCurrentField('canonical', e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none"
+                className="w-full bg-white border border-black/10 rounded-xl px-3 py-2 text-xs text-[#1a1a1a] font-mono focus:outline-none focus:border-[#ad314d]"
               />
             </div>
           </div>
         </div>
 
         {/* Right: Live Preview Console */}
-        <div className="lg:col-span-6 bg-[#0e131f] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-white/5">
-            <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">Live Platform Preview</span>
-            <div className="flex gap-1 text-xs">
+        <div className="lg:col-span-6 bg-white/85 backdrop-blur-md border border-black/8 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-black/8">
+            <span className="text-xs font-mono text-[#55555e] uppercase tracking-widest font-semibold">Live Platform Preview</span>
+            <div className="flex gap-1 text-xs bg-black/5 p-1 rounded-xl border border-black/8">
               <button
                 onClick={() => setPreviewPlatform('google')}
                 className={`px-3 py-1 rounded-lg capitalize transition-colors ${
-                  previewPlatform === 'google' ? 'bg-blue-600 text-white font-bold' : 'bg-white/5 text-gray-400 hover:text-white'
+                  previewPlatform === 'google' ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'
                 }`}
               >
                 Google SERP
@@ -240,7 +240,7 @@ export const SEOSuite: React.FC = () => {
               <button
                 onClick={() => setPreviewPlatform('twitter')}
                 className={`px-3 py-1 rounded-lg capitalize transition-colors ${
-                  previewPlatform === 'twitter' ? 'bg-blue-600 text-white font-bold' : 'bg-white/5 text-gray-400 hover:text-white'
+                  previewPlatform === 'twitter' ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'
                 }`}
               >
                 Twitter Card
@@ -248,7 +248,7 @@ export const SEOSuite: React.FC = () => {
               <button
                 onClick={() => setPreviewPlatform('linkedin')}
                 className={`px-3 py-1 rounded-lg capitalize transition-colors ${
-                  previewPlatform === 'linkedin' ? 'bg-blue-600 text-white font-bold' : 'bg-white/5 text-gray-400 hover:text-white'
+                  previewPlatform === 'linkedin' ? 'bg-[#ad314d] text-white font-bold' : 'text-[#55555e] hover:text-[#1a1a1a]'
                 }`}
               >
                 LinkedIn Share

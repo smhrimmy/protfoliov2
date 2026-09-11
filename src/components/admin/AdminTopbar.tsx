@@ -66,11 +66,11 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
   return (
     <header className="h-16 bg-[#ececeb]/90 border-b border-black/8 text-[#222222] backdrop-blur-md px-4 sm:px-6 flex items-center justify-between shrink-0 select-none z-30">
       {/* Left: Breadcrumbs & Autosave */}
-      <div className="flex items-center gap-3 min-w-0">
-        <nav className="flex items-center gap-1.5 text-xs truncate" aria-label="Breadcrumb">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <nav className="flex items-center gap-1 sm:gap-1.5 text-xs truncate" aria-label="Breadcrumb">
           <button 
             onClick={() => onNavigate('/admin/dashboard')}
-            className="text-gray-500 hover:text-black font-mono transition-colors"
+            className="text-gray-500 hover:text-black font-mono transition-colors shrink-0"
           >
             ADMIN
           </button>
@@ -80,7 +80,7 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({
               {idx > 0 && <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />}
               <button
                 onClick={() => onNavigate(b.path)}
-                className={`truncate transition-colors ${
+                className={`truncate transition-colors max-w-[90px] xs:max-w-[130px] sm:max-w-none ${
                   idx === breadcrumbs.length - 1 
                     ? 'font-semibold text-black' 
                     : 'text-gray-500 hover:text-black'

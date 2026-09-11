@@ -137,14 +137,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('/admin/visual-editor')}
                 className="stage-pill-action stage-pill-action-dark flex-1 justify-center"
               >
-                <Eye className="w-3.5 h-3.5" /> Open Visual Editor
+                <Eye className="w-3.5 h-3.5 text-white" /> Open Visual Editor
               </button>
               <button
                 onClick={() => onNavigate('/')}
-                className="stage-pill-action stage-pill-action-glass px-3"
+                className="stage-pill-action stage-pill-action-glass px-3 text-[#1a1a1a]"
                 title="View on Public Site"
               >
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="w-4 h-4 text-[#1a1a1a]" />
               </button>
             </div>
           </div>
@@ -182,26 +182,26 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                       {draft.summary || draft.hookHeadline}
                     </p>
 
-                    <div className="flex items-center justify-between pt-2.5 border-t border-black/8 text-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-black/8 text-xs">
                       <span className="text-[11px] text-[#666670] font-mono">Target: {draft.platform.toUpperCase()}</span>
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         <button
                           onClick={() => handleRejectDraft(draft.id)}
-                          className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-700 rounded-full font-semibold text-xs flex items-center gap-1 transition-colors"
+                          className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 rounded-full font-semibold text-xs flex items-center gap-1 transition-colors shadow-2xs"
                         >
-                          <X className="w-3.5 h-3.5" /> Reject
+                          <X className="w-3.5 h-3.5 text-red-700" /> Reject
                         </button>
                         <button
                           onClick={() => onNavigate('/admin/automations')}
-                          className="stage-pill-action stage-pill-action-glass py-1.5 text-xs"
+                          className="stage-pill-action stage-pill-action-glass py-1.5 px-3 text-xs text-[#1a1a1a] font-semibold"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleApproveDraft(draft.id)}
-                          className="stage-pill-action bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm py-1.5 text-xs"
+                          className="stage-pill-action bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm py-1.5 px-3.5 text-xs font-semibold flex items-center gap-1"
                         >
-                          <Check className="w-3.5 h-3.5" /> Approve & Broadcast
+                          <Check className="w-3.5 h-3.5 text-white" /> Approve & Broadcast
                         </button>
                       </div>
                     </div>
@@ -271,7 +271,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
                     <button
                       onClick={() => onNavigate(`/admin/projects/${proj.id}`)}
-                      className="stage-pill-action stage-pill-action-glass py-1 text-xs"
+                      className="stage-pill-action stage-pill-action-glass py-1 px-3 text-xs text-[#1a1a1a] font-semibold"
                       title="Edit project"
                     >
                       Edit

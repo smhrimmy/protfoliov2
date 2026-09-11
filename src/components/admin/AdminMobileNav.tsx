@@ -3,7 +3,7 @@ import {
   LayoutDashboard, FolderGit2, FileText, Palette, Sliders, Menu, X,
   Layers, Settings, Sparkles, Send, BarChart3, Search, Image, Database,
   Eye, GraduationCap, Award, MessageSquare, Files, Printer, ShieldAlert,
-  User, Activity, MessageCircle, Compass
+  User, Activity, MessageCircle, Compass, Bell, GitBranch
 } from 'lucide-react';
 
 interface AdminMobileNavProps {
@@ -28,6 +28,7 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
         { label: 'Dashboard', route: '/admin/dashboard', icon: LayoutDashboard },
         { label: 'Recruiter Mode', route: '/admin/recruiter', icon: Sliders },
         { label: 'Site Health', route: '/admin/site-health', icon: Activity },
+        { label: 'Notifications', route: '/admin/notifications', icon: Bell },
         { label: 'Settings', route: '/admin/settings', icon: Settings },
       ]
     },
@@ -55,6 +56,7 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
         { label: 'Design System', route: '/admin/design-system', icon: Layers },
         { label: 'AI Workspace', route: '/admin/ai', icon: Sparkles },
         { label: 'Automations & LinkedIn', route: '/admin/automations', icon: Send },
+        { label: 'GitHub Hub', route: '/admin/github', icon: GitBranch },
         { label: 'Analytics Telemetry', route: '/admin/analytics', icon: BarChart3 },
         { label: 'SEO Suite', route: '/admin/seo', icon: Search },
       ]
@@ -142,14 +144,14 @@ export const AdminMobileNav: React.FC<AdminMobileNavProps> = ({ currentRoute, on
                       <button
                         key={iIdx}
                         onClick={() => handleSelectRoute(item.route)}
-                        className={`flex items-center gap-2.5 p-3 rounded-xl text-left text-xs transition-colors ${
+                        className={`flex items-center gap-2 sm:gap-2.5 p-2.5 sm:p-3 rounded-xl text-left text-[11px] sm:text-xs transition-colors ${
                           isActive 
                             ? 'bg-[#ad314d]/10 text-[#ad314d] border border-[#ad314d]/30 font-bold' 
-                            : 'bg-white/80 text-gray-700 hover:bg-white border border-black/8 shadow-sm'
+                            : 'bg-white/85 text-gray-800 hover:bg-white border border-black/8 shadow-2xs'
                         }`}
                       >
                         <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#ad314d]' : 'text-gray-500'}`} />
-                        <span className="truncate">{item.label}</span>
+                        <span className="truncate font-medium">{item.label}</span>
                       </button>
                     );
                   })}

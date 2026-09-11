@@ -65,39 +65,39 @@ export const AutomationsPage: React.FC = () => {
       </div>
 
       {/* Telegram-style Approval Queue */}
-      <div className="bg-[#0e131f] border border-blue-500/30 rounded-2xl p-6 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-white/5">
+      <div className="bg-white/85 backdrop-blur-md border border-black/8 rounded-2xl p-6 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between pb-3 border-b border-black/8">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
               <Send className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white">Telegram-Style Content Approval Queue</h3>
-              <p className="text-[11px] font-mono text-gray-400">Content will not broadcast until approved.</p>
+              <h3 className="text-sm font-bold text-[#1a1a1a]">Telegram-Style Content Approval Queue</h3>
+              <p className="text-[11px] font-mono text-[#55555e]">Content will not broadcast until approved.</p>
             </div>
           </div>
-          <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">
+          <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">
             {drafts.filter(d => d.status === 'pending_approval').length} PENDING
           </span>
         </div>
 
         {drafts.filter(d => d.status === 'pending_approval').length === 0 ? (
-          <div className="py-8 text-center text-xs text-gray-500 font-mono">
+          <div className="py-8 text-center text-xs text-[#666670] font-mono">
             No drafts currently pending. Publish a blog post or project to auto-trigger social generation.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {drafts.filter(d => d.status === 'pending_approval').map(draft => (
-              <div key={draft.id} className="bg-[#070a10] p-4 rounded-xl border border-white/10 space-y-3">
+              <div key={draft.id} className="bg-black/[0.02] p-4 rounded-xl border border-black/8 space-y-3">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-blue-400 uppercase font-bold">{draft.platform}</span>
-                  <span className="text-amber-400 text-[10px]">AWAITING APPROVAL</span>
+                  <span className="text-blue-700 uppercase font-bold">{draft.platform}</span>
+                  <span className="text-amber-700 text-[10px] font-bold">AWAITING APPROVAL</span>
                 </div>
-                <p className="text-xs font-bold text-white">{draft.hookHeadline}</p>
-                <p className="text-[11px] text-gray-300 line-clamp-2 leading-relaxed">{draft.summary}</p>
+                <p className="text-xs font-bold text-[#1a1a1a]">{draft.hookHeadline}</p>
+                <p className="text-[11px] text-[#44444c] line-clamp-2 leading-relaxed">{draft.summary}</p>
                 <button
                   onClick={() => setSelectedDraft(draft)}
-                  className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1"
+                  className="w-full py-2 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-all shadow-xs"
                 >
                   Open Approval Controls (Approve / Edit / Regen)
                 </button>
@@ -108,33 +108,33 @@ export const AutomationsPage: React.FC = () => {
       </div>
 
       {/* Connected Platform Adapters & Automation Rules */}
-      <div className="bg-[#0e131f] border border-white/5 rounded-2xl p-6 space-y-4">
-        <h3 className="text-sm font-bold text-white">Automation Pipelines & Adapters</h3>
-        <div className="divide-y divide-white/5">
+      <div className="bg-white/85 backdrop-blur-md border border-black/8 rounded-2xl p-6 space-y-4 shadow-xs">
+        <h3 className="text-sm font-bold text-[#1a1a1a]">Automation Pipelines & Adapters</h3>
+        <div className="divide-y divide-black/6">
           {rules.map(rule => (
             <div key={rule.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <h4 className="text-sm font-bold text-white">{rule.name}</h4>
+                  <h4 className="text-sm font-bold text-[#1a1a1a]">{rule.name}</h4>
                   <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase ${
-                    rule.status === 'connected' ? 'bg-emerald-500/20 text-emerald-400' :
-                    rule.status === 'simulated' ? 'bg-blue-500/20 text-blue-300' :
-                    'bg-amber-500/20 text-amber-400'
+                    rule.status === 'connected' ? 'bg-emerald-100 text-emerald-800' :
+                    rule.status === 'simulated' ? 'bg-blue-100 text-blue-800' :
+                    'bg-amber-100 text-amber-800'
                   }`}>
                     {rule.status}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400">Trigger: <span className="font-mono text-gray-300">{rule.trigger}</span> · Last run: {rule.lastRun ? new Date(rule.lastRun).toLocaleString() : 'Never'}</p>
+                <p className="text-xs text-[#55555e]">Trigger: <span className="font-mono text-[#1a1a1a]">{rule.trigger}</span> · Last run: {rule.lastRun ? new Date(rule.lastRun).toLocaleString() : 'Never'}</p>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="text-right text-xs font-mono text-gray-400 hidden sm:block">
-                  <span className="text-emerald-400 font-bold">{rule.successCount}</span> passed / {rule.failCount} failed
+                <div className="text-right text-xs font-mono text-[#55555e] hidden sm:block">
+                  <span className="text-emerald-700 font-bold">{rule.successCount}</span> passed / {rule.failCount} failed
                 </div>
                 <button
                   onClick={() => handleToggleRule(rule.id)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
-                    rule.enabled ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-gray-400'
+                    rule.enabled ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-black/5 text-[#55555e]'
                   }`}
                 >
                   {rule.enabled ? 'Enabled' : 'Disabled'}
@@ -146,24 +146,24 @@ export const AutomationsPage: React.FC = () => {
       </div>
 
       {/* Execution Logs (Simulated Success Verification) */}
-      <div className="bg-[#0e131f] border border-white/5 rounded-2xl p-6 space-y-4">
+      <div className="bg-white/85 backdrop-blur-md border border-black/8 rounded-2xl p-6 space-y-4 shadow-xs">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold text-white">Execution Logs & Payloads</h3>
-          <span className="text-xs font-mono text-gray-400">Real verified simulated payloads</span>
+          <h3 className="text-sm font-bold text-[#1a1a1a]">Execution Logs & Payloads</h3>
+          <span className="text-xs font-mono text-[#55555e]">Real verified simulated payloads</span>
         </div>
 
         <div className="space-y-2 font-mono text-xs max-h-64 overflow-y-auto">
           {logs.map(log => (
-            <div key={log.id} className="p-3 bg-[#070a10] rounded-xl border border-white/5 flex items-start justify-between">
+            <div key={log.id} className="p-3 bg-black/[0.02] rounded-xl border border-black/6 flex items-start justify-between">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
                     [{log.status}]
                   </span>
-                  <span className="text-white font-semibold">{log.platform}</span>
-                  <span className="text-gray-500 text-[10px]">{new Date(log.timestamp).toLocaleTimeString()}</span>
+                  <span className="text-[#1a1a1a] font-semibold">{log.platform}</span>
+                  <span className="text-[#888890] text-[10px]">{new Date(log.timestamp).toLocaleTimeString()}</span>
                 </div>
-                <p className="text-gray-400 text-[11px]">{log.message}</p>
+                <p className="text-[#55555e] text-[11px]">{log.message}</p>
               </div>
             </div>
           ))}

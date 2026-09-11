@@ -220,10 +220,10 @@ export const SettingsPage: React.FC = () => {
 
       {/* Mobile Category Switcher & Quick Navigation (< md) */}
       <div className="block md:hidden space-y-3">
-        <div className="p-3.5 bg-[#0a0e17] border border-white/10 rounded-2xl space-y-3 shadow-lg">
+        <div className="p-3.5 bg-white/85 backdrop-blur-md border border-black/8 rounded-2xl space-y-3 shadow-2xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-gray-400 font-semibold">Settings Category</span>
-            <span className="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full border border-blue-500/20">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-[#55555e] font-bold">Settings Category</span>
+            <span className="text-[10px] font-mono text-[#ad314d] bg-[#ad314d]/10 px-2 py-0.5 rounded-full border border-[#ad314d]/20 font-bold">
               {categories.findIndex(c => c.id === activeSection) + 1} of {categories.length}
             </span>
           </div>
@@ -233,15 +233,15 @@ export const SettingsPage: React.FC = () => {
             <select
               value={activeSection}
               onChange={e => setActiveSection(e.target.value)}
-              className="w-full bg-[#151c2c] border border-white/15 text-white rounded-xl px-4 py-3 text-xs font-semibold appearance-none focus:outline-none focus:border-blue-500 shadow-inner"
+              className="w-full bg-white border border-black/12 text-[#1a1a1a] rounded-xl px-4 py-3 text-xs font-semibold appearance-none focus:outline-none focus:border-[#ad314d] shadow-xs"
             >
               {categories.map(c => (
-                <option key={c.id} value={c.id} className="bg-[#0f172a] text-white py-2">
+                <option key={c.id} value={c.id} className="bg-white text-[#1a1a1a] py-2">
                   {c.label}
                 </option>
               ))}
             </select>
-            <div className="pointer-events-none absolute right-3.5 top-3.5 text-gray-400 text-xs">
+            <div className="pointer-events-none absolute right-3.5 top-3.5 text-[#55555e] text-xs">
               ▼
             </div>
           </div>
@@ -940,24 +940,24 @@ export const SettingsPage: React.FC = () => {
       </div>
 
       {/* Sticky Mobile Quick Save Action Bar (< md) */}
-      <div className="md:hidden fixed bottom-16 left-0 right-0 z-40 p-3 bg-[#0a0e17]/95 backdrop-blur-lg border-t border-white/10 flex items-center justify-between shadow-2xl">
+      <div className="md:hidden fixed bottom-16 left-0 right-0 z-40 p-3 bg-[#ececeb]/95 backdrop-blur-lg border-t border-black/10 flex items-center justify-between shadow-2xl">
         <div className="flex items-center gap-2 text-xs">
-          <div className={`w-2 h-2 rounded-full ${hasUnsavedChanges ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`} />
-          <span className="font-mono text-gray-300 text-[11px]">{hasUnsavedChanges ? 'Unsaved edits' : 'Up to date'}</span>
+          <div className={`w-2 h-2 rounded-full ${hasUnsavedChanges ? 'bg-amber-500 animate-pulse' : 'bg-emerald-600'}`} />
+          <span className="font-mono text-[#1a1a1a] font-semibold text-[11px]">{hasUnsavedChanges ? 'Unsaved edits' : 'Up to date'}</span>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => handleResetSection(activeSection)}
-            className="px-3 py-1.5 bg-white/5 text-gray-300 rounded-xl text-xs font-mono"
+            className="px-3 py-1.5 bg-white/80 hover:bg-white text-[#1a1a1a] border border-black/10 rounded-xl text-xs font-mono font-medium shadow-xs"
           >
             Reset
           </button>
           <button
             onClick={() => handleSaveSection(activeSection)}
             disabled={isSaving}
-            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-blue-600/30"
+            className="px-4 py-1.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-sm"
           >
-            {isSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+            {isSaving ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5 text-white" />}
             <span>Save</span>
           </button>
         </div>

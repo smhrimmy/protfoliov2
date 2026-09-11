@@ -198,11 +198,25 @@
   color: #71717a !important;
 }
 
-/* CRITICAL: Preserve White text for colored badges, primary action buttons, & dark pills */
+/* High-contrast accessible text colors for Stage canvas */
+.stage-admin-scope .text-blue-400 { color: #1d4ed8 !important; }
+.stage-admin-scope .text-blue-300 { color: #2563eb !important; }
+.stage-admin-scope .text-emerald-400 { color: #047857 !important; }
+.stage-admin-scope .text-emerald-300 { color: #059669 !important; }
+.stage-admin-scope .text-purple-400 { color: #7e22ce !important; }
+.stage-admin-scope .text-purple-300 { color: #9333ea !important; }
+.stage-admin-scope .text-amber-400 { color: #b45309 !important; }
+.stage-admin-scope .text-amber-300 { color: #d97706 !important; }
+.stage-admin-scope .text-red-400 { color: #b91c1c !important; }
+.stage-admin-scope .text-red-300 { color: #dc2626 !important; }
+
+/* CRITICAL: Preserve White text for solid colored badges, primary action buttons, & dark pills */
 .stage-admin-scope button.bg-blue-600,
-.stage-admin-scope button[class*="bg-blue"],
-.stage-admin-scope button[class*="bg-emerald"],
-.stage-admin-scope button[class*="bg-red"],
+.stage-admin-scope button.bg-blue-500,
+.stage-admin-scope button.bg-emerald-600,
+.stage-admin-scope button.bg-emerald-500,
+.stage-admin-scope button.bg-red-600,
+.stage-admin-scope button.bg-red-500,
 .stage-admin-scope .bg-\[\#ad314d\],
 .stage-admin-scope .bg-\[\#ad314d\] *,
 .stage-admin-scope .bg-\[\#202020\],
@@ -211,14 +225,29 @@
 .stage-admin-scope .bg-\[\#1a1a1a\] *,
 .stage-admin-scope .bg-\[\#1e2025\],
 .stage-admin-scope .bg-\[\#1e2025\] *,
-.stage-admin-scope .stage-pill-action,
-.stage-admin-scope .bg-blue-600,
-.stage-admin-scope .bg-blue-600 *,
-.stage-admin-scope .bg-emerald-600,
-.stage-admin-scope .bg-emerald-600 *,
-.stage-admin-scope .bg-red-600,
-.stage-admin-scope .bg-red-600 * {
+.stage-admin-scope .stage-pill-action-dark,
+.stage-admin-scope .stage-pill-action-dark *,
+.stage-admin-scope .stage-pill-action-crimson,
+.stage-admin-scope .stage-pill-action-crimson * {
   color: #ffffff !important;
+}
+
+/* Explicit ink colors for glass pills and light tinted actions */
+.stage-admin-scope .stage-pill-action-glass,
+.stage-admin-scope .stage-pill-action-glass * {
+  color: #1a1a1a !important;
+}
+.stage-admin-scope button[class*="bg-red-500/"],
+.stage-admin-scope button[class*="bg-red-100"] {
+  color: #b91c1c !important;
+}
+.stage-admin-scope button[class*="bg-blue-500/"],
+.stage-admin-scope button[class*="bg-blue-100"] {
+  color: #1d4ed8 !important;
+}
+.stage-admin-scope button[class*="bg-emerald-500/"],
+.stage-admin-scope button[class*="bg-emerald-100"] {
+  color: #047857 !important;
 }
 
 /* Explicit ink and crimson text classes */

@@ -134,13 +134,13 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       {/* Traffic Chart */}
-      <div className="bg-[#0e131f] border border-white/5 rounded-3xl p-6 sm:p-8 space-y-4">
-        <div className="flex items-center justify-between">
+      <div className="bg-[#0e131f] border border-white/5 rounded-3xl p-5 sm:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h3 className="text-sm font-bold text-white uppercase tracking-wider">Traffic Volume Over Time</h3>
             <p className="text-xs text-gray-400 mt-0.5">Continuous request volume across active period.</p>
           </div>
-          <span className="text-xs font-mono text-blue-400">Peak Volume: Day 5</span>
+          <span className="text-xs font-mono text-[#ad314d] font-bold self-start sm:self-auto">Peak Volume: Day 5</span>
         </div>
 
         <div className="h-52 flex items-end gap-3 pt-6 px-2">

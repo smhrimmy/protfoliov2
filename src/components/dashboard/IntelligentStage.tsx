@@ -279,28 +279,28 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             </div>
 
             {/* Quick Action Pills */}
-            <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full sm:w-auto shrink-0">
               <button
                 onClick={() => onNavigate('/admin/projects/new')}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#ad314d] hover:bg-[#92243d] text-white text-xs font-bold shadow-sm transition-all"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#ad314d] hover:bg-[#92243d] text-white text-xs font-bold shadow-sm transition-all"
               >
                 <Plus className="w-4 h-4" /> New Project
               </button>
               <button
                 onClick={() => onNavigate('/admin/blog/new')}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#1e2025] hover:bg-[#111215] text-white text-xs font-bold shadow-sm transition-all"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-[#1e2025] hover:bg-[#111215] text-white text-xs font-bold shadow-sm transition-all"
               >
                 <Plus className="w-4 h-4" /> New Article
               </button>
               <button
                 onClick={() => onNavigate('/admin/visual-editor')}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/90 hover:bg-white border border-black/12 text-[#2d2d32] text-xs font-bold shadow-xs transition-all"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-white/90 hover:bg-white border border-black/12 text-[#2d2d32] text-xs font-bold shadow-xs transition-all"
               >
                 <Eye className="w-3.5 h-3.5 text-purple-600" /> Visual Editor
               </button>
               <button
                 onClick={() => onNavigate('/admin/recruiter')}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/90 hover:bg-white border border-black/12 text-[#2d2d32] text-xs font-bold shadow-xs transition-all"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-white/90 hover:bg-white border border-black/12 text-[#2d2d32] text-xs font-bold shadow-xs transition-all"
               >
                 <Users className="w-3.5 h-3.5 text-emerald-600" /> Recruiter Mode
               </button>
@@ -313,10 +313,10 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
       <section className="px-4 sm:px-8 py-8 max-w-7xl mx-auto space-y-6" aria-label="System Telemetry Bento">
         {/* Stage Controls: Filters + Mobile Layout Switcher */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5 p-1 bg-black/5 rounded-full border border-black/8 text-xs font-medium">
+          <div className="flex items-center gap-1.5 p-1 bg-black/5 rounded-full border border-black/8 text-xs font-medium overflow-x-auto no-scrollbar max-w-full whitespace-nowrap">
             <button
               onClick={() => setActiveCategory('all')}
-              className={`px-3 py-1 rounded-full transition-all ${
+              className={`px-3 py-1 rounded-full transition-all shrink-0 ${
                 activeCategory === 'all'
                   ? 'bg-white text-[#1a1a1a] font-bold shadow-xs'
                   : 'text-[#666670] hover:text-[#1a1a1a]'
@@ -326,7 +326,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             </button>
             <button
               onClick={() => setActiveCategory('core')}
-              className={`px-3 py-1 rounded-full transition-all ${
+              className={`px-3 py-1 rounded-full transition-all shrink-0 ${
                 activeCategory === 'core'
                   ? 'bg-white text-[#1a1a1a] font-bold shadow-xs'
                   : 'text-[#666670] hover:text-[#1a1a1a]'
@@ -336,7 +336,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
             </button>
             <button
               onClick={() => setActiveCategory('intelligence')}
-              className={`px-3 py-1 rounded-full transition-all ${
+              className={`px-3 py-1 rounded-full transition-all shrink-0 ${
                 activeCategory === 'intelligence'
                   ? 'bg-white text-[#1a1a1a] font-bold shadow-xs'
                   : 'text-[#666670] hover:text-[#1a1a1a]'
@@ -380,7 +380,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           {/* CARD 1: SITE PERFORMANCE & EDGE LATENCY */}
           {showCore && (
             <article
-              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
+              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto min-h-[255px] sm:h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
               style={{
                 background: 'linear-gradient(145deg, #c0395e 0%, #a42c4c 45%, #7e1220 100%)'
               }}
@@ -440,18 +440,18 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
               </div>
 
               {/* Bottom Interactive Multi-Metric Pills */}
-              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar scroll-smooth">
                 {card1Data.map((d, i) => (
                   <button
                     key={i}
                     onClick={() => setCard1Index(i)}
-                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all shrink-0 ${
                       card1Index === i
                         ? 'bg-white text-[#1a1a1a] shadow-sm'
                         : 'bg-white/15 text-white/85 hover:bg-white/25 border border-white/20'
                     }`}
                   >
-                    {d.num}{d.unit} {d.subtitle}
+                    {d.num} {d.unit} · {d.subtitle}
                   </button>
                 ))}
               </div>
@@ -461,7 +461,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           {/* CARD 2: CONTENT LIBRARY & CORPUS */}
           {showCore && (
             <article
-              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
+              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto min-h-[255px] sm:h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
               style={{
                 background: 'linear-gradient(145deg, #a87bc4 0%, #8c4e74 50%, #68233a 100%)'
               }}
@@ -506,18 +506,18 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar scroll-smooth">
                 {card2Data.map((d, i) => (
                   <button
                     key={i}
                     onClick={() => setCard2Index(i)}
-                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all shrink-0 ${
                       card2Index === i
                         ? 'bg-white text-[#1a1a1a] shadow-sm'
                         : 'bg-white/15 text-white/85 hover:bg-white/25 border border-white/20'
                     }`}
                   >
-                    {d.num}{d.unit} {d.subtitle}
+                    {d.num} {d.unit} · {d.subtitle}
                   </button>
                 ))}
               </div>
@@ -527,7 +527,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           {/* CARD 3: CONNECTED CHANNELS & PIPELINES */}
           {showCore && (
             <article
-              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
+              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto min-h-[255px] sm:h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
               style={{
                 background: 'linear-gradient(145deg, #ea580c 0%, #c2410c 50%, #881e05 100%)'
               }}
@@ -574,18 +574,18 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar scroll-smooth">
                 {card3Data.map((d, i) => (
                   <button
                     key={i}
                     onClick={() => setCard3Index(i)}
-                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all shrink-0 ${
                       card3Index === i
                         ? 'bg-white text-[#1a1a1a] shadow-sm'
                         : 'bg-white/15 text-white/85 hover:bg-white/25 border border-white/20'
                     }`}
                   >
-                    {d.num}{d.unit} {d.subtitle}
+                    {d.num} {d.unit} · {d.subtitle}
                   </button>
                 ))}
               </div>
@@ -595,7 +595,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           {/* CARD 4: AUDIENCE & RECRUITER TELEMETRY */}
           {showIntelligence && (
             <article
-              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
+              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto min-h-[255px] sm:h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
               style={{
                 background: 'linear-gradient(145deg, #4f46e5 0%, #3730a3 50%, #1e1b4b 100%)'
               }}
@@ -641,18 +641,18 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar scroll-smooth">
                 {card4Data.map((d, i) => (
                   <button
                     key={i}
                     onClick={() => setCard4Index(i)}
-                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all shrink-0 ${
                       card4Index === i
                         ? 'bg-white text-[#1a1a1a] shadow-sm'
                         : 'bg-white/15 text-white/85 hover:bg-white/25 border border-white/20'
                     }`}
                   >
-                    {d.num}{d.unit} {d.subtitle}
+                    {d.num} {d.unit} · {d.subtitle}
                   </button>
                 ))}
               </div>
@@ -662,7 +662,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           {/* CARD 5: THEME ECOSYSTEM & ISOLATION */}
           {showIntelligence && (
             <article
-              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
+              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto min-h-[255px] sm:h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
               style={{
                 background: 'linear-gradient(145deg, #059669 0%, #047857 50%, #064e3b 100%)'
               }}
@@ -706,18 +706,18 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar scroll-smooth">
                 {card5Data.map((d, i) => (
                   <button
                     key={i}
                     onClick={() => setCard5Index(i)}
-                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all shrink-0 ${
                       card5Index === i
                         ? 'bg-white text-[#1a1a1a] shadow-sm'
                         : 'bg-white/15 text-white/85 hover:bg-white/25 border border-white/20'
                     }`}
                   >
-                    {d.num}{d.unit} {d.subtitle}
+                    {d.num} {d.unit} · {d.subtitle}
                   </button>
                 ))}
               </div>
@@ -727,7 +727,7 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
           {/* CARD 6: AUTONOMOUS SOCIAL PIPELINE */}
           {showIntelligence && (
             <article
-              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
+              className="bento-telemetry-card shrink-0 w-[88vw] max-w-[390px] sm:w-auto min-h-[255px] sm:h-[245px] rounded-2xl p-5 flex flex-col justify-between text-white relative overflow-hidden shadow-lg border border-white/30 scroll-snap-center"
               style={{
                 background: 'linear-gradient(145deg, #d97706 0%, #b45309 50%, #78350f 100%)'
               }}
@@ -779,18 +779,18 @@ export const IntelligentStage: React.FC<IntelligentStageProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-1.5 pt-3 border-t border-white/15 z-10 overflow-x-auto no-scrollbar scroll-smooth">
                 {card6Data.map((d, i) => (
                   <button
                     key={i}
                     onClick={() => setCard6Index(i)}
-                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-[10.5px] font-semibold whitespace-nowrap transition-all shrink-0 ${
                       card6Index === i
                         ? 'bg-white text-[#1a1a1a] shadow-sm'
                         : 'bg-white/15 text-white/85 hover:bg-white/25 border border-white/20'
                     }`}
                   >
-                    {d.num}{d.unit} {d.subtitle}
+                    {d.num} {d.unit} · {d.subtitle}
                   </button>
                 ))}
               </div>
