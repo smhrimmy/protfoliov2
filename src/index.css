@@ -228,8 +228,17 @@
 .stage-admin-scope .stage-pill-action-dark,
 .stage-admin-scope .stage-pill-action-dark *,
 .stage-admin-scope .stage-pill-action-crimson,
-.stage-admin-scope .stage-pill-action-crimson * {
+.stage-admin-scope .stage-pill-action-crimson *,
+.stage-admin-scope .preview-canvas-surface,
+.stage-admin-scope .preview-canvas-surface .canvas-text-heading,
+.stage-admin-scope .preview-canvas-surface .canvas-badge-text {
   color: #ffffff !important;
+}
+.stage-admin-scope .preview-canvas-surface .canvas-text-body {
+  color: #e2e8f0 !important;
+}
+.stage-admin-scope .preview-canvas-surface .canvas-text-muted {
+  color: #94a3b8 !important;
 }
 
 /* Explicit ink colors for glass pills and light tinted actions */
