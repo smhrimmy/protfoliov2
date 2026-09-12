@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Play, User, Award, Briefcase, Calendar, 
-  ExternalLink, ArrowUpRight, GitBranch, Mail, Send, 
-  Check, Star, Sparkles, LogIn, ChevronRight, FileText,
-  DollarSign, Activity, AlertCircle, Compass, Users,
-  Zap, Radio, Shield, Target, Layers, LogOut
+  ChevronRight, LogOut, Compass
 } from 'lucide-react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
-import { Project, BlogPost } from '@/types/portfolio';
+import { Project } from '@/types/portfolio';
 import { GameHUD } from './components/GameHUD';
 import { RadarMinimap } from './components/RadarMinimap';
 import { HeistDossierModal } from './components/HeistDossierModal';
 import { SkillsTreeView } from './components/SkillsTreeView';
 import { ExperienceLogView } from './components/ExperienceLogView';
 import { ContactSafeView } from './components/ContactSafeView';
-import { ProjectCaseStudyView } from './components/ProjectCaseStudyView';
 import { Theme25ProjectsView } from './Projects';
 import { ViceCityBackdrop } from './components/ViceCityBackdrop';
+import { HeroStartGameView } from './components/HeroStartGameView';
 import { soundFX } from './components/SoundEffects';
+import { useTheme25Era, Theme25EraProvider } from './context/Theme25EraContext';
+import { MotionGrid, MotionCard } from '@/animations';
 
 type ActiveTab = 'start' | 'dossier' | 'skills' | 'projects' | 'experience' | 'achievements' | 'academy' | 'contact';
 
-export const Home: React.FC<ThemePageProps> = ({
+const HomeContent: React.FC<ThemePageProps> = ({
   identity,
   projects,
   blogPosts,
@@ -29,6 +27,8 @@ export const Home: React.FC<ThemePageProps> = ({
   skillCategories,
   onNavigate
 }) => {
+  const { tokens } = useTheme25Era();
+
   const getInitialTab = (): ActiveTab => {
     if (typeof window !== 'undefined' && window.location.hash) {
       const hash = window.location.hash.replace('#', '') as ActiveTab;
@@ -68,7 +68,6 @@ export const Home: React.FC<ThemePageProps> = ({
     { id: 'contact', label: 'CONTACT' }
   ];
 
-  // Tab switching with tactile sound
   const handleTabSwitch = (tab: ActiveTab) => {
     soundFX.playTabShift();
     setActiveTab(tab);
@@ -77,12 +76,7 @@ export const Home: React.FC<ThemePageProps> = ({
     }
   };
 
-  const handleOpenHeist = (p: Project) => {
-    soundFX.playHeistSelect();
-    setSelectedHeist(p);
-  };
-
-  // Keyboard navigation: Q/E or ArrowLeft/ArrowRight or 1-7, and ESC for menu
+  // Keyboard navigation: Q/E or ArrowUp/ArrowDown or 1-8, and ESC for menu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeElement = document.activeElement;
@@ -99,7 +93,7 @@ export const Home: React.FC<ThemePageProps> = ({
         const currentIndex = menuItems.findIndex(m => m.id === activeTab);
         const nextIndex = (currentIndex + 1) % menuItems.length;
         handleTabSwitch(menuItems[nextIndex].id);
-      } else if (['1', '2', '3', '4', '5', '6', '7'].includes(e.key)) {
+      } else if (['1', '2', '3', '4', '5', '6', '7', '8'].includes(e.key)) {
         const num = parseInt(e.key, 10) - 1;
         if (num >= 0 && num < menuItems.length) {
           handleTabSwitch(menuItems[num].id);
@@ -113,7 +107,7 @@ export const Home: React.FC<ThemePageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeTab, selectedHeist]);
 
-  // If projects is active, render the dedicated Theme 25 Projects showcase page
+  // If projects is active, render the dedicated Theme 25 Projects showcase
   if (activeTab === 'projects') {
     return (
       <Theme25ProjectsView
@@ -125,7 +119,6 @@ export const Home: React.FC<ThemePageProps> = ({
     );
   }
 
-  // Objective string based on current tab
   const getObjectiveForTab = (): string => {
     switch (activeTab) {
       case 'start': return 'INITIATE OPERATIVE MISSION BRIEFING';
@@ -160,20 +153,29 @@ export const Home: React.FC<ThemePageProps> = ({
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-8 items-start">
           
           {/* ============================================================ */}
-          {/* LEFT RAIL: VERTICAL PAUSE MENU (From Screenshot 1, 2, 3)     */}
+          {/* LEFT RAIL: VERTICAL PAUSE MENU (9 Items)                     */}
           {/* ============================================================ */}
           <aside className="w-full lg:w-72 shrink-0 space-y-4">
             
             {/* Brand Masthead: PRAJWAL BUILDS / Portfolio */}
-            <div className="bg-[#0c0e17]/90 border border-white/10 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md space-y-3">
+            <div 
+              className="border rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md space-y-3"
+              style={{
+                backgroundColor: tokens.cardBg,
+                borderColor: tokens.borderColor
+              }}
+            >
               <div className="border-b border-white/10 pb-2.5 sm:pb-3 flex items-center justify-between lg:block">
                 <div>
                   <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight font-sans">
                     PRAJWAL BUILDS
                   </h1>
                   <span 
-                    className="text-base sm:text-xl text-pink-400 font-serif italic block drop-shadow-[0_0_12px_rgba(244,114,182,0.8)] -mt-0.5"
-                    style={{ fontFamily: 'Brush Script MT, cursive, serif' }}
+                    className="text-base sm:text-xl italic block drop-shadow-[0_0_12px_rgba(244,114,182,0.8)] -mt-0.5"
+                    style={{ 
+                      color: tokens.accentColor,
+                      fontFamily: tokens.fontScript 
+                    }}
                   >
                     Portfolio
                   </span>
@@ -183,7 +185,7 @@ export const Home: React.FC<ThemePageProps> = ({
                 </div>
                 <button
                   onClick={() => onNavigate('/admin')}
-                  className="lg:hidden text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1"
+                  className="lg:hidden text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1 cursor-pointer"
                 >
                   <LogOut className="w-3 h-3" />
                   <span>ADMIN</span>
@@ -200,11 +202,16 @@ export const Home: React.FC<ThemePageProps> = ({
                         key={item.id}
                         onClick={() => handleTabSwitch(item.id)}
                         onMouseEnter={() => soundFX.playMenuTick()}
-                        className={`whitespace-nowrap px-3 py-1.5 rounded-full font-bold text-[10px] tracking-wider uppercase transition-all shrink-0 flex items-center gap-1 focus:outline-none ${
+                        className={`whitespace-nowrap px-3 py-1.5 rounded-full font-bold text-[10px] tracking-wider uppercase transition-all shrink-0 flex items-center gap-1 focus:outline-none cursor-pointer ${
                           isActive
-                            ? 'bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 text-white border border-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.5)]'
+                            ? 'text-white border shadow-lg'
                             : 'text-white/80 hover:text-white bg-black/70 border border-white/10'
                         }`}
+                        style={{
+                          background: isActive ? tokens.activePillGradient : undefined,
+                          borderColor: isActive ? tokens.borderColor : undefined,
+                          boxShadow: isActive ? `0 0 15px ${tokens.accentGlow}` : undefined
+                        }}
                       >
                         <span>{item.label}</span>
                         {item.count !== undefined && (
@@ -228,17 +235,22 @@ export const Home: React.FC<ThemePageProps> = ({
                       key={item.id}
                       onClick={() => handleTabSwitch(item.id)}
                       onMouseEnter={() => soundFX.playMenuTick()}
-                      className={`w-full text-left px-3.5 py-2.5 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between group focus:outline-none ${
+                      className={`w-full text-left px-3.5 py-2.5 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between group focus:outline-none cursor-pointer ${
                         isActive
-                          ? 'bg-gradient-to-r from-pink-500/30 to-purple-600/30 border-2 border-pink-500 text-white shadow-[0_0_20px_rgba(236,72,153,0.4)] translate-x-1'
-                          : 'bg-black/50 text-gray-400 hover:text-white hover:bg-white/10 border border-transparent'
+                          ? 'border text-white shadow-xl translate-x-1'
+                          : 'text-white hover:text-cyan-300 transition-colors'
                       }`}
+                      style={{
+                        background: isActive ? tokens.activePillGradient : undefined,
+                        borderColor: isActive ? tokens.borderColor : undefined,
+                        boxShadow: isActive ? `0 0 20px ${tokens.accentGlow}` : undefined
+                      }}
                     >
                       <div className="flex items-center gap-2">
-                        <span className={`text-[9px] font-mono ${isActive ? 'text-pink-400 font-bold' : 'text-gray-600'}`}>
+                        <span className={`text-[9px] font-mono ${isActive ? 'text-white font-bold' : 'text-gray-500'}`}>
                           0{idx + 1}
                         </span>
-                        <span className="font-sans group-hover:text-cyan-300 transition-colors">
+                        <span className="font-sans">
                           {item.label}
                         </span>
                       </div>
@@ -246,14 +258,12 @@ export const Home: React.FC<ThemePageProps> = ({
                       <div className="flex items-center gap-1.5">
                         {item.count !== undefined && (
                           <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
-                            isActive ? 'bg-pink-500 text-black font-bold' : 'bg-white/10 text-gray-500'
+                            isActive ? 'bg-white/25 text-white font-bold' : 'bg-white/10 text-gray-400'
                           }`}>
                             {item.count}
                           </span>
                         )}
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${
-                          isActive ? 'text-pink-400 translate-x-0.5' : 'text-gray-600 opacity-0 group-hover:opacity-100'
-                        }`} />
+                        {isActive && <ChevronRight className="w-3.5 h-3.5 text-white" />}
                       </div>
                     </button>
                   );
@@ -263,7 +273,7 @@ export const Home: React.FC<ThemePageProps> = ({
                 <button
                   onClick={() => onNavigate('/admin')}
                   onMouseEnter={() => soundFX.playMenuTick()}
-                  className="w-full text-left px-3.5 py-2.5 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 border border-white/5 hover:border-amber-500/40 focus:outline-none pt-2 mt-2 border-t"
+                  className="w-full text-left px-3.5 py-2.5 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 border border-white/5 hover:border-amber-500/40 focus:outline-none pt-2 mt-2 border-t cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     <LogOut className="w-3.5 h-3.5 text-amber-400" /> EXIT GAME (ADMIN OS)
@@ -275,20 +285,20 @@ export const Home: React.FC<ThemePageProps> = ({
 
             {/* Tactical Key Controller Tips */}
             <div className="hidden lg:block bg-black/60 border border-white/10 rounded-xl p-3 text-[9px] text-gray-400 space-y-1">
-              <span className="text-[#f59e0b] font-bold block">TACTICAL CONTROLLER:</span>
+              <span className="text-amber-400 font-bold block">TACTICAL CONTROLLER:</span>
               <div className="flex items-center justify-between">
                 <span>[Q / ↑] PREV SECTION</span>
                 <span className="text-white/30">|</span>
                 <span>[E / ↓] NEXT SECTION</span>
               </div>
               <div className="flex items-center justify-between">
-                <span>[1-7] QUICK LEAP</span>
+                <span>[1-8] QUICK LEAP</span>
                 <span className="text-white/30">|</span>
                 <span>[ESC] START MENU</span>
               </div>
             </div>
 
-            {/* Tactical Radar for Desktop (Cleanly docked beneath the menu) */}
+            {/* Tactical Radar for Desktop */}
             <div className="hidden lg:flex flex-col items-center pt-2">
               <RadarMinimap 
                 activeSection={activeTab}
@@ -305,65 +315,10 @@ export const Home: React.FC<ThemePageProps> = ({
 
             {/* TAB: START GAME (Hero Overview) */}
             {activeTab === 'start' && (
-              <div className="space-y-6 animate-in fade-in duration-200">
-                {/* Hero Showcase Diorama Box */}
-                <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#120a1f] via-[#0c0e17] to-black border-2 border-pink-500/40 p-6 sm:p-10 shadow-[0_0_40px_rgba(236,72,153,0.2)]">
-                  {/* Decorative Neon Palm/City Sunset Glow */}
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-pink-500/20 via-purple-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
-
-                  <div className="relative z-10 max-w-2xl space-y-5">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs font-bold tracking-widest">
-                      <Sparkles className="w-3.5 h-3.5 text-pink-400" /> VICE CITY EDITION V2.5
-                    </div>
-
-                    <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase font-sans leading-none">
-                      PRAJWAL DL
-                    </h2>
-
-                    <p className="text-base sm:text-xl text-cyan-300 font-sans font-bold tracking-wide">
-                      Fullstack Systems Architect &bull; Web Performance Advisor
-                    </p>
-
-                    <p className="text-xs sm:text-sm text-gray-300 font-sans leading-relaxed">
-                      Specializing in multi-tenant SaaS engineering, resilient DNS infrastructure, high-contrast reactive interfaces, and mission-critical cloud deployments.
-                    </p>
-
-                    {/* Telemetry Stats Pills */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-                      <div className="bg-black/80 p-3 rounded-xl border border-white/10">
-                        <span className="text-[10px] text-gray-400 uppercase block font-bold">Total Operations</span>
-                        <span className="text-xl font-black text-white font-sans">36 REPOSITORIES</span>
-                      </div>
-                      <div className="bg-black/80 p-3 rounded-xl border border-white/10">
-                        <span className="text-[10px] text-gray-400 uppercase block font-bold">Field Reliability</span>
-                        <span className="text-xl font-black text-emerald-400 font-sans">99.9% UPTIME</span>
-                      </div>
-                      <div className="col-span-2 sm:col-span-1 bg-black/80 p-3 rounded-xl border border-white/10">
-                        <span className="text-[10px] text-gray-400 uppercase block font-bold">Valuation</span>
-                        <span className="text-xl font-black text-[#f59e0b] font-sans">$3,600,000</span>
-                      </div>
-                    </div>
-
-                    {/* CTA Buttons */}
-                    <div className="flex flex-wrap items-center gap-3 pt-4">
-                      <button
-                        onClick={() => handleTabSwitch('projects')}
-                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(236,72,153,0.5)] hover:scale-105 focus:outline-none flex items-center gap-2"
-                      >
-                        <Play className="w-4 h-4 fill-white" /> LAUNCH PROJECTS &bull; CASE STUDIES
-                      </button>
-
-                      <button
-                        onClick={() => handleTabSwitch('contact')}
-                        className="px-6 py-3 rounded-xl bg-black/80 hover:bg-black text-gray-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all border border-white/20 hover:border-cyan-400/50 focus:outline-none flex items-center gap-2"
-                      >
-                        <Mail className="w-4 h-4 text-cyan-400" /> CONTACT SAFE
-                      </button>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
+              <HeroStartGameView 
+                onStartGame={() => handleTabSwitch('projects')}
+                onExploreSection={(sec) => handleTabSwitch(sec as any)}
+              />
             )}
 
             {/* TAB: ABOUT ME / OPERATIVE DOSSIER */}
@@ -371,12 +326,25 @@ export const Home: React.FC<ThemePageProps> = ({
               <div className="space-y-6 animate-in fade-in duration-200">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                   {/* Mugshot & Telemetry */}
-                  <div className="lg:col-span-5 bg-[#0c0e17] border border-white/15 rounded-2xl p-6 space-y-4 shadow-xl">
+                  <div 
+                    className="lg:col-span-5 border rounded-2xl p-6 space-y-4 shadow-xl"
+                    style={{
+                      backgroundColor: tokens.cardBg,
+                      borderColor: tokens.borderColor
+                    }}
+                  >
                     <div className="space-y-1 border-b border-white/10 pb-3">
-                      <span className="text-[10px] font-bold text-pink-400 bg-pink-500/10 px-2.5 py-0.5 rounded border border-pink-500/30">
+                      <span 
+                        className="text-[10px] font-bold px-2.5 py-0.5 rounded border"
+                        style={{
+                          backgroundColor: `${tokens.accentColor}20`,
+                          borderColor: tokens.borderColor,
+                          color: tokens.accentColor
+                        }}
+                      >
                         CLASSIFIED DOSSIER #0076-PDL
                       </span>
-                      <h3 className="text-2xl font-black text-white uppercase font-sans">
+                      <h3 className="text-2xl font-black text-white uppercase font-sans pt-1">
                         {identity.name}
                       </h3>
                       <p className="text-xs text-emerald-400 font-bold">
@@ -402,7 +370,13 @@ export const Home: React.FC<ThemePageProps> = ({
                   </div>
 
                   {/* Operational Background */}
-                  <div className="lg:col-span-7 bg-[#0c0e17] border border-white/15 rounded-2xl p-6 space-y-5 shadow-xl">
+                  <div 
+                    className="lg:col-span-7 border rounded-2xl p-6 space-y-5 shadow-xl"
+                    style={{
+                      backgroundColor: tokens.cardBg,
+                      borderColor: tokens.borderColor
+                    }}
+                  >
                     <div className="border-b border-white/10 pb-3">
                       <h3 className="text-xl font-black text-white uppercase font-sans tracking-wide">
                         OPERATIVE CAPABILITY BRIEFING
@@ -420,7 +394,12 @@ export const Home: React.FC<ThemePageProps> = ({
                       </div>
 
                       <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
-                        <span className="text-[10px] text-pink-400 font-bold uppercase">INFRASTRUCTURE &amp; CLOUD</span>
+                        <span 
+                          className="text-[10px] font-bold uppercase"
+                          style={{ color: tokens.accentColor }}
+                        >
+                          INFRASTRUCTURE &amp; CLOUD
+                        </span>
                         <p className="text-sm font-black text-white font-sans">AWS / DOCKER / POSTGRESQL / REDIS</p>
                         <p className="text-xs text-gray-400 font-sans">Containerized microservices, high-concurrency caching, and cloud DNS routing.</p>
                       </div>
@@ -436,12 +415,12 @@ export const Home: React.FC<ThemePageProps> = ({
               </div>
             )}
 
-            {/* TAB: SKILLS TREE (From Screenshot 1) */}
+            {/* TAB: SKILLS TREE (Screenshot 2 Top Right) */}
             {activeTab === 'skills' && (
               <SkillsTreeView skillCategories={skillCategories} />
             )}
 
-            {/* TAB: EXPERIENCE LOG (From Screenshot 1) */}
+            {/* TAB: EXPERIENCE LOG (Screenshot 2 Bottom Left) */}
             {activeTab === 'experience' && (
               <ExperienceLogView experience={experience} />
             )}
@@ -463,11 +442,20 @@ export const Home: React.FC<ThemePageProps> = ({
                     <div 
                       key={post.id}
                       onClick={() => onNavigate(`/blog/${post.slug}`)}
-                      className="group cursor-pointer p-5 rounded-2xl bg-[#0c0e17] border border-white/15 hover:border-pink-500/60 transition-all duration-200 flex flex-col justify-between space-y-4 shadow-xl"
+                      className="group cursor-pointer p-5 rounded-2xl border hover:border-pink-500/60 transition-all duration-200 flex flex-col justify-between space-y-4 shadow-xl"
+                      style={{
+                        backgroundColor: tokens.cardBg,
+                        borderColor: tokens.borderColor
+                      }}
                     >
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-[10px] text-gray-400 font-mono">
-                          <span className="text-pink-400 font-bold uppercase">{post.category}</span>
+                          <span 
+                            className="font-bold uppercase"
+                            style={{ color: tokens.accentColor }}
+                          >
+                            {post.category}
+                          </span>
                           <span>{post.readingTimeMinutes || 4} MIN READ</span>
                         </div>
 
@@ -488,7 +476,10 @@ export const Home: React.FC<ThemePageProps> = ({
                             </span>
                           ))}
                         </div>
-                        <span className="text-pink-400 text-[11px] font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                        <span 
+                          className="text-[11px] font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1"
+                          style={{ color: tokens.accentColor }}
+                        >
                           READ INTEL &rarr;
                         </span>
                       </div>
@@ -507,7 +498,7 @@ export const Home: React.FC<ThemePageProps> = ({
                       TECHNICAL MASTERY // ADVANCED CREDENTIALS
                     </span>
                     <span className="text-[10px] text-cyan-400 font-bold flex items-center gap-1">
-                      <Zap className="w-3 h-3 fill-cyan-400" /> GRADUATION LEVEL 100
+                      GRADUATION LEVEL 100
                     </span>
                   </div>
                   <h2 className="text-2xl sm:text-4xl font-black text-white uppercase font-sans tracking-tight pt-1">
@@ -519,8 +510,17 @@ export const Home: React.FC<ThemePageProps> = ({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-5 rounded-2xl bg-[#0c0e17] border border-cyan-400/40 space-y-3 shadow-xl">
-                    <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-wider block">
+                  <div 
+                    className="p-5 rounded-2xl border space-y-3 shadow-xl"
+                    style={{
+                      backgroundColor: tokens.cardBg,
+                      borderColor: tokens.highlightColor
+                    }}
+                  >
+                    <span 
+                      className="text-[10px] font-bold uppercase tracking-wider block"
+                      style={{ color: tokens.highlightColor }}
+                    >
                       DEGREE &amp; INSTITUTION
                     </span>
                     <h3 className="text-lg font-black text-white font-sans uppercase">
@@ -534,8 +534,17 @@ export const Home: React.FC<ThemePageProps> = ({
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-[#0c0e17] border border-pink-500/40 space-y-3 shadow-xl">
-                    <span className="text-[10px] text-pink-400 font-bold uppercase tracking-wider block">
+                  <div 
+                    className="p-5 rounded-2xl border space-y-3 shadow-xl"
+                    style={{
+                      backgroundColor: tokens.cardBg,
+                      borderColor: tokens.borderColor
+                    }}
+                  >
+                    <span 
+                      className="text-[10px] font-bold uppercase tracking-wider block"
+                      style={{ color: tokens.accentColor }}
+                    >
                       PROFESSIONAL TRACK
                     </span>
                     <h3 className="text-lg font-black text-white font-sans uppercase">
@@ -552,12 +561,12 @@ export const Home: React.FC<ThemePageProps> = ({
               </div>
             )}
 
-            {/* TAB: CONTACT SAFE (From Screenshot 1) */}
+            {/* TAB: CONTACT SAFE (Screenshot 2 Bottom Right) */}
             {activeTab === 'contact' && (
               <ContactSafeView />
             )}
 
-            {/* Bottom Right Quote (from Screenshot 1, 2, 3) */}
+            {/* Bottom Right Quote */}
             <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-xs text-gray-500 font-mono">
                 SECURE TERMINAL BENGALURU &bull; ENCRYPTED TRANSMISSION
@@ -565,13 +574,16 @@ export const Home: React.FC<ThemePageProps> = ({
 
               <div className="text-right space-y-0.5">
                 <p 
-                  className="text-sm sm:text-base text-pink-300 font-serif italic drop-shadow-[0_0_12px_rgba(244,114,182,0.8)]"
-                  style={{ fontFamily: 'Brush Script MT, cursive, serif' }}
+                  className="text-sm sm:text-base italic drop-shadow-[0_0_12px_rgba(244,114,182,0.8)]"
+                  style={{ 
+                    color: tokens.accentColor,
+                    fontFamily: tokens.fontScript 
+                  }}
                 >
                   &ldquo;Code is my weapon. Creativity is my world.&rdquo;
                 </p>
-                <span className="text-xs text-[#f59e0b] font-mono tracking-widest block font-bold">
-                  &mdash; Prajwal
+                <span className="text-xs text-amber-400 font-mono tracking-widest block font-bold">
+                  &mdash; Prajwal DL
                 </span>
               </div>
             </div>
@@ -589,7 +601,7 @@ export const Home: React.FC<ThemePageProps> = ({
               <span className="text-[10px] text-pink-400 font-bold">TACTICAL RADAR</span>
               <button
                 onClick={() => setShowMobileRadar(false)}
-                className="px-2 py-0.5 rounded bg-white/10 text-[10px] text-gray-300 font-bold"
+                className="px-2 py-0.5 rounded bg-white/10 text-[10px] text-gray-300 font-bold cursor-pointer"
               >
                 ✕ CLOSE
               </button>
@@ -605,23 +617,12 @@ export const Home: React.FC<ThemePageProps> = ({
         ) : (
           <button
             onClick={() => setShowMobileRadar(true)}
-            className="px-3.5 py-2 rounded-full bg-black/90 hover:bg-black text-[10px] text-cyan-400 border border-cyan-400/50 font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)] flex items-center gap-1.5 backdrop-blur-md"
+            className="px-3.5 py-2 rounded-full bg-black/90 hover:bg-black text-[10px] text-cyan-400 border border-cyan-400/50 font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)] flex items-center gap-1.5 backdrop-blur-md cursor-pointer"
           >
             <Compass className="w-3.5 h-3.5 animate-spin" /> GPS RADAR
           </button>
         )}
       </aside>
-
-      {/* Persistent Bottom Vice City Ticker Bar */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-black/95 border-t border-white/10 px-4 py-1.5 text-center text-[9px] sm:text-[10px] text-gray-400 font-mono tracking-widest select-none backdrop-blur-md">
-        <span className="text-pink-400 font-bold">VICE CITY INSPIRED</span>
-        <span className="mx-2 text-white/20">&bull;</span>
-        <span className="text-cyan-400 font-bold">BUILD DIFFERENT</span>
-        <span className="mx-2 text-white/20">&bull;</span>
-        <span className="text-[#f59e0b] font-bold">STAY LEGENDARY</span>
-        <span className="mx-2 text-white/20 hidden sm:inline">&bull;</span>
-        <span className="text-gray-500 hidden sm:inline">PORTFOLIO COMPILATION V2.5</span>
-      </footer>
 
       {/* Heist Dossier Mission Modal */}
       <HeistDossierModal
@@ -632,3 +633,9 @@ export const Home: React.FC<ThemePageProps> = ({
     </div>
   );
 };
+
+export const Home: React.FC<ThemePageProps> = (props) => (
+  <Theme25EraProvider>
+    <HomeContent {...props} />
+  </Theme25EraProvider>
+);
