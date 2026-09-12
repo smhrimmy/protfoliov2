@@ -16,6 +16,7 @@ import { BlogList } from '@/pages/admin/BlogList';
 import { BlogEditor } from '@/pages/admin/BlogEditor';
 import { VisualSiteEditor } from '@/pages/admin/VisualSiteEditor';
 import { ThemeSelectorPage } from '@/pages/admin/ThemeSelectorPage';
+import { MotionLabPage } from '@/pages/admin/MotionLabPage';
 import { MediaLibrary } from '@/pages/admin/MediaLibrary';
 import { AutomationsPage } from '@/pages/admin/AutomationsPage';
 import { DesignSystemPage } from '@/pages/admin/DesignSystemPage';
@@ -164,6 +165,8 @@ export function App() {
       adminContent = <VisualSiteEditor onNavigate={navigate} />;
     } else if (currentRoute === '/admin/themes') {
       adminContent = <ThemeSelectorPage onNavigate={navigate} onPreviewTheme={handleSelectTheme} />;
+    } else if (currentRoute === '/admin/motion-lab') {
+      adminContent = <MotionLabPage onNavigate={navigate} />;
     } else if (currentRoute === '/admin/media') {
       adminContent = <MediaLibrary />;
     } else if (currentRoute === '/admin/automations') {

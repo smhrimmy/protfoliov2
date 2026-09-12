@@ -6,6 +6,7 @@ import {
 import { Project } from '@/types/portfolio';
 import { GameHUD } from './components/GameHUD';
 import { soundFX } from './components/SoundEffects';
+import { MotionGrid, MotionCard } from '@/animations';
 
 interface ProjectsPageProps {
   projects: Project[];
@@ -423,129 +424,138 @@ export const Theme25ProjectsView: React.FC<ProjectsPageProps> = ({
             </div>
 
             {/* ------------------------------------------------------------ */}
-            {/* CARD 1 — "Project 01" summary card                           */}
+            {/* THREE STACKED INFO CARDS WITH THEME 25 MOTION CONTRACT       */}
             {/* ------------------------------------------------------------ */}
-            <div className="bg-[#090d16]/95 border-2 border-cyan-400/80 rounded-2xl p-4 sm:p-5 shadow-[0_0_25px_rgba(34,211,238,0.2)] backdrop-blur-md space-y-2.5">
+            <MotionGrid themeId="25" className="space-y-3.5">
               
-              {/* Small label top-left: "PROJECT 01:" */}
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider font-mono">
-                  PROJECT 0{selectedIdx + 1}:
-                </span>
-                <span className="text-[8px] text-emerald-400 font-mono font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-                  VERIFIED DEPLOYMENT
-                </span>
-              </div>
-
-              {/* Project title in bold white, larger size */}
-              <h2 className="text-lg sm:text-xl font-black text-white font-sans uppercase tracking-tight leading-snug">
-                {activeProject.title}
-              </h2>
-
-              {/* Divider line */}
-              <div className="border-t border-white/10 pt-2 space-y-2 text-xs font-mono">
-                
-                {/* Row: "TECH STACK" label + 3-4 small icon badges */}
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-pink-400 uppercase tracking-wider text-[11px]">
-                    TECH STACK
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    {activeProject.technologies.slice(0, 4).map((tech, idx) => renderTechBadge(tech, idx))}
-                  </div>
-                </div>
-
-                {/* Row: "PROJECT COMPLETION:" label + bold percentage value */}
-                <div className="flex items-center justify-between pt-0.5">
-                  <span className="text-gray-300 uppercase text-[11px]">
-                    PROJECT COMPLETION:
-                  </span>
-                  <span className="text-sm font-black text-white font-mono">
-                    {completionPercentage}%
-                  </span>
-                </div>
-
-                {/* Row: "LINES OF CODE:" label + bold number */}
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300 uppercase text-[11px]">
-                    LINES OF CODE:
-                  </span>
-                  <span className="text-sm font-black text-white font-mono">
-                    {linesOfCode.toLocaleString()}
-                  </span>
-                </div>
-
-                {/* Row: "CLIENT SATISFACTION:" label + 5-star rating */}
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300 uppercase text-[11px]">
-                    CLIENT SATISFACTION:
-                  </span>
-                  <div className="flex items-center text-amber-400 gap-0.5">
-                    {[...Array(clientSatisfaction)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-amber-400" />
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            {/* ------------------------------------------------------------ */}
-            {/* CARD 2 — "Features" box (pink border, dark fill)             */}
-            {/* ------------------------------------------------------------ */}
-            <div className="bg-[#090d16]/95 border-2 border-pink-500/80 rounded-2xl p-4 sm:p-5 shadow-[0_0_25px_rgba(236,72,153,0.25)] backdrop-blur-md space-y-2">
-              <span className="text-[11px] font-bold text-pink-400 uppercase tracking-wider block font-mono">
-                FEATURES
-              </span>
-
-              <ol className="space-y-1.5 text-xs text-gray-200 font-sans list-none">
-                {features.slice(0, 3).map((feat, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-pink-400 font-black font-mono">{idx + 1}.</span>
-                    <span className="leading-snug">{feat}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-
-            {/* ------------------------------------------------------------ */}
-            {/* CARD 3 — Screenshot grid + Full-width CTA pill button        */}
-            {/* ------------------------------------------------------------ */}
-            <div className="bg-[#090d16]/95 border border-white/15 rounded-2xl p-4 shadow-2xl backdrop-blur-md space-y-2.5">
-              <div className="flex items-center justify-between text-[9px] text-gray-400 font-mono border-b border-white/10 pb-1.5">
-                <span className="uppercase font-bold text-cyan-400">TELEMETRY SCREENSHOTS</span>
-                <span>2 × 3 MATRIX</span>
-              </div>
-
-              {/* 2 rows × 3 columns of small thumbnail images */}
-              <div className="grid grid-cols-3 gap-1.5">
-                {galleryList.map((imgUrl, gIdx) => (
-                  <div 
-                    key={gIdx}
-                    onClick={handleLiveDemoClick}
-                    className="aspect-video rounded-lg overflow-hidden border border-white/15 bg-black/60 hover:border-pink-500/90 transition-all cursor-pointer group relative shadow-md"
-                  >
-                    <img 
-                      src={imgUrl} 
-                      alt={`Project Screenshot ${gIdx + 1}`}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-10 transition-opacity" />
-                  </div>
-                ))}
-              </div>
-
-              {/* Below the grid: full-width CTA pill button "VIEW LIVE DEMO ›" */}
-              <button
-                onClick={handleLiveDemoClick}
-                onMouseEnter={() => soundFX.playMenuTick()}
-                className="w-full py-2.5 mt-1.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(236,72,153,0.5)] flex items-center justify-center gap-1.5 hover:scale-[1.02] transition-all focus:outline-none"
+              {/* CARD 1 — "Project 01" summary card */}
+              <MotionCard
+                themeId="25"
+                index={0}
+                className="bg-[#090d16]/95 border-2 border-cyan-400/80 rounded-2xl p-4 sm:p-5 shadow-[0_0_25px_rgba(34,211,238,0.2)] backdrop-blur-md space-y-2.5"
               >
-                <span>VIEW LIVE DEMO</span>
-                <span className="text-sm leading-none">›</span>
-              </button>
+                {/* Small label top-left: "PROJECT 01:" */}
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider font-mono">
+                    PROJECT 0{selectedIdx + 1}:
+                  </span>
+                  <span className="text-[8px] text-emerald-400 font-mono font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                    VERIFIED DEPLOYMENT
+                  </span>
+                </div>
 
-            </div>
+                {/* Project title in bold white, larger size */}
+                <h2 className="text-lg sm:text-xl font-black text-white font-sans uppercase tracking-tight leading-snug">
+                  {activeProject.title}
+                </h2>
+
+                {/* Divider line */}
+                <div className="border-t border-white/10 pt-2 space-y-2 text-xs font-mono">
+                  {/* Row: "TECH STACK" label + 3-4 small icon badges */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-pink-400 uppercase tracking-wider text-[11px]">
+                      TECH STACK
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      {activeProject.technologies.slice(0, 4).map((tech, idx) => renderTechBadge(tech, idx))}
+                    </div>
+                  </div>
+
+                  {/* Row: "PROJECT COMPLETION:" label + bold percentage value */}
+                  <div className="flex items-center justify-between pt-0.5">
+                    <span className="text-gray-300 uppercase text-[11px]">
+                      PROJECT COMPLETION:
+                    </span>
+                    <span className="text-sm font-black text-white font-mono">
+                      {completionPercentage}%
+                    </span>
+                  </div>
+
+                  {/* Row: "LINES OF CODE:" label + bold number */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300 uppercase text-[11px]">
+                      LINES OF CODE:
+                    </span>
+                    <span className="text-sm font-black text-white font-mono">
+                      {linesOfCode.toLocaleString()}
+                    </span>
+                  </div>
+
+                  {/* Row: "CLIENT SATISFACTION:" label + 5-star rating */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300 uppercase text-[11px]">
+                      CLIENT SATISFACTION:
+                    </span>
+                    <div className="flex items-center text-amber-400 gap-0.5">
+                      {[...Array(clientSatisfaction)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </MotionCard>
+
+              {/* CARD 2 — "Features" box (pink border, dark fill) */}
+              <MotionCard
+                themeId="25"
+                index={1}
+                className="bg-[#090d16]/95 border-2 border-pink-500/80 rounded-2xl p-4 sm:p-5 shadow-[0_0_25px_rgba(236,72,153,0.25)] backdrop-blur-md space-y-2"
+              >
+                <span className="text-[11px] font-bold text-pink-400 uppercase tracking-wider block font-mono">
+                  FEATURES
+                </span>
+
+                <ol className="space-y-1.5 text-xs text-gray-200 font-sans list-none">
+                  {features.slice(0, 3).map((feat, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-pink-400 font-black font-mono">{idx + 1}.</span>
+                      <span className="leading-snug">{feat}</span>
+                    </li>
+                  ))}
+                </ol>
+              </MotionCard>
+
+              {/* CARD 3 — Screenshot grid + Full-width CTA pill button */}
+              <MotionCard
+                themeId="25"
+                index={2}
+                className="bg-[#090d16]/95 border border-white/15 rounded-2xl p-4 shadow-2xl backdrop-blur-md space-y-2.5"
+              >
+                <div className="flex items-center justify-between text-[9px] text-gray-400 font-mono border-b border-white/10 pb-1.5">
+                  <span className="uppercase font-bold text-cyan-400">TELEMETRY SCREENSHOTS</span>
+                  <span>2 × 3 MATRIX</span>
+                </div>
+
+                {/* 2 rows × 3 columns of small thumbnail images */}
+                <div className="grid grid-cols-3 gap-1.5">
+                  {galleryList.map((imgUrl, gIdx) => (
+                    <div 
+                      key={gIdx}
+                      onClick={handleLiveDemoClick}
+                      className="aspect-video rounded-lg overflow-hidden border border-white/15 bg-black/60 hover:border-pink-500/90 transition-all cursor-pointer group relative shadow-md"
+                    >
+                      <img 
+                        src={imgUrl} 
+                        alt={`Project Screenshot ${gIdx + 1}`}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-10 transition-opacity" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Below the grid: full-width CTA pill button "VIEW LIVE DEMO ›" */}
+                <button
+                  onClick={handleLiveDemoClick}
+                  onMouseEnter={() => soundFX.playMenuTick()}
+                  className="w-full py-2.5 mt-1.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(236,72,153,0.5)] flex items-center justify-center gap-1.5 hover:scale-[1.02] transition-all focus:outline-none"
+                >
+                  <span>VIEW LIVE DEMO</span>
+                  <span className="text-sm leading-none">›</span>
+                </button>
+              </MotionCard>
+
+            </MotionGrid>
 
           </div>
 

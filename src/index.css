@@ -241,6 +241,38 @@
   color: #94a3b8 !important;
 }
 
+/* Motion Lab dark canvas color protection */
+.stage-admin-scope .motion-lab-scope .text-white,
+.stage-admin-scope .motion-lab-scope h1,
+.stage-admin-scope .motion-lab-scope h2,
+.stage-admin-scope .motion-lab-scope h3 {
+  color: #ffffff !important;
+}
+.stage-admin-scope .motion-lab-scope .text-gray-100 {
+  color: #f3f4f6 !important;
+}
+.stage-admin-scope .motion-lab-scope .text-gray-200 {
+  color: #e5e7eb !important;
+}
+.stage-admin-scope .motion-lab-scope .text-gray-300 {
+  color: #d1d5db !important;
+}
+.stage-admin-scope .motion-lab-scope .text-gray-400 {
+  color: #9ca3af !important;
+}
+.stage-admin-scope .motion-lab-scope .text-cyan-400 {
+  color: #22d3ee !important;
+}
+.stage-admin-scope .motion-lab-scope .text-emerald-400 {
+  color: #34d399 !important;
+}
+.stage-admin-scope .motion-lab-scope .text-pink-400 {
+  color: #f472b6 !important;
+}
+.stage-admin-scope .motion-lab-scope .text-amber-400 {
+  color: #fbbf24 !important;
+}
+
 /* Explicit ink colors for glass pills and light tinted actions */
 .stage-admin-scope .stage-pill-action-glass,
 .stage-admin-scope .stage-pill-action-glass * {

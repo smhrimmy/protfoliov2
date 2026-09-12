@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { mockStorage } from '@/data/mockStorage';
 import { Project, BlogPost, Experience, SkillCategory, Education, Certification, Testimonial, CustomPage } from '@/types/portfolio';
+import { MotionGrid, MotionCard, MotionHeading } from '@/animations';
 
 interface PublicPageProps {
   onNavigate: (route: string) => void;
@@ -223,13 +224,12 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/projects">
       <div className="space-y-10">
-        <div className="space-y-2">
-          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">// Selected Works</span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Production Systems & Case Studies</h1>
-          <p className="text-xs font-mono text-gray-400 max-w-xl">
-            Real-world products delivering measurable business impact and resilient cloud uptime.
-          </p>
-        </div>
+        <MotionHeading 
+          subtitle="Real-world products delivering measurable business impact and resilient cloud uptime."
+          className="text-3xl sm:text-4xl font-bold text-white tracking-tight"
+        >
+          Production Systems & Case Studies
+        </MotionHeading>
 
         {/* Filter & Search */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-y border-white/[0.06] py-4">
@@ -261,13 +261,15 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
           </div>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredProjects.map(p => (
-            <article
+        {/* Projects Grid with Animate-Once Motion Contract */}
+        <MotionGrid className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {filteredProjects.map((p, idx) => (
+            <MotionCard
               key={p.id}
+              index={idx}
+              as="article"
               onClick={() => onNavigate(`/projects/${p.slug || p.id}`)}
-              className="group cursor-pointer rounded-xl bg-[#0e121a] border border-white/[0.08] overflow-hidden hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 shadow-lg"
+              className="group cursor-pointer rounded-xl bg-[#0e121a] border border-white/[0.08] overflow-hidden hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between shadow-lg"
             >
               <div>
                 <div className="relative h-52 overflow-hidden bg-black/40">
@@ -298,8 +300,8 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
 
               <div className="p-6 pt-0 space-y-4">
                 <div className="flex flex-wrap gap-1.5">
-                  {p.technologies.slice(0, 4).map((t, idx) => (
-                    <span key={idx} className="text-[10px] font-mono bg-white/[0.04] text-gray-400 px-2 py-0.5 rounded border border-white/[0.06]">
+                  {p.technologies.slice(0, 4).map((t, tIdx) => (
+                    <span key={tIdx} className="text-[10px] font-mono bg-white/[0.04] text-gray-400 px-2 py-0.5 rounded border border-white/[0.06]">
                       {t}
                     </span>
                   ))}
@@ -310,9 +312,9 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
                   <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </div>
-            </article>
+            </MotionCard>
           ))}
-        </div>
+        </MotionGrid>
       </div>
     </PublicLayout>
   );
@@ -1065,11 +1067,13 @@ export const PublicBlogListPage: React.FC<PublicPageProps> = ({ onNavigate }) =>
           </form>
         </div>
 
-        {/* Articles List */}
-        <div className="space-y-6">
-          {filtered.map(post => (
-            <article
+        {/* Articles List with Animate-Once Motion Contract */}
+        <MotionGrid className="space-y-6" as="div">
+          {filtered.map((post, idx) => (
+            <MotionCard
               key={post.id}
+              index={idx}
+              as="article"
               onClick={() => onNavigate(`/blog/${post.slug}`)}
               className="p-6 rounded-2xl bg-[#0e131f] border border-white/5 hover:border-blue-500/40 transition-all duration-300 cursor-pointer space-y-3 group"
             >
@@ -1091,8 +1095,8 @@ export const PublicBlogListPage: React.FC<PublicPageProps> = ({ onNavigate }) =>
 
               <div className="flex items-center justify-between pt-2">
                 <div className="flex flex-wrap gap-1">
-                  {post.tags.map((t, idx) => (
-                    <span key={idx} className="text-[10px] font-mono bg-white/5 text-gray-400 px-2 py-0.5 rounded">
+                  {post.tags.map((t, tIdx) => (
+                    <span key={tIdx} className="text-[10px] font-mono bg-white/5 text-gray-400 px-2 py-0.5 rounded">
                       #{t}
                     </span>
                   ))}
@@ -1102,9 +1106,9 @@ export const PublicBlogListPage: React.FC<PublicPageProps> = ({ onNavigate }) =>
                   Read Article <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
-            </article>
+            </MotionCard>
           ))}
-        </div>
+        </MotionGrid>
       </div>
     </PublicLayout>
   );

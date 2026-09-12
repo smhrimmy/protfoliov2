@@ -53,7 +53,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ currentRoute, onNavi
       label: 'DESIGN & THEMES',
       items: [
         { label: 'Visual Site Editor', route: '/admin/visual-editor', icon: Eye },
-        { label: 'Themes (23 Themes)', route: '/admin/themes', icon: Palette },
+        { label: 'Themes (25 Themes)', route: '/admin/themes', icon: Palette },
+        { label: 'Motion Lab (25 Flavors)', route: '/admin/motion-lab', icon: Activity },
         { label: 'Design System', route: '/admin/design-system', icon: Layers },
       ]
     },
