@@ -576,5 +576,29 @@ export const THEME_MANIFESTS: ThemeManifest[] = [
       textMuted: '#666666',
       borderColor: '#e5e5e3'
     }
+  },
+  {
+    id: 'theme-25-the-wanted-level',
+    number: '25',
+    name: 'The Wanted Level',
+    category: 'OS / Retro',
+    concept: 'Open-world crime game pause-menu UI with persistent Heads-Up Display, dynamic cash odometer, interactive wanted stars, tactical GPS radar minimap, and classified heist mission dossiers.',
+    capabilities: ['High Contrast', 'Motion-Rich'],
+    performance: 'Moderate',
+    layoutArchitecture: 'game-pause-menu-hud',
+    navigationPattern: 'tabbed-pause-ribbon',
+    gridSystem: 'full-bleed-art-plate-diorama',
+    typographyPairing: 'Impact Grotesk Display + Monospace Tactical HUD',
+    signatureInteraction: 'Interactive wanted heat stars, cash odometer, tactical GPS radar minimap, and Web Audio API menu clicks',
+    motionModel: 'Snappy tactile pause-ribbon slide, CRT scanline hum, and wanted star strobe',
+    uses3D: false,
+    defaultTokens: {
+      bgPrimary: '#0a0a0f',
+      bgSecondary: '#13151f',
+      accent: '#f59e0b',
+      textPrimary: '#f8fafc',
+      textMuted: '#94a3b8',
+      borderColor: 'rgba(245, 158, 11, 0.3)'
+    }
   }
 ];
