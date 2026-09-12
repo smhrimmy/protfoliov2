@@ -28,7 +28,7 @@
 
 | Route | Component / View | Purpose & Functionality |
 | :--- | :--- | :--- |
-| `/` | `resolveThemePage(activeThemeId)` | Dynamic Home Page rendered using one of the **24 distinct themes** selected by the user. |
+| `/` | `resolveThemePage(activeThemeId)` | Dynamic Home Page rendered using one of the **25 distinct themes** selected by the user. |
 | `/projects` | `ProjectsPublicPage` | Complete public showcase of production case studies with filterable tech badges and live demo links. |
 | `/projects/:slug` | `ProjectDetailPublicPage` | Deep-dive case study reader with architecture breakdown, metrics, challenges, screenshots, and live URL. |
 | `/blog` | `BlogPublicPage` | Technical journal with category filters (`Frontend`, `Backend`, `DevOps`, `Career`, `Dev Notes`), search, and reading time. |
@@ -123,7 +123,7 @@ The Admin OS is accessed via `/admin` and follows the unified **Intelligent Stag
 
 ---
 
-## 3. The 24 Distinct Public Themes
+## 3. The 25 Distinct Public Themes
 
 Every theme is registered in `src/themes/registry.ts` and validated by `validateThemeUniqueness()` to guarantee a distinct architectural triplet:
 
@@ -231,11 +231,11 @@ All mock and placeholder content was purged in favor of verified professional da
 4. **Cashflow Wealth OS**: Real-time cashflow management suite for SMEs with automated ledger reconciliation.
 5. **FictionZone**: Full-stack interactive fiction platform with community reviews and reading lists.
 
-### Professional Career History
-1. **Web Advisor** — Unifycx *(Oct 2024 – Present)*: Leading frontend platform architecture, client performance optimization, and accessibility audits.
-2. **Technical Support Specialist** — Glowtouch Technologies *(Nov 2023 – Oct 2024)*: Diagnosed complex server hosting issues, DNS configurations, and SSL provisioning.
-3. **Web Specialist** — Vitvara Technologies *(Jan 2023 – Oct 2023)*: Developed custom CMS themes, high-converting landing pages, and responsive UI components.
-4. **Freelance Fullstack Developer** *(2022 – 2023)*: Built custom web applications and e-commerce stores for international clients.
+### Professional Career History (Verified Resume Chronology)
+1. **Web Advisor** — Unifycx *(Jun 2025 – Present)*: Assisting customers with website migrations, SSL installations, email configurations, and hosting control panel troubleshooting across shared and cloud environments.
+2. **Freelancer / Web Developer** — Freelance *(Dec 2024 – Jun 2025)*: Designed and developed custom web applications using React.js, JavaScript, Tailwind CSS, and REST APIs with user-centric UX.
+3. **Junior Support Engineer** — Glowtouch Technologies *(Aug 2024 – Dec 2024)*: Provided technical live chat support for WordPress, PHP, MySQL, hosting servers, DNS, and domain migrations.
+4. **Web Developer Intern** — Vitvara Technologies *(Jan 2024 – May 2024)*: Developed responsive web applications using React.js and modern frontend development best practices.
 
 ### GitHub Telemetry (@smhrimmy)
 - **Repositories**: 36 public repositories
