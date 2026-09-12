@@ -152,7 +152,8 @@ Every theme is registered in `src/themes/registry.ts` and validated by `validate
 | **21. Secret Reveal AI** | `secret-reveal-ai` \| `prompt-bar-nav` \| `dynamic-synthesized-stage` | AI prompt bar interface that answers queries and reveals portfolio data. |
 | **22. Animated Mascot** | `animated-mascot-companion` \| `speech-bubble-nav` \| `playful-island-grid` | Interactive avatar companion guiding visitors through work. |
 | **23. Hand-Tracked LowPoly**| `hand-tracked-spatial-3d` \| `gesture-ring-nav` \| `volumetric-lowpoly-stage` | **Full Computer Vision**: Real-time webcam hand tracking via MediaPipe Hands. |
-| **24. The Journal** *(NEW)* | `journal-writing-ledger` \| `minimal-plaintext-header-nav` \| `quiet-margins-article-flow` | **Reference: midhunnk.in/blog**. Content-first writing ledger, italic wordmark, quiet margins, automated social syndication target. |
+| **24. The Journal** | `journal-writing-ledger` \| `minimal-plaintext-header-nav` \| `quiet-margins-article-flow` | **Reference: midhunnk.in/blog**. Content-first writing ledger, italic wordmark, quiet margins, automated social syndication target. |
+| **25. The Wanted Level** *(NEW)* | `game-pause-menu-hud` \| `tabbed-pause-ribbon` \| `full-bleed-art-plate-diorama` | **Genre: Open-world crime game pause menu**. Persistent HUD, $36M cash counter, wanted heat stars, GPS radar minimap, classified heist dossiers, Web Audio synth clicks. |
 
 ---
 
