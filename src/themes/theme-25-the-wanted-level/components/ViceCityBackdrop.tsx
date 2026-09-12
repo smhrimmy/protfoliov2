@@ -11,9 +11,16 @@ export const ViceCityBackdrop: React.FC<ViceCityBackdropProps> = ({ activeTab })
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
       
+      {/* Full-bleed Illustrated Desk & Cityscape Background Art */}
+      <img
+        src="/themes/theme-25/background-desk.jpg"
+        alt="Vice City Theme 25 Background Art"
+        className="absolute inset-0 w-full h-full object-cover object-right filter contrast-[1.05] brightness-[0.98] opacity-25 lg:opacity-65 transition-opacity duration-300 pointer-events-none"
+      />
+
       {/* Sky Base Gradient reacting to Era and Active Tab */}
       <div 
-        className="absolute inset-0 transition-colors duration-700"
+        className="absolute inset-0 mix-blend-color-burn opacity-80 transition-colors duration-700"
         style={{
           background: tokens.skyGradient
         }}
@@ -148,6 +155,15 @@ export const ViceCityBackdrop: React.FC<ViceCityBackdropProps> = ({ activeTab })
           backgroundImage: 'radial-gradient(circle at 50% 45%, rgba(0,0,0,0) 35%, rgba(2,1,6,0.95) 100%)'
         }}
       />
+
+      {/* CHARACTER OVERLAY ILLUSTRATION (Prajwal DL Vice City Style) */}
+      <div className="fixed bottom-0 right-[2%] xl:right-[4%] z-10 pointer-events-none select-none hidden lg:block overflow-hidden max-h-[82vh] transition-all duration-300">
+        <img
+          src="/themes/theme-25/character-prajwal.png"
+          alt="Prajwal DL Vice City Character Illustration"
+          className="h-[75vh] xl:h-[82vh] w-auto object-contain object-bottom filter drop-shadow-[0_15px_40px_rgba(0,0,0,0.9)] brightness-105 contrast-105"
+        />
+      </div>
 
       {/* Retro CRT Scanlines Overlay */}
       <div 
