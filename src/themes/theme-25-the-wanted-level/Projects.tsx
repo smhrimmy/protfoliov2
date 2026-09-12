@@ -177,6 +177,28 @@ const Theme25ProjectsContent: React.FC<ProjectsPageProps> = ({
         </span>
       );
     }
+    if (t.includes('node')) {
+      return (
+        <span 
+          key={idx} 
+          title="Node.js Runtime" 
+          className="w-6 h-6 rounded-md bg-emerald-500/25 border border-emerald-500/60 flex items-center justify-center text-emerald-400 font-mono font-black text-[9px] shadow-[0_0_8px_rgba(16,185,129,0.4)]"
+        >
+          Node
+        </span>
+      );
+    }
+    if (t.includes('tail') || t.includes('css')) {
+      return (
+        <span 
+          key={idx} 
+          title="Tailwind CSS Styling" 
+          className="w-6 h-6 rounded-md bg-sky-500/25 border border-sky-500/60 flex items-center justify-center text-sky-300 font-mono font-black text-[9px] shadow-[0_0_8px_rgba(14,165,233,0.4)]"
+        >
+          TW
+        </span>
+      );
+    }
     if (t.includes('aws') || t.includes('cloud')) {
       return (
         <span 
@@ -188,6 +210,17 @@ const Theme25ProjectsContent: React.FC<ProjectsPageProps> = ({
         </span>
       );
     }
+    if (t.includes('docker') || t.includes('container')) {
+      return (
+        <span 
+          key={idx} 
+          title="Docker Containers" 
+          className="w-6 h-6 rounded-md bg-blue-600/25 border border-blue-500/60 flex items-center justify-center text-blue-400 font-mono font-black text-[9px] shadow-[0_0_8px_rgba(59,130,246,0.4)]"
+        >
+          DOC
+        </span>
+      );
+    }
     if (t.includes('tensor') || t.includes('ai') || t.includes('llm') || t.includes('ml')) {
       return (
         <span 
@@ -195,7 +228,7 @@ const Theme25ProjectsContent: React.FC<ProjectsPageProps> = ({
           title="AI / ML Pipeline" 
           className="w-6 h-6 rounded-md bg-pink-500/25 border border-pink-500/60 flex items-center justify-center text-pink-400 font-mono font-black text-[10px] shadow-[0_0_8px_rgba(236,72,153,0.4)]"
         >
-          TF
+          AI
         </span>
       );
     }
@@ -242,7 +275,7 @@ const Theme25ProjectsContent: React.FC<ProjectsPageProps> = ({
       {/* FULL-BLEED ILLUSTRATED BACKGROUND ART */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#070912]">
         <img
-          src="/themes/theme-25/showcase-bg.jpg"
+          src="/themes/theme-25/background-desk.jpg"
           alt="Vice City Illustrated Project Showcase"
           className="w-full h-full object-cover object-right filter contrast-[1.05] brightness-[0.98] opacity-25 lg:opacity-100 transition-opacity duration-300"
         />
@@ -668,6 +701,15 @@ const Theme25ProjectsContent: React.FC<ProjectsPageProps> = ({
           </button>
         )}
       </aside>
+
+      {/* CHARACTER OVERLAY ILLUSTRATION (Prajwal DL Vice City Style) */}
+      <div className="fixed bottom-0 right-[2%] xl:right-[4%] z-20 pointer-events-none select-none hidden lg:block overflow-hidden max-h-[82vh] transition-all duration-300">
+        <img
+          src="/themes/theme-25/character-prajwal.png"
+          alt="Prajwal DL Vice City Character Illustration"
+          className="h-[75vh] xl:h-[82vh] w-auto object-contain object-bottom filter drop-shadow-[0_15px_40px_rgba(0,0,0,0.9)] brightness-105 contrast-105"
+        />
+      </div>
 
       {/* Bottom Right Quote */}
       <div className="fixed bottom-8 right-6 z-30 hidden md:block text-right pointer-events-none select-none">
