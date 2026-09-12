@@ -20,6 +20,11 @@ export interface Project {
     metaDescription: string;
     ogImage?: string;
   };
+  completionPercentage?: number;
+  linesOfCode?: number;
+  clientSatisfaction?: number;
+  features?: string[];
+  objective_label?: string;
 }
 
 export type BlockType = 

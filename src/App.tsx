@@ -63,6 +63,7 @@ import {
   PublicRSSFeedPage, 
   PublicOfflinePage 
 } from '@/pages/public/PublicSitePages';
+import { Theme25ProjectsView } from '@/themes/theme-25-the-wanted-level/Projects';
 
 // Icons
 import { Palette, ChevronUp, ChevronDown, ExternalLink, Sparkles, Check } from 'lucide-react';
@@ -100,7 +101,13 @@ export function App() {
   const navigate = (path: string) => {
     startTransition(() => {
       window.history.pushState({}, '', path);
-      setCurrentRoute(path);
+      const cleanPath = path.split('?')[0].split('#')[0] || '/';
+      setCurrentRoute(cleanPath);
+
+      const matchTheme = path.match(/[?&]theme=([^&#]+)/);
+      if (matchTheme && matchTheme[1]) {
+        setActiveThemeId(matchTheme[1]);
+      }
       window.scrollTo(0, 0);
     });
   };
@@ -229,6 +236,14 @@ export function App() {
     return <PublicAboutPage onNavigate={navigate} />;
   }
   if (currentRoute === '/projects') {
+    if (activeThemeId === 'theme-25-the-wanted-level') {
+      return (
+        <Theme25ProjectsView
+          projects={mockStorage.getProjects()}
+          onNavigate={navigate}
+        />
+      );
+    }
     return <PublicProjectsListPage onNavigate={navigate} />;
   }
   if (currentRoute.startsWith('/projects/') || currentRoute.startsWith('/project/')) {

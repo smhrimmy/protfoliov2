@@ -65,10 +65,10 @@ export const GameHUD: React.FC<GameHUDProps> = ({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 py-2.5 bg-gradient-to-b from-black/95 via-black/70 to-transparent pointer-events-none select-none font-mono">
-      <div className="max-w-7xl mx-auto flex items-start justify-between gap-3 pointer-events-auto">
+      <div className="max-w-7xl mx-auto flex items-start justify-between gap-3 pointer-events-none">
         
         {/* LEFT HUD: Health, Armor, Weapon Arsenal */}
-        <div className="space-y-1 bg-black/85 p-2 sm:p-2.5 rounded-lg border border-white/10 backdrop-blur-md shadow-xl max-w-[55%] sm:max-w-none">
+        <div className="space-y-1 bg-black/85 p-2 sm:p-2.5 rounded-lg border border-white/10 backdrop-blur-md shadow-xl max-w-[55%] sm:max-w-none pointer-events-auto">
           {/* Operative Callout */}
           <div className="flex items-center justify-between text-[9px] sm:text-[11px] font-bold text-white/90 gap-2 sm:gap-4">
             <span className="tracking-wider text-[#f59e0b] truncate">OP: PRAJWAL DL</span>
@@ -113,7 +113,7 @@ export const GameHUD: React.FC<GameHUDProps> = ({
         </div>
 
         {/* CENTER HUD: 98.4 FM Radio Capsule & Telemetry Ticker */}
-        <div className="hidden md:flex flex-col items-center gap-1 shrink-0 pt-0.5">
+        <div className="hidden md:flex flex-col items-center gap-1 shrink-0 pt-0.5 pointer-events-auto">
           {/* Radio Station Tuner Capsule */}
           <button 
             onClick={handleRadioClick}
@@ -143,7 +143,7 @@ export const GameHUD: React.FC<GameHUDProps> = ({
         </div>
 
         {/* RIGHT HUD: Cash Counter, Wanted Stars & Time */}
-        <div className="flex flex-col items-end space-y-1 shrink-0">
+        <div className="flex flex-col items-end space-y-1 shrink-0 pointer-events-auto">
           {/* Stylized Cash Counter Odometer */}
           <div className="flex items-center gap-2">
             {onBackToMenu && (

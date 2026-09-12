@@ -15,10 +15,11 @@ import { SkillsTreeView } from './components/SkillsTreeView';
 import { ExperienceLogView } from './components/ExperienceLogView';
 import { ContactSafeView } from './components/ContactSafeView';
 import { ProjectCaseStudyView } from './components/ProjectCaseStudyView';
+import { Theme25ProjectsView } from './Projects';
 import { ViceCityBackdrop } from './components/ViceCityBackdrop';
 import { soundFX } from './components/SoundEffects';
 
-type ActiveTab = 'start' | 'dossier' | 'skills' | 'projects' | 'experience' | 'achievements' | 'contact';
+type ActiveTab = 'start' | 'dossier' | 'skills' | 'projects' | 'experience' | 'achievements' | 'academy' | 'contact';
 
 export const Home: React.FC<ThemePageProps> = ({
   identity,
@@ -28,10 +29,33 @@ export const Home: React.FC<ThemePageProps> = ({
   skillCategories,
   onNavigate
 }) => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('projects');
+  const getInitialTab = (): ActiveTab => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash.replace('#', '') as ActiveTab;
+      const valid: ActiveTab[] = ['start', 'dossier', 'skills', 'projects', 'experience', 'achievements', 'academy', 'contact'];
+      if (valid.includes(hash)) return hash;
+    }
+    return 'projects';
+  };
+
+  const [activeTab, setActiveTab] = useState<ActiveTab>(getInitialTab);
   const [wantedLevel, setWantedLevel] = useState<number>(5);
   const [selectedHeist, setSelectedHeist] = useState<Project | null>(null);
   const [showMobileRadar, setShowMobileRadar] = useState(false);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash) {
+        const hash = window.location.hash.replace('#', '') as ActiveTab;
+        const valid: ActiveTab[] = ['start', 'dossier', 'skills', 'projects', 'experience', 'achievements', 'academy', 'contact'];
+        if (valid.includes(hash)) {
+          setActiveTab(hash);
+        }
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const menuItems: Array<{ id: ActiveTab; label: string; count?: number }> = [
     { id: 'start', label: 'START GAME' },
@@ -40,6 +64,7 @@ export const Home: React.FC<ThemePageProps> = ({
     { id: 'projects', label: 'PROJECTS', count: projects.length },
     { id: 'experience', label: 'EXPERIENCE', count: experience.length },
     { id: 'achievements', label: 'ACHIEVEMENTS', count: blogPosts.length },
+    { id: 'academy', label: 'ACADEMY' },
     { id: 'contact', label: 'CONTACT' }
   ];
 
@@ -47,6 +72,9 @@ export const Home: React.FC<ThemePageProps> = ({
   const handleTabSwitch = (tab: ActiveTab) => {
     soundFX.playTabShift();
     setActiveTab(tab);
+    if (typeof window !== 'undefined') {
+      window.location.hash = tab;
+    }
   };
 
   const handleOpenHeist = (p: Project) => {
@@ -85,15 +113,27 @@ export const Home: React.FC<ThemePageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeTab, selectedHeist]);
 
+  // If projects is active, render the dedicated Theme 25 Projects showcase page
+  if (activeTab === 'projects') {
+    return (
+      <Theme25ProjectsView
+        projects={projects}
+        onNavigate={onNavigate}
+        activeNav="projects"
+        onSelectNav={(tab) => handleTabSwitch(tab as any)}
+      />
+    );
+  }
+
   // Objective string based on current tab
   const getObjectiveForTab = (): string => {
     switch (activeTab) {
       case 'start': return 'INITIATE OPERATIVE MISSION BRIEFING';
       case 'dossier': return 'INSPECT OPERATIVE BACKGROUND & CV';
       case 'skills': return 'UPGRADE TALENT TREE PROGRESSION';
-      case 'projects': return 'DEEP-DIVE INTO COMPLETED WORKS';
       case 'experience': return 'VERIFY ENTERPRISE SERVICE RECORD';
       case 'achievements': return 'ANALYZE FIELD TRANSMISSIONS';
+      case 'academy': return 'COMPLETE OPERATIVE CREDENTIAL AUDIT';
       case 'contact': return 'ESTABLISH SECURE FREQUENCY';
       default: return 'DEEP-DIVE INTO PRODUCTION PLATFORMS';
     }
@@ -363,14 +403,6 @@ export const Home: React.FC<ThemePageProps> = ({
               <SkillsTreeView skillCategories={skillCategories} />
             )}
 
-            {/* TAB: PROJECTS / CASE STUDIES (From Screenshot 2 & 3) */}
-            {activeTab === 'projects' && (
-              <ProjectCaseStudyView 
-                projects={projects} 
-                onOpenDossier={handleOpenHeist} 
-              />
-            )}
-
             {/* TAB: EXPERIENCE LOG (From Screenshot 1) */}
             {activeTab === 'experience' && (
               <ExperienceLogView experience={experience} />
@@ -424,6 +456,60 @@ export const Home: React.FC<ThemePageProps> = ({
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB: ACADEMY (Technical Mastery & Training) */}
+            {activeTab === 'academy' && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="border-b border-white/10 pb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold tracking-widest border border-emerald-500/30">
+                      TECHNICAL MASTERY // ADVANCED CREDENTIALS
+                    </span>
+                    <span className="text-[10px] text-cyan-400 font-bold flex items-center gap-1">
+                      <Zap className="w-3 h-3 fill-cyan-400" /> GRADUATION LEVEL 100
+                    </span>
+                  </div>
+                  <h2 className="text-2xl sm:text-4xl font-black text-white uppercase font-sans tracking-tight pt-1">
+                    OPERATIVE ACADEMY
+                  </h2>
+                  <p className="text-xs text-gray-400">
+                    Formal engineering background, continuous cloud certifications, and high-intensity architectural training.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-[#0c0e17] border border-cyan-400/40 space-y-3 shadow-xl">
+                    <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-wider block">
+                      DEGREE &amp; INSTITUTION
+                    </span>
+                    <h3 className="text-lg font-black text-white font-sans uppercase">
+                      Bachelor of Computer Applications (BCA)
+                    </h3>
+                    <p className="text-xs text-amber-400 font-mono">
+                      St. Aloysius College • Mangalore, Karnataka
+                    </p>
+                    <p className="text-xs text-gray-300 font-sans leading-relaxed">
+                      Graduated with high distinction in core computer science, relational database engineering, data structures, and distributed systems.
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-[#0c0e17] border border-pink-500/40 space-y-3 shadow-xl">
+                    <span className="text-[10px] text-pink-400 font-bold uppercase tracking-wider block">
+                      PROFESSIONAL TRACK
+                    </span>
+                    <h3 className="text-lg font-black text-white font-sans uppercase">
+                      Fullstack Web &amp; Cloud Infrastructure
+                    </h3>
+                    <p className="text-xs text-emerald-400 font-mono">
+                      Continuous Engineering Mastery • 2024 - 2026
+                    </p>
+                    <p className="text-xs text-gray-300 font-sans leading-relaxed">
+                      Advanced self-directed coursework and verified project deployment in React 19, TypeScript strict mode, Next.js streaming, and DNS hosting migrations.
+                    </p>
+                  </div>
                 </div>
               </div>
             )}

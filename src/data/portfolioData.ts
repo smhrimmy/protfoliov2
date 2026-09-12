@@ -35,8 +35,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Built SupportOS as an intelligent customer support platform engineered to streamline inbound helpdesk workflows. Features multi-channel ticket ingestion, real-time sentiment telemetry, automated macro recommendations, and high-performance customer service ergonomics.",
     coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Full Stack Developer",
     client: "Personal Project",
@@ -47,6 +51,15 @@ export const initialProjects: Project[] = [
     featured: true,
     visibility: "public",
     status: "published",
+    completionPercentage: 85,
+    linesOfCode: 21500,
+    clientSatisfaction: 5,
+    features: [
+      "Personalized Recommendations",
+      "Adaptive UI",
+      "Performance Stats"
+    ],
+    objective_label: "VICE CITY PORT",
     seo: {
       metaTitle: "SupportOS — AI-Native Customer Support Platform",
       metaDescription: "Customer support workbench engineered with ticket triage and real-time response telemetry."
@@ -60,7 +73,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Developed OptiTalent HRMS to modernize internal workforce operations. Features comprehensive employee records management, role-based access control, leave request pipelines, performance evaluations, and clean data visualizations.",
     coverImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Frontend & Full Stack Engineer",
     client: "Workforce Solution",
@@ -71,6 +89,15 @@ export const initialProjects: Project[] = [
     featured: true,
     visibility: "public",
     status: "published",
+    completionPercentage: 92,
+    linesOfCode: 18400,
+    clientSatisfaction: 5,
+    features: [
+      "Automated Attendance Tracking",
+      "Department Analytics",
+      "Role-Based Security"
+    ],
+    objective_label: "DOWNTOWN MAINFRAME",
     seo: {
       metaTitle: "OptiTalent HRMS — Workforce Management Platform",
       metaDescription: "Modern Human Resource Management System for attendance, payroll, and employee onboarding."
@@ -84,7 +111,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Engineered Finverse to provide individuals and founders with an executive financial overview. Features automated transaction categorizations, cashflow forecasts, interactive asset distribution charts, and multi-currency tracking.",
     coverImage: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Full Stack Developer",
     client: "Fintech Platform",
@@ -95,6 +127,15 @@ export const initialProjects: Project[] = [
     featured: true,
     visibility: "public",
     status: "published",
+    completionPercentage: 96,
+    linesOfCode: 32000,
+    clientSatisfaction: 5,
+    features: [
+      "Multi-Currency Ledgers",
+      "Real-Time Net Worth",
+      "Liquidity Forecasting"
+    ],
+    objective_label: "STARFISH ISLAND BANK",
     seo: {
       metaTitle: "Finverse — Financial Operating System",
       metaDescription: "Personal wealth tracking platform with liquidity insights and net worth dashboards."
@@ -108,7 +149,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Built Wealth OS / Cashflow to provide real-time visibility into income streams, monthly recurring expenditures, invoice health, and emergency reserves with zero friction.",
     coverImage: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Web Application Developer",
     date: "2026",
@@ -118,6 +164,15 @@ export const initialProjects: Project[] = [
     featured: true,
     visibility: "public",
     status: "published",
+    completionPercentage: 100,
+    linesOfCode: 14200,
+    clientSatisfaction: 5,
+    features: [
+      "Dynamic Invoice Generation",
+      "Payment Gateway Webhooks",
+      "Tax Reconciliation"
+    ],
+    objective_label: "OCEAN BEACH DATAHUB",
     seo: {
       metaTitle: "Cashflow & Wealth OS — Prajwal DL",
       metaDescription: "Dynamic cashflow management and financial tracking application."
@@ -131,7 +186,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Created FictionZone to offer a smooth, distraction-free reading experience for serialized literature. Features font scaling, theme toggles (dark/sepia/light), chapter progression caching, and tag-based catalog discovery.",
     coverImage: "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Frontend Developer",
     date: "2026",
@@ -141,6 +201,15 @@ export const initialProjects: Project[] = [
     featured: false,
     visibility: "public",
     status: "published",
+    completionPercentage: 90,
+    linesOfCode: 11200,
+    clientSatisfaction: 5,
+    features: [
+      "Distraction-Free Reading Mode",
+      "Chapter Bookmark Cache",
+      "Custom Font Scaling"
+    ],
+    objective_label: "WASHINGTON BEACH ARCHIVE",
     seo: {
       metaTitle: "FictionZone — Digital Reading Platform",
       metaDescription: "Web novel exploration app with chapter bookmarks and reading customization."
@@ -154,7 +223,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Architected a responsive, touch-first reader application optimized for rapid image loading, pre-fetching next chapter frames, and smooth horizontal/vertical reading modes across all devices.",
     coverImage: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1563089145-599997674d42?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Frontend Engineer",
     date: "2026",
@@ -164,6 +238,15 @@ export const initialProjects: Project[] = [
     featured: false,
     visibility: "public",
     status: "published",
+    completionPercentage: 88,
+    linesOfCode: 15600,
+    clientSatisfaction: 5,
+    features: [
+      "Infinite Frame Pre-Caching",
+      "Touch-Optimized Gestures",
+      "Dynamic Dual-Page Layouts"
+    ],
+    objective_label: "ESCOBAR INTERNATIONAL HUB",
     seo: {
       metaTitle: "MangaReader — High-Performance Reader",
       metaDescription: "Responsive digital manga reader with pre-caching and smooth page navigation."
@@ -177,7 +260,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Built Web Check to provide network administrators and webmasters with rapid insights into domain configurations, Nameservers, A/AAAA records, MX routing, SSL expiration dates, and HTTP response headers.",
     coverImage: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1562813733-b31f71025d54?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1510519138161-584449ad2930?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Full Stack Engineer",
     date: "2026",
@@ -187,6 +275,15 @@ export const initialProjects: Project[] = [
     featured: false,
     visibility: "public",
     status: "published",
+    completionPercentage: 94,
+    linesOfCode: 19800,
+    clientSatisfaction: 5,
+    features: [
+      "Instant Nameserver Lookup",
+      "SSL Handshake Validation",
+      "Header Security Auditing"
+    ],
+    objective_label: "VICE POINT TOWER",
     seo: {
       metaTitle: "Web Check — DNS & SSL Diagnostic Tool",
       metaDescription: "Instant domain inspection, DNS lookup, and SSL certificate verification."
@@ -200,7 +297,12 @@ export const initialProjects: Project[] = [
     caseStudyBody: "Engineered a client-side suite of developer utilities designed for daily productivity. Includes Base64 conversion, URL encoding, JSON format and validate, color palette generators, and timestamp converters.",
     coverImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&auto=format&fit=crop&q=80",
     galleryImages: [
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&auto=format&fit=crop&q=80"
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&auto=format&fit=crop&q=80"
     ],
     role: "Web Developer",
     date: "2026",
@@ -210,6 +312,15 @@ export const initialProjects: Project[] = [
     featured: false,
     visibility: "public",
     status: "published",
+    completionPercentage: 98,
+    linesOfCode: 16700,
+    clientSatisfaction: 5,
+    features: [
+      "Client-Side JSON Parsing",
+      "Multi-Format Encoders",
+      "Live Regex Testing Sandbox"
+    ],
+    objective_label: "LEAF LINKS STATION",
     seo: {
       metaTitle: "WebTool2 — Developer Utility Suite",
       metaDescription: "Fast, client-side developer toolbox for JSON, encoding, regex, and web inspection."
