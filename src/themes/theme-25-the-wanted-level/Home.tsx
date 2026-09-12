@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Terminal, Shield, Target, Award, Briefcase, Calendar, 
+  Play, User, Award, Briefcase, Calendar, 
   ExternalLink, ArrowUpRight, GitBranch, Mail, Send, 
   Check, Star, Sparkles, LogIn, ChevronRight, FileText,
-  DollarSign, Activity, AlertCircle, Compass, Users
+  DollarSign, Activity, AlertCircle, Compass, Users,
+  Zap, Radio, Shield, Target, Layers, LogOut
 } from 'lucide-react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
 import { Project, BlogPost } from '@/types/portfolio';
 import { GameHUD } from './components/GameHUD';
 import { RadarMinimap } from './components/RadarMinimap';
 import { HeistDossierModal } from './components/HeistDossierModal';
+import { SkillsTreeView } from './components/SkillsTreeView';
+import { ExperienceLogView } from './components/ExperienceLogView';
+import { ContactSafeView } from './components/ContactSafeView';
+import { ProjectCaseStudyView } from './components/ProjectCaseStudyView';
+import { ViceCityBackdrop } from './components/ViceCityBackdrop';
 import { soundFX } from './components/SoundEffects';
+
+type ActiveTab = 'start' | 'dossier' | 'skills' | 'projects' | 'experience' | 'achievements' | 'contact';
 
 export const Home: React.FC<ThemePageProps> = ({
   identity,
@@ -20,23 +28,23 @@ export const Home: React.FC<ThemePageProps> = ({
   skillCategories,
   onNavigate
 }) => {
-  const [activeTab, setActiveTab] = useState<'dossier' | 'heists' | 'arsenal' | 'intel' | 'crew' | 'dispatch'>('heists');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('projects');
   const [wantedLevel, setWantedLevel] = useState<number>(5);
   const [selectedHeist, setSelectedHeist] = useState<Project | null>(null);
-  const [contactSent, setContactSent] = useState(false);
   const [showMobileRadar, setShowMobileRadar] = useState(false);
 
-  const tabList: Array<'heists' | 'dossier' | 'arsenal' | 'intel' | 'crew' | 'dispatch'> = [
-    'heists',
-    'dossier',
-    'arsenal',
-    'intel',
-    'crew',
-    'dispatch'
+  const menuItems: Array<{ id: ActiveTab; label: string; count?: number }> = [
+    { id: 'start', label: 'START GAME' },
+    { id: 'dossier', label: 'ABOUT ME' },
+    { id: 'skills', label: 'SKILLS' },
+    { id: 'projects', label: 'PROJECTS', count: projects.length },
+    { id: 'experience', label: 'EXPERIENCE', count: experience.length },
+    { id: 'achievements', label: 'ACHIEVEMENTS', count: blogPosts.length },
+    { id: 'contact', label: 'CONTACT' }
   ];
 
   // Tab switching with tactile sound
-  const handleTabSwitch = (tab: 'dossier' | 'heists' | 'arsenal' | 'intel' | 'crew' | 'dispatch') => {
+  const handleTabSwitch = (tab: ActiveTab) => {
     soundFX.playTabShift();
     setActiveTab(tab);
   };
@@ -46,28 +54,30 @@ export const Home: React.FC<ThemePageProps> = ({
     setSelectedHeist(p);
   };
 
-  // Tactile game keyboard shortcuts (Q/E or Left/Right or 1-6)
+  // Keyboard navigation: Q/E or ArrowLeft/ArrowRight or 1-7, and ESC for menu
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const activeElement = document.activeElement;
       const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA');
       if (isInput || selectedHeist) return;
 
-      if (e.key === 'q' || e.key === 'Q' || e.key === 'ArrowLeft') {
+      if (e.key === 'q' || e.key === 'Q' || e.key === 'ArrowUp') {
         e.preventDefault();
-        const currentIndex = tabList.indexOf(activeTab);
-        const prevIndex = (currentIndex - 1 + tabList.length) % tabList.length;
-        handleTabSwitch(tabList[prevIndex]);
-      } else if (e.key === 'e' || e.key === 'E' || e.key === 'ArrowRight') {
+        const currentIndex = menuItems.findIndex(m => m.id === activeTab);
+        const prevIndex = (currentIndex - 1 + menuItems.length) % menuItems.length;
+        handleTabSwitch(menuItems[prevIndex].id);
+      } else if (e.key === 'e' || e.key === 'E' || e.key === 'ArrowDown') {
         e.preventDefault();
-        const currentIndex = tabList.indexOf(activeTab);
-        const nextIndex = (currentIndex + 1) % tabList.length;
-        handleTabSwitch(tabList[nextIndex]);
-      } else if (['1', '2', '3', '4', '5', '6'].includes(e.key)) {
+        const currentIndex = menuItems.findIndex(m => m.id === activeTab);
+        const nextIndex = (currentIndex + 1) % menuItems.length;
+        handleTabSwitch(menuItems[nextIndex].id);
+      } else if (['1', '2', '3', '4', '5', '6', '7'].includes(e.key)) {
         const num = parseInt(e.key, 10) - 1;
-        if (num >= 0 && num < tabList.length) {
-          handleTabSwitch(tabList[num]);
+        if (num >= 0 && num < menuItems.length) {
+          handleTabSwitch(menuItems[num].id);
         }
+      } else if (e.key === 'Escape') {
+        handleTabSwitch('start');
       }
     };
 
@@ -75,22 +85,25 @@ export const Home: React.FC<ThemePageProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeTab, selectedHeist]);
 
+  // Objective string based on current tab
+  const getObjectiveForTab = (): string => {
+    switch (activeTab) {
+      case 'start': return 'INITIATE OPERATIVE MISSION BRIEFING';
+      case 'dossier': return 'INSPECT OPERATIVE BACKGROUND & CV';
+      case 'skills': return 'UPGRADE TALENT TREE PROGRESSION';
+      case 'projects': return 'DEEP-DIVE INTO COMPLETED WORKS';
+      case 'experience': return 'VERIFY ENTERPRISE SERVICE RECORD';
+      case 'achievements': return 'ANALYZE FIELD TRANSMISSIONS';
+      case 'contact': return 'ESTABLISH SECURE FREQUENCY';
+      default: return 'DEEP-DIVE INTO PRODUCTION PLATFORMS';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#08090f] text-gray-100 font-mono relative overflow-x-hidden selection:bg-[#f59e0b] selection:text-black">
+    <div className="min-h-screen bg-[#080911] text-gray-100 font-mono relative overflow-x-hidden selection:bg-pink-500 selection:text-white">
       
-      {/* Gritty Cinematic Vignette & Scanline Overlay */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-30 opacity-40 mix-blend-overlay"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%)'
-        }}
-      />
-      <div 
-        className="fixed inset-0 pointer-events-none z-30 opacity-10"
-        style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, #000, #000 2px, transparent 2px, transparent 4px)'
-        }}
-      />
+      {/* Authentic Vice City Backdrop: Sunset Skyline, Searchlight & Palm Fronds */}
+      <ViceCityBackdrop activeTab={activeTab} />
 
       {/* Persistent Game Heads-Up Display */}
       <GameHUD 
@@ -98,553 +111,393 @@ export const Home: React.FC<ThemePageProps> = ({
         onWantedLevelChange={setWantedLevel}
         repoCount={36}
         activeArsenal="TYPESCRIPT // REACT 19"
+        currentObjective={getObjectiveForTab()}
+        onBackToMenu={() => handleTabSwitch('start')}
       />
 
-      {/* Main Pause-Menu Container */}
-      <main className="relative z-10 pt-28 pb-36 px-4 sm:px-8 max-w-7xl mx-auto space-y-8">
-        
-        {/* Pause Ribbon & Game Banner */}
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-white/15 pb-4">
-            <div className="flex items-center gap-3">
-              <span className="bg-[#f59e0b] text-black font-black px-3 py-1 text-sm tracking-wider uppercase">
-                PAUSED
-              </span>
-              <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white uppercase font-sans drop-shadow-md">
-                {identity.name}
-              </h1>
-              <span className="hidden md:inline text-xs font-bold text-gray-400 border-l border-white/20 pl-3">
-                {identity.role}
-              </span>
-            </div>
-
-            {/* Quick Admin OS portal */}
-            <button
-              onClick={() => onNavigate('/admin')}
-              className="self-start sm:self-auto px-3.5 py-1.5 rounded bg-black/60 hover:bg-[#f59e0b] text-gray-300 hover:text-black border border-white/20 hover:border-[#f59e0b] text-xs font-bold transition-colors flex items-center gap-1.5 focus:outline-none shadow-md"
-            >
-              <LogIn className="w-3.5 h-3.5" /> ADMIN OS TERMINAL
-            </button>
-          </div>
-
-          {/* Tabbed Pause-Menu Ribbon with Tactical Bumper Controls */}
-          <div className="flex items-center gap-2 border-b border-white/10 pb-1">
-            <button 
-              onClick={() => {
-                const currentIndex = tabList.indexOf(activeTab);
-                const prevIndex = (currentIndex - 1 + tabList.length) % tabList.length;
-                handleTabSwitch(tabList[prevIndex]);
-              }}
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-2 rounded-t-lg bg-black/60 hover:bg-white/10 text-[11px] font-bold text-gray-400 hover:text-white border border-white/10 transition-colors shrink-0 focus:outline-none"
-              title="Previous Section [Q or Left Arrow]"
-            >
-              <span className="bg-white/15 px-1.5 py-0.5 rounded text-[10px] text-[#f59e0b] font-mono font-black">Q</span>
-              <span className="text-[9px] tracking-wider text-gray-400">LB</span>
-            </button>
-
-            <nav aria-label="Pause Menu Tabs" className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none flex-1">
-              {[
-                { id: 'heists', label: 'HEISTS / WORKS', count: projects.length },
-                { id: 'dossier', label: 'OPERATIVE DOSSIER' },
-                { id: 'arsenal', label: 'TECH ARSENAL' },
-                { id: 'intel', label: 'FIELD INTEL', count: blogPosts.length },
-                { id: 'crew', label: 'SYNDICATE CREW' },
-                { id: 'dispatch', label: 'CONTRACT DISPATCH' },
-              ].map((tab, idx) => {
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabSwitch(tab.id as any)}
-                    onMouseEnter={() => soundFX.playMenuTick()}
-                    className={`px-4 py-2.5 rounded-t-lg font-black text-xs sm:text-sm tracking-wider uppercase transition-all whitespace-nowrap focus:outline-none flex items-center gap-2 ${
-                      isActive 
-                        ? 'bg-[#f59e0b] text-black shadow-[0_0_20px_rgba(245,158,11,0.5)] translate-y-[-2px]' 
-                        : 'bg-black/60 text-gray-400 hover:text-white hover:bg-white/10 border border-transparent'
-                    }`}
-                  >
-                    <span className="hidden xl:inline text-[9px] opacity-60 font-mono">[{idx + 1}]</span>
-                    <span>{tab.label}</span>
-                    {tab.count !== undefined && (
-                      <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-bold ${
-                        isActive ? 'bg-black text-[#f59e0b]' : 'bg-white/10 text-gray-400'
-                      }`}>
-                        {tab.count}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </nav>
-
-            <button 
-              onClick={() => {
-                const currentIndex = tabList.indexOf(activeTab);
-                const nextIndex = (currentIndex + 1) % tabList.length;
-                handleTabSwitch(tabList[nextIndex]);
-              }}
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-2 rounded-t-lg bg-black/60 hover:bg-white/10 text-[11px] font-bold text-gray-400 hover:text-white border border-white/10 transition-colors shrink-0 focus:outline-none"
-              title="Next Section [E or Right Arrow]"
-            >
-              <span className="text-[9px] tracking-wider text-gray-400">RB</span>
-              <span className="bg-white/15 px-1.5 py-0.5 rounded text-[10px] text-[#f59e0b] font-mono font-black">E</span>
-            </button>
-          </div>
-        </div>
-
-        {/* ============================================================ */}
-        {/* TAB 1: HEISTS / PROJECTS SHOWCASE                            */}
-        {/* ============================================================ */}
-        {activeTab === 'heists' && (
-          <section className="space-y-6 animate-in fade-in duration-200">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-black text-white uppercase font-sans tracking-wide">
-                  ACTIVE SYNDICATE OPERATIONS ({projects.length})
-                </h2>
-                <p className="text-xs text-gray-400">
-                  Select an operation to review mission architecture, security tier, and declassified execution logs.
+      {/* Main 2-Column Vice City Pause Menu Layout */}
+      <main className="relative z-10 pt-28 pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+          
+          {/* ============================================================ */}
+          {/* LEFT RAIL: VERTICAL PAUSE MENU (From Screenshot 1, 2, 3)     */}
+          {/* ============================================================ */}
+          <aside className="w-full lg:w-72 shrink-0 space-y-4">
+            
+            {/* Brand Masthead: PRAJWAL BUILDS / Portfolio */}
+            <div className="bg-[#0c0e17]/90 border border-white/10 rounded-2xl p-5 shadow-2xl backdrop-blur-md space-y-3">
+              <div className="border-b border-white/10 pb-3">
+                <h1 className="text-2xl font-black text-white uppercase tracking-tight font-sans">
+                  PRAJWAL BUILDS
+                </h1>
+                <span 
+                  className="text-xl text-pink-400 font-serif italic block drop-shadow-[0_0_12px_rgba(244,114,182,0.8)]"
+                  style={{ fontFamily: 'Brush Script MT, cursive, serif' }}
+                >
+                  Portfolio
+                </span>
+                <p className="text-[10px] text-cyan-400 font-mono pt-1">
+                  FULLSTACK SYSTEMS ARCHITECT
                 </p>
               </div>
-              <span className="text-[11px] text-[#f59e0b] bg-[#f59e0b]/10 border border-[#f59e0b]/30 px-3 py-1 rounded font-bold self-start">
-                TOTAL ENTERPRISE VALUATION: $3,500,000+
-              </span>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {projects.map(project => (
-                <div
-                  key={project.id}
-                  onClick={() => handleOpenHeist(project)}
-                  className="group cursor-pointer bg-[#0e111a]/90 border border-white/15 hover:border-[#f59e0b] rounded-xl overflow-hidden shadow-xl transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between"
-                >
-                  {/* Card Art Plate */}
-                  <div className="relative h-44 bg-black/80 overflow-hidden">
-                    <img 
-                      src={project.coverImage} 
-                      alt={project.title}
-                      className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0e111a] via-transparent to-transparent" />
-                    <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
-                      <span className="px-2 py-0.5 rounded bg-black/80 text-[10px] font-bold text-emerald-400 border border-emerald-400/40">
-                        PRODUCTION LIVE
-                      </span>
-                    </div>
-                    <div className="absolute bottom-2.5 right-3 text-right">
-                      <span className="text-[10px] text-gray-400 uppercase font-mono block">Estimated Yield</span>
-                      <span className="text-lg font-black text-[#f59e0b] font-sans drop-shadow-md">
-                        $750,000+
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Card Body */}
-                  <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
-                    <div className="space-y-1.5">
-                      <div className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
-                        ROLE: <span className="text-gray-200">{project.role || 'Lead Engineer'}</span>
-                      </div>
-                      <h3 className="text-lg font-black text-white group-hover:text-[#f59e0b] transition-colors font-sans uppercase">
-                        {project.title}
-                      </h3>
-                      <p className="text-xs text-gray-400 line-clamp-3 leading-relaxed font-sans">
-                        {project.summary}
-                      </p>
-                    </div>
-
-                    <div className="pt-3 border-t border-white/10 space-y-3">
-                      <div className="flex flex-wrap gap-1">
-                        {project.technologies.slice(0, 3).map((tech, i) => (
-                          <span key={i} className="text-[10px] bg-white/5 px-2 py-0.5 rounded text-gray-300 border border-white/5">
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleOpenHeist(project);
-                        }}
-                        className="w-full py-2 rounded bg-white/5 group-hover:bg-[#f59e0b] group-hover:text-black text-xs font-black uppercase transition-colors flex items-center justify-center gap-1.5 border border-white/10 group-hover:border-[#f59e0b]"
-                      >
-                        VIEW MISSION DOSSIER <ArrowUpRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ============================================================ */}
-        {/* TAB 2: OPERATIVE DOSSIER (BIO, CAREER, GITHUB TELEMETRY)      */}
-        {/* ============================================================ */}
-        {activeTab === 'dossier' && (
-          <section className="space-y-6 animate-in fade-in duration-200">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              
-              {/* Operative Mugshot & Stats */}
-              <div className="bg-[#0e111a]/90 border border-white/15 rounded-xl p-6 space-y-5">
-                <div className="space-y-2">
-                  <span className="text-[10px] font-bold text-[#f59e0b] bg-[#f59e0b]/10 px-2 py-0.5 rounded border border-[#f59e0b]/30">
-                    CLASSIFIED FILE: #0076-PDL
-                  </span>
-                  <h3 className="text-2xl font-black text-white uppercase font-sans">
-                    {identity.name}
-                  </h3>
-                  <p className="text-xs text-emerald-400 font-bold">
-                    PRIMARY STACK: TYPESCRIPT / FULLSTACK
-                  </p>
-                </div>
-
-                <div className="h-48 rounded-lg bg-black/60 border border-white/10 overflow-hidden relative flex items-center justify-center">
-                  <img 
-                    src={identity.avatarUrl} 
-                    alt={identity.name}
-                    className="w-full h-full object-cover grayscale contrast-125" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  <div className="absolute bottom-2 left-3 text-[10px] text-gray-300 font-mono">
-                    STATUS: ACTIVE OPERATIVE
-                  </div>
-                </div>
-
-                <div className="space-y-2 text-xs text-gray-300 font-sans leading-relaxed border-t border-white/10 pt-4">
-                  <p>{identity.bio}</p>
-                </div>
-
-                {/* Telemetry Metrics */}
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-                  <div className="p-2.5 rounded bg-black/40 border border-white/5">
-                    <span className="text-[10px] text-gray-500 uppercase block">GitHub Repos</span>
-                    <span className="text-lg font-black text-white">36 Public</span>
-                  </div>
-                  <div className="p-2.5 rounded bg-black/40 border border-white/5">
-                    <span className="text-[10px] text-gray-500 uppercase block">Field SLA</span>
-                    <span className="text-lg font-black text-emerald-400">99.9% Uptime</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Verified Career Timeline */}
-              <div className="lg:col-span-2 bg-[#0e111a]/90 border border-white/15 rounded-xl p-6 space-y-6">
-                <div>
-                  <h3 className="text-xl font-black text-white uppercase font-sans tracking-wide">
-                    VERIFIED SERVICE CHRONOLOGY ({experience.length} ROLES)
-                  </h3>
-                  <p className="text-xs text-gray-400">
-                    Chronological deployment history across enterprise support, frontend engineering, and platform architecture.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  {experience.map(exp => (
-                    <div 
-                      key={exp.id}
-                      className="p-4 rounded-lg bg-black/40 border border-white/10 hover:border-[#f59e0b]/40 transition-colors space-y-2"
+              {/* Vertical Menu Buttons */}
+              <nav aria-label="Game Pause Navigation" className="space-y-1.5">
+                {menuItems.map((item, idx) => {
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleTabSwitch(item.id)}
+                      onMouseEnter={() => soundFX.playMenuTick()}
+                      className={`w-full text-left px-3.5 py-2.5 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between group focus:outline-none ${
+                        isActive
+                          ? 'bg-gradient-to-r from-pink-500/30 to-purple-600/30 border-2 border-pink-500 text-white shadow-[0_0_20px_rgba(236,72,153,0.4)] translate-x-1'
+                          : 'bg-black/50 text-gray-400 hover:text-white hover:bg-white/10 border border-transparent'
+                      }`}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                        <div>
-                          <span className="text-sm font-black text-white uppercase font-sans">{exp.role}</span>
-                          <span className="text-xs text-[#f59e0b] font-bold sm:ml-2">@ {exp.company}</span>
-                        </div>
-                        <span className="text-[11px] text-gray-400 font-mono bg-white/5 px-2 py-0.5 rounded self-start sm:self-auto">
-                          {exp.startDate} – {exp.endDate}
+                      <div className="flex items-center gap-2">
+                        <span className={`text-[9px] font-mono ${isActive ? 'text-pink-400 font-bold' : 'text-gray-600'}`}>
+                          0{idx + 1}
+                        </span>
+                        <span className="font-sans group-hover:text-cyan-300 transition-colors">
+                          {item.label}
                         </span>
                       </div>
 
-                      <p className="text-xs text-gray-300 font-sans leading-relaxed">
-                        {exp.description}
-                      </p>
+                      <div className="flex items-center gap-1.5">
+                        {item.count !== undefined && (
+                          <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
+                            isActive ? 'bg-pink-500 text-black font-bold' : 'bg-white/10 text-gray-500'
+                          }`}>
+                            {item.count}
+                          </span>
+                        )}
+                        <ChevronRight className={`w-3.5 h-3.5 transition-transform ${
+                          isActive ? 'text-pink-400 translate-x-0.5' : 'text-gray-600 opacity-0 group-hover:opacity-100'
+                        }`} />
+                      </div>
+                    </button>
+                  );
+                })}
 
-                      {exp.technologies && exp.technologies.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {exp.technologies.map((t, idx) => (
+                {/* EXIT GAME / ADMIN OS BUTTON */}
+                <button
+                  onClick={() => onNavigate('/admin')}
+                  onMouseEnter={() => soundFX.playMenuTick()}
+                  className="w-full text-left px-3.5 py-2.5 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 border border-white/5 hover:border-amber-500/40 focus:outline-none pt-2 mt-2 border-t"
+                >
+                  <span className="flex items-center gap-2">
+                    <LogOut className="w-3.5 h-3.5 text-amber-400" /> EXIT GAME (ADMIN OS)
+                  </span>
+                  <span className="text-[9px] text-gray-500 font-mono">/admin</span>
+                </button>
+              </nav>
+            </div>
+
+            {/* Tactical Key Controller Tips */}
+            <div className="hidden lg:block bg-black/60 border border-white/10 rounded-xl p-3 text-[9px] text-gray-400 space-y-1">
+              <span className="text-[#f59e0b] font-bold block">TACTICAL CONTROLLER:</span>
+              <div className="flex items-center justify-between">
+                <span>[Q / ↑] PREV SECTION</span>
+                <span className="text-white/30">|</span>
+                <span>[E / ↓] NEXT SECTION</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>[1-7] QUICK LEAP</span>
+                <span className="text-white/30">|</span>
+                <span>[ESC] START MENU</span>
+              </div>
+            </div>
+
+            {/* Tactical Radar for Desktop (Cleanly docked beneath the menu) */}
+            <div className="hidden lg:flex flex-col items-center pt-2">
+              <RadarMinimap 
+                activeSection={activeTab}
+                onWaypointClick={(sec) => handleTabSwitch(sec as any)}
+              />
+            </div>
+
+          </aside>
+
+          {/* ============================================================ */}
+          {/* RIGHT STAGE: CONTEXTUAL SCREEN CONTENT                       */}
+          {/* ============================================================ */}
+          <div className="flex-1 w-full min-w-0 space-y-6">
+
+            {/* TAB: START GAME (Hero Overview) */}
+            {activeTab === 'start' && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                {/* Hero Showcase Diorama Box */}
+                <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#120a1f] via-[#0c0e17] to-black border-2 border-pink-500/40 p-6 sm:p-10 shadow-[0_0_40px_rgba(236,72,153,0.2)]">
+                  {/* Decorative Neon Palm/City Sunset Glow */}
+                  <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-pink-500/20 via-purple-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+                  <div className="relative z-10 max-w-2xl space-y-5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-500/40 text-pink-300 text-xs font-bold tracking-widest">
+                      <Sparkles className="w-3.5 h-3.5 text-pink-400" /> VICE CITY EDITION V2.5
+                    </div>
+
+                    <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase font-sans leading-none">
+                      PRAJWAL DL
+                    </h2>
+
+                    <p className="text-base sm:text-xl text-cyan-300 font-sans font-bold tracking-wide">
+                      Fullstack Systems Architect &bull; Web Performance Advisor
+                    </p>
+
+                    <p className="text-xs sm:text-sm text-gray-300 font-sans leading-relaxed">
+                      Specializing in multi-tenant SaaS engineering, resilient DNS infrastructure, high-contrast reactive interfaces, and mission-critical cloud deployments.
+                    </p>
+
+                    {/* Telemetry Stats Pills */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                      <div className="bg-black/80 p-3 rounded-xl border border-white/10">
+                        <span className="text-[10px] text-gray-400 uppercase block font-bold">Total Operations</span>
+                        <span className="text-xl font-black text-white font-sans">36 REPOSITORIES</span>
+                      </div>
+                      <div className="bg-black/80 p-3 rounded-xl border border-white/10">
+                        <span className="text-[10px] text-gray-400 uppercase block font-bold">Field Reliability</span>
+                        <span className="text-xl font-black text-emerald-400 font-sans">99.9% UPTIME</span>
+                      </div>
+                      <div className="col-span-2 sm:col-span-1 bg-black/80 p-3 rounded-xl border border-white/10">
+                        <span className="text-[10px] text-gray-400 uppercase block font-bold">Valuation</span>
+                        <span className="text-xl font-black text-[#f59e0b] font-sans">$3,600,000</span>
+                      </div>
+                    </div>
+
+                    {/* CTA Buttons */}
+                    <div className="flex flex-wrap items-center gap-3 pt-4">
+                      <button
+                        onClick={() => handleTabSwitch('projects')}
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black text-xs uppercase tracking-widest transition-all shadow-[0_0_25px_rgba(236,72,153,0.5)] hover:scale-105 focus:outline-none flex items-center gap-2"
+                      >
+                        <Play className="w-4 h-4 fill-white" /> LAUNCH PROJECTS &bull; CASE STUDIES
+                      </button>
+
+                      <button
+                        onClick={() => handleTabSwitch('contact')}
+                        className="px-6 py-3 rounded-xl bg-black/80 hover:bg-black text-gray-200 hover:text-white font-bold text-xs uppercase tracking-wider transition-all border border-white/20 hover:border-cyan-400/50 focus:outline-none flex items-center gap-2"
+                      >
+                        <Mail className="w-4 h-4 text-cyan-400" /> CONTACT SAFE
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: ABOUT ME / OPERATIVE DOSSIER */}
+            {activeTab === 'dossier' && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                  {/* Mugshot & Telemetry */}
+                  <div className="lg:col-span-5 bg-[#0c0e17] border border-white/15 rounded-2xl p-6 space-y-4 shadow-xl">
+                    <div className="space-y-1 border-b border-white/10 pb-3">
+                      <span className="text-[10px] font-bold text-pink-400 bg-pink-500/10 px-2.5 py-0.5 rounded border border-pink-500/30">
+                        CLASSIFIED DOSSIER #0076-PDL
+                      </span>
+                      <h3 className="text-2xl font-black text-white uppercase font-sans">
+                        {identity.name}
+                      </h3>
+                      <p className="text-xs text-emerald-400 font-bold">
+                        CLEARANCE: LEVEL 5 // ACTIVE OPERATIVE
+                      </p>
+                    </div>
+
+                    <div className="h-56 rounded-xl bg-black/70 border border-white/10 overflow-hidden relative flex items-center justify-center">
+                      <img 
+                        src={identity.avatarUrl} 
+                        alt={identity.name}
+                        className="w-full h-full object-cover grayscale contrast-125" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                      <div className="absolute bottom-2 left-3 text-[10px] text-cyan-300 font-mono">
+                        LOCATION: BENGALURU, INDIA
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-gray-300 leading-relaxed font-sans">
+                      {identity.bio}
+                    </p>
+                  </div>
+
+                  {/* Operational Background */}
+                  <div className="lg:col-span-7 bg-[#0c0e17] border border-white/15 rounded-2xl p-6 space-y-5 shadow-xl">
+                    <div className="border-b border-white/10 pb-3">
+                      <h3 className="text-xl font-black text-white uppercase font-sans tracking-wide">
+                        OPERATIVE CAPABILITY BRIEFING
+                      </h3>
+                      <p className="text-xs text-gray-400">
+                        Verified competency in designing high-throughput applications, zero-downtime migrations, and enterprise cloud support.
+                      </p>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                        <span className="text-[10px] text-cyan-400 font-bold uppercase">PRIMARY WEAPONRY</span>
+                        <p className="text-sm font-black text-white font-sans">TYPESCRIPT / REACT 19 / NODE.JS / NEXT.JS</p>
+                        <p className="text-xs text-gray-400 font-sans">Type-safe component pipelines, streaming SSR, and modular architectures.</p>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                        <span className="text-[10px] text-pink-400 font-bold uppercase">INFRASTRUCTURE &amp; CLOUD</span>
+                        <p className="text-sm font-black text-white font-sans">AWS / DOCKER / POSTGRESQL / REDIS</p>
+                        <p className="text-xs text-gray-400 font-sans">Containerized microservices, high-concurrency caching, and cloud DNS routing.</p>
+                      </div>
+
+                      <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                        <span className="text-[10px] text-emerald-400 font-bold uppercase">DIAGNOSTIC TELEMETRY</span>
+                        <p className="text-sm font-black text-white font-sans">DNS MIGRATION / SSL HANDSHAKE / WEB VITALS</p>
+                        <p className="text-xs text-gray-400 font-sans">Author of enterprise hosting runbooks and CDN optimization strategies.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: SKILLS TREE (From Screenshot 1) */}
+            {activeTab === 'skills' && (
+              <SkillsTreeView skillCategories={skillCategories} />
+            )}
+
+            {/* TAB: PROJECTS / CASE STUDIES (From Screenshot 2 & 3) */}
+            {activeTab === 'projects' && (
+              <ProjectCaseStudyView 
+                projects={projects} 
+                onOpenDossier={handleOpenHeist} 
+              />
+            )}
+
+            {/* TAB: EXPERIENCE LOG (From Screenshot 1) */}
+            {activeTab === 'experience' && (
+              <ExperienceLogView experience={experience} />
+            )}
+
+            {/* TAB: ACHIEVEMENTS & INTEL */}
+            {activeTab === 'achievements' && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="border-b border-white/10 pb-4">
+                  <h2 className="text-2xl sm:text-4xl font-black text-white uppercase font-sans tracking-tight">
+                    ACHIEVEMENTS &bull; FIELD INTEL
+                  </h2>
+                  <p className="text-xs text-gray-400">
+                    Declassified technical articles, platform performance certifications, and verified credentials.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {blogPosts.map(post => (
+                    <div 
+                      key={post.id}
+                      onClick={() => onNavigate(`/blog/${post.slug}`)}
+                      className="group cursor-pointer p-5 rounded-2xl bg-[#0c0e17] border border-white/15 hover:border-pink-500/60 transition-all duration-200 flex flex-col justify-between space-y-4 shadow-xl"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-[10px] text-gray-400 font-mono">
+                          <span className="text-pink-400 font-bold uppercase">{post.category}</span>
+                          <span>{post.readingTimeMinutes || 4} MIN READ</span>
+                        </div>
+
+                        <h3 className="text-lg font-black text-white group-hover:text-cyan-300 transition-colors font-sans uppercase">
+                          {post.title}
+                        </h3>
+
+                        <p className="text-xs text-gray-400 font-sans line-clamp-3 leading-relaxed">
+                          {post.excerpt}
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+                        <div className="flex flex-wrap gap-1">
+                          {post.tags.slice(0, 2).map((t, idx) => (
                             <span key={idx} className="text-[10px] bg-white/5 text-gray-400 px-2 py-0.5 rounded">
-                              {t}
+                              #{t}
                             </span>
                           ))}
                         </div>
-                      )}
+                        <span className="text-pink-400 text-[11px] font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                          READ INTEL &rarr;
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
+            )}
 
-            </div>
-          </section>
-        )}
+            {/* TAB: CONTACT SAFE (From Screenshot 1) */}
+            {activeTab === 'contact' && (
+              <ContactSafeView />
+            )}
 
-        {/* ============================================================ */}
-        {/* TAB 3: TECH ARSENAL (SKILLS WEAPON WHEEL)                     */}
-        {/* ============================================================ */}
-        {activeTab === 'arsenal' && (
-          <section className="space-y-6 animate-in fade-in duration-200">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-white uppercase font-sans tracking-wide">
-                OPERATIONAL WEAPONRY &amp; STACK ARSENAL
-              </h2>
-              <p className="text-xs text-gray-400">
-                Core technical proficiencies categorized by discipline with verified competency ratings.
-              </p>
-            </div>
+            {/* Bottom Right Quote (from Screenshot 1, 2, 3) */}
+            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-xs text-gray-500 font-mono">
+                SECURE TERMINAL BENGALURU &bull; ENCRYPTED TRANSMISSION
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {skillCategories.map(cat => (
-                <div 
-                  key={cat.id} 
-                  className="bg-[#0e111a]/90 border border-white/15 rounded-xl p-5 space-y-4 shadow-lg"
+              <div className="text-right space-y-0.5">
+                <p 
+                  className="text-sm sm:text-base text-pink-300 font-serif italic drop-shadow-[0_0_12px_rgba(244,114,182,0.8)]"
+                  style={{ fontFamily: 'Brush Script MT, cursive, serif' }}
                 >
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                    <h3 className="text-sm font-black text-[#f59e0b] uppercase tracking-wider font-sans">
-                      {cat.category}
-                    </h3>
-                    <span className="text-[10px] text-gray-500 font-mono">{cat.skills.length} ARMS</span>
-                  </div>
-
-                  <div className="space-y-3">
-                    {cat.skills.map((skill, idx) => (
-                      <div key={idx} className="space-y-1">
-                        <div className="flex items-center justify-between text-xs font-mono">
-                          <span className="text-gray-200 font-bold">{skill.name}</span>
-                          <span className="text-emerald-400 font-bold">{skill.level || 90}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-black/60 rounded-xs overflow-hidden border border-white/10">
-                          <div 
-                            className="h-full bg-gradient-to-r from-amber-500 to-emerald-400"
-                            style={{ width: `${skill.level || 90}%` }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ============================================================ */}
-        {/* TAB 4: FIELD INTEL (BLOG / DISPATCHES)                       */}
-        {/* ============================================================ */}
-        {activeTab === 'intel' && (
-          <section className="space-y-6 animate-in fade-in duration-200">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-white uppercase font-sans tracking-wide">
-                INTERCEPTED FIELD DISPATCHES ({blogPosts.length})
-              </h2>
-              <p className="text-xs text-gray-400">
-                Declassified technical transmissions on fullstack architecture, system resilience, and creator engineering.
-              </p>
+                  &ldquo;Code is my weapon. Creativity is my world.&rdquo;
+                </p>
+                <span className="text-xs text-[#f59e0b] font-mono tracking-widest block font-bold">
+                  &mdash; Prajwal
+                </span>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {blogPosts.map(post => (
-                <div 
-                  key={post.id}
-                  onClick={() => onNavigate(`/blog/${post.slug}`)}
-                  className="group cursor-pointer p-5 rounded-xl bg-[#0e111a]/90 border border-white/15 hover:border-[#f59e0b] transition-all duration-200 flex flex-col justify-between space-y-4"
-                >
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-[10px] text-gray-400 font-mono">
-                      <span className="text-[#f59e0b] font-bold uppercase">{post.category}</span>
-                      <span>{post.readingTimeMinutes || 4} MIN READ</span>
-                    </div>
+          </div>
 
-                    <h3 className="text-lg font-black text-white group-hover:text-[#f59e0b] transition-colors font-sans uppercase">
-                      {post.title}
-                    </h3>
-
-                    <p className="text-xs text-gray-400 font-sans line-clamp-3 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
-                    <div className="flex flex-wrap gap-1">
-                      {post.tags.slice(0, 2).map((t, idx) => (
-                        <span key={idx} className="text-[10px] bg-white/5 text-gray-400 px-2 py-0.5 rounded">
-                          #{t}
-                        </span>
-                      ))}
-                    </div>
-                    <span className="text-[#f59e0b] text-[11px] font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                      READ INTEL →
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ============================================================ */}
-        {/* TAB 5: SYNDICATE CREW (TESTIMONIALS & ENDORSEMENTS)          */}
-        {/* ============================================================ */}
-        {activeTab === 'crew' && (
-          <section className="space-y-6 animate-in fade-in duration-200">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-black text-white uppercase font-sans tracking-wide">
-                SYNDICATE REPUTATION &amp; ENDORSEMENTS
-              </h2>
-              <p className="text-xs text-gray-400">
-                Verified client and collaborator statements regarding platform delivery, code quality, and operational reliability.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {[
-                {
-                  quote: "Prajwal engineered our entire multi-tenant operations hub with zero downtime. His architectural foresight saved us months of rework.",
-                  author: "Enterprise Operations Lead",
-                  firm: "Tier-1 SaaS Platform",
-                  rating: 5
-                },
-                {
-                  quote: "Fastest problem-solver I've worked with. Delivered our mission-critical HRMS suite on time and with 100% test coverage.",
-                  author: "Product Director",
-                  firm: "Fintech Venture",
-                  rating: 5
-                }
-              ].map((item, idx) => (
-                <div key={idx} className="p-5 rounded-xl bg-[#0e111a]/90 border border-white/15 space-y-3">
-                  <div className="flex items-center gap-1 text-[#f59e0b]">
-                    {[...Array(item.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-[#f59e0b]" />
-                    ))}
-                  </div>
-                  <p className="text-xs sm:text-sm text-gray-300 font-sans italic leading-relaxed">
-                    &ldquo;{item.quote}&rdquo;
-                  </p>
-                  <div className="pt-2 border-t border-white/10 text-xs font-mono">
-                    <span className="text-white font-bold block">{item.author}</span>
-                    <span className="text-gray-500 text-[10px]">{item.firm}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ============================================================ */}
-        {/* TAB 6: CONTRACT DISPATCH (CONTACT)                           */}
-        {/* ============================================================ */}
-        {activeTab === 'dispatch' && (
-          <section className="space-y-6 animate-in fade-in duration-200 max-w-2xl mx-auto">
-            <div className="text-center space-y-1">
-              <h2 className="text-xl sm:text-3xl font-black text-white uppercase font-sans tracking-wide">
-                INITIATE CONTRACT DISPATCH
-              </h2>
-              <p className="text-xs text-gray-400 font-mono">
-                Direct encrypted transmission channel to Prajwal DL.
-              </p>
-            </div>
-
-            <div className="bg-[#0e111a]/95 border border-[#f59e0b]/40 rounded-xl p-6 sm:p-8 space-y-5 shadow-2xl">
-              {contactSent ? (
-                <div className="text-center py-8 space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
-                    <Check className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white uppercase">TRANSMISSION RECEIVED</h3>
-                  <p className="text-xs text-gray-400">
-                    The operative will review your mission brief and dispatch a response within 24 hours.
-                  </p>
-                </div>
-              ) : (
-                <form 
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    soundFX.playCashChime();
-                    setContactSent(true);
-                  }}
-                  className="space-y-4 text-xs font-mono"
-                >
-                  <div className="space-y-1.5">
-                    <label className="text-gray-300 font-bold uppercase">Contractor / Syndicate Name</label>
-                    <input 
-                      required
-                      type="text" 
-                      placeholder="e.g. Acme Corp / Alex Mercer" 
-                      className="w-full p-3 rounded bg-black/60 border border-white/15 focus:border-[#f59e0b] text-white focus:outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-gray-300 font-bold uppercase">Secure Frequency (Email)</label>
-                    <input 
-                      required
-                      type="email" 
-                      placeholder="e.g. alex@acmecorp.com" 
-                      className="w-full p-3 rounded bg-black/60 border border-white/15 focus:border-[#f59e0b] text-white focus:outline-none"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-gray-300 font-bold uppercase">Mission Scope &amp; Target Valuation</label>
-                    <textarea 
-                      required
-                      rows={4}
-                      placeholder="Describe target system architecture, timeline, and projected budget..." 
-                      className="w-full p-3 rounded bg-black/60 border border-white/15 focus:border-[#f59e0b] text-white focus:outline-none leading-relaxed"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-3.5 rounded bg-[#f59e0b] hover:bg-[#d97706] text-black font-black text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.4)] focus:outline-none"
-                  >
-                    <Send className="w-4 h-4" /> TRANSMIT CONTRACT BRIEFING
-                  </button>
-                </form>
-              )}
-            </div>
-          </section>
-        )}
-
+        </div>
       </main>
 
-      {/* Docked GPS Radar Minimap in Bottom-Left */}
-      <aside aria-label="Tactical Radar" className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40">
-        <div className="hidden sm:block">
-          <RadarMinimap 
-            activeSection={activeTab}
-            onWaypointClick={(sec) => handleTabSwitch(sec as any)}
-          />
-        </div>
-        <div className="sm:hidden">
-          {showMobileRadar ? (
-            <div className="space-y-2 bg-black/90 p-2 rounded-xl border border-[#f59e0b]/40 shadow-2xl">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-[#f59e0b] font-bold">TACTICAL RADAR</span>
-                <button
-                  onClick={() => setShowMobileRadar(false)}
-                  className="px-2 py-0.5 rounded bg-white/10 text-[10px] text-gray-300 font-bold"
-                >
-                  ✕ CLOSE
-                </button>
-              </div>
-              <RadarMinimap 
-                activeSection={activeTab}
-                onWaypointClick={(sec) => {
-                  handleTabSwitch(sec as any);
-                  setShowMobileRadar(false);
-                }}
-              />
+      {/* Floating GPS Radar for Mobile / Tablet Devices */}
+      <aside aria-label="Tactical Radar" className="fixed bottom-6 left-4 z-40 lg:hidden">
+        {showMobileRadar ? (
+          <div className="space-y-2 bg-black/95 p-2.5 rounded-2xl border border-pink-500/50 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] text-pink-400 font-bold">TACTICAL RADAR</span>
+              <button
+                onClick={() => setShowMobileRadar(false)}
+                className="px-2 py-0.5 rounded bg-white/10 text-[10px] text-gray-300 font-bold"
+              >
+                ✕ CLOSE
+              </button>
             </div>
-          ) : (
-            <button
-              onClick={() => setShowMobileRadar(true)}
-              className="px-3 py-1.5 rounded-full bg-black/90 hover:bg-black text-[10px] text-sky-400 border border-sky-400/50 font-bold shadow-xl flex items-center gap-1.5 backdrop-blur-md"
-            >
-              <Compass className="w-3.5 h-3.5 animate-spin" /> GPS RADAR
-            </button>
-          )}
-        </div>
+            <RadarMinimap 
+              activeSection={activeTab}
+              onWaypointClick={(sec) => {
+                handleTabSwitch(sec as any);
+                setShowMobileRadar(false);
+              }}
+            />
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowMobileRadar(true)}
+            className="px-3.5 py-2 rounded-full bg-black/90 hover:bg-black text-[10px] text-cyan-400 border border-cyan-400/50 font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)] flex items-center gap-1.5 backdrop-blur-md"
+          >
+            <Compass className="w-3.5 h-3.5 animate-spin" /> GPS RADAR
+          </button>
+        )}
       </aside>
+
+      {/* Persistent Bottom Vice City Ticker Bar */}
+      <footer className="fixed bottom-0 left-0 right-0 z-30 bg-black/95 border-t border-white/10 px-4 py-1.5 text-center text-[9px] sm:text-[10px] text-gray-400 font-mono tracking-widest select-none backdrop-blur-md">
+        <span className="text-pink-400 font-bold">VICE CITY INSPIRED</span>
+        <span className="mx-2 text-white/20">&bull;</span>
+        <span className="text-cyan-400 font-bold">BUILD DIFFERENT</span>
+        <span className="mx-2 text-white/20">&bull;</span>
+        <span className="text-[#f59e0b] font-bold">STAY LEGENDARY</span>
+        <span className="mx-2 text-white/20 hidden sm:inline">&bull;</span>
+        <span className="text-gray-500 hidden sm:inline">PORTFOLIO COMPILATION V2.5</span>
+      </footer>
 
       {/* Heist Dossier Mission Modal */}
       <HeistDossierModal

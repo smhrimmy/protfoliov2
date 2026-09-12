@@ -326,3 +326,15 @@
 .stage-admin-scope .border-blue-500\/30 {
   border-color: rgba(173, 49, 77, 0.3) !important;
 }
+
+@keyframes searchlight {
+  0% {
+    transform: rotate(-28deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(-28deg);
+  }
+}

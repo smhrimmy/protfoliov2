@@ -71,7 +71,8 @@ export function App() {
   const [booting, setBooting] = useState(true);
   const [switchingThemeId, setSwitchingThemeId] = useState<string | null>(null);
   const [currentRoute, setCurrentRoute] = useState(window.location.pathname || '/');
-  const [activeThemeId, setActiveThemeId] = useState(mockStorage.getActiveTheme());
+  const queryTheme = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('theme') : null;
+  const [activeThemeId, setActiveThemeId] = useState(queryTheme || mockStorage.getActiveTheme());
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [, startTransition] = useTransition();
 
