@@ -13,6 +13,11 @@ import { ContactSafeView } from './components/ContactSafeView';
 import { Theme25ProjectsView } from './Projects';
 import { ViceCityBackdrop } from './components/ViceCityBackdrop';
 import { HeroStartGameView } from './components/HeroStartGameView';
+import { BootScreen } from './components/BootScreen';
+import { WeatherOverlay } from './components/WeatherOverlay';
+import { DustOverlay } from './components/DustOverlay';
+import { MissionToast } from './components/MissionToast';
+import { MobilePhone } from './components/MobilePhone';
 import { soundFX } from './components/SoundEffects';
 import { useTheme25Era, Theme25EraProvider } from './context/Theme25EraContext';
 import { MotionGrid, MotionCard } from '@/animations';
@@ -42,6 +47,49 @@ const HomeContent: React.FC<ThemePageProps> = ({
   const [wantedLevel, setWantedLevel] = useState<number>(5);
   const [selectedHeist, setSelectedHeist] = useState<Project | null>(null);
   const [showMobileRadar, setShowMobileRadar] = useState(false);
+  const [isBooting, setIsBooting] = useState<boolean>(true);
+  const [showMissionToast, setShowMissionToast] = useState<boolean>(false);
+  const [missionToastMsg, setMissionToastMsg] = useState<string>('Intel Gathered: Case Study Unlocked');
+  const [activeCheat, setActiveCheat] = useState<string>('');
+  const [cheatMessage, setCheatMessage] = useState<string>('');
+
+  // Cheat Codes listener (miamivice, matrix, drunk, clear)
+  useEffect(() => {
+    let buffer = '';
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement;
+      const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA');
+      if (isInput) return;
+      if (e.key.length !== 1) return;
+
+      buffer += e.key.toLowerCase();
+      if (buffer.length > 20) buffer = buffer.slice(-20);
+
+      const triggerCheat = (code: string, filterClass: string, msg: string) => {
+        if (buffer.endsWith(code)) {
+          soundFX.playCashChime();
+          setActiveCheat(filterClass);
+          setCheatMessage(`CHEAT ACTIVATED: ${msg}`);
+          buffer = '';
+        }
+      };
+
+      triggerCheat('miamivice', 'hue-rotate-90 saturate-200', 'COLOR MADNESS');
+      triggerCheat('matrix', 'invert brightness-125 contrast-150', 'SYSTEM HACKED');
+      triggerCheat('drunk', 'rotate-2 scale-105', 'INTOXICATED');
+      triggerCheat('clear', '', 'CHEATS DISABLED');
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (cheatMessage) {
+      const timer = setTimeout(() => setCheatMessage(''), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [cheatMessage]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -132,11 +180,36 @@ const HomeContent: React.FC<ThemePageProps> = ({
     }
   };
 
+  if (isBooting) {
+    return <BootScreen onComplete={() => setIsBooting(false)} />;
+  }
+
   return (
-    <div className="min-h-screen bg-[#080911] text-gray-100 font-mono relative overflow-x-hidden selection:bg-pink-500 selection:text-white">
+    <div className={`min-h-screen bg-[#080911] text-gray-100 font-mono relative overflow-x-hidden selection:bg-pink-500 selection:text-white transition-all duration-700 ${activeCheat}`}>
       
+      {/* Interactive Weather Canvas Overlay (Rain / Heat Haze Dust / Fog) */}
+      <WeatherOverlay />
+
+      {/* Floating Dust / Static Overlay */}
+      <DustOverlay />
+
       {/* Authentic Vice City Backdrop: Sunset Skyline, Searchlight & Palm Fronds */}
       <ViceCityBackdrop activeTab={activeTab} />
+
+      {/* Cheat Activated Message Banner */}
+      {cheatMessage && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[110] bg-black/90 px-6 py-2 rounded-xl border-2 border-amber-400 pointer-events-none animate-pulse shadow-2xl backdrop-blur-md">
+          <p className="font-sans font-black text-xl text-amber-400 tracking-widest uppercase">{cheatMessage}</p>
+        </div>
+      )}
+
+      {/* Mission Toast Notification */}
+      {showMissionToast && (
+        <MissionToast
+          message={missionToastMsg}
+          onComplete={() => setShowMissionToast(false)}
+        />
+      )}
 
       {/* Persistent Game Heads-Up Display */}
       <GameHUD 
@@ -317,7 +390,7 @@ const HomeContent: React.FC<ThemePageProps> = ({
             {activeTab === 'start' && (
               <HeroStartGameView 
                 onStartGame={() => handleTabSwitch('projects')}
-                onExploreSection={(sec) => handleTabSwitch(sec as any)}
+                onExploreSection={(sec: string) => handleTabSwitch(sec as any)}
               />
             )}
 
@@ -623,6 +696,9 @@ const HomeContent: React.FC<ThemePageProps> = ({
           </button>
         )}
       </aside>
+
+      {/* iFruit Mobile Phone Widget */}
+      <MobilePhone />
 
       {/* Heist Dossier Mission Modal */}
       <HeistDossierModal

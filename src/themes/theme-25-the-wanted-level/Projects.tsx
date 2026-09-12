@@ -8,6 +8,8 @@ import { GameHUD } from './components/GameHUD';
 import { ProjectDetailView } from './components/ProjectDetailView';
 import { soundFX } from './components/SoundEffects';
 import { MotionGrid, MotionCard } from '@/animations';
+import { MobilePhone } from './components/MobilePhone';
+import { WeatherOverlay } from './components/WeatherOverlay';
 import { useTheme25Era, Theme25EraProvider } from './context/Theme25EraContext';
 
 interface ProjectsPageProps {
@@ -710,6 +712,12 @@ const Theme25ProjectsContent: React.FC<ProjectsPageProps> = ({
           className="h-[75vh] xl:h-[82vh] w-auto object-contain object-bottom filter drop-shadow-[0_15px_40px_rgba(0,0,0,0.9)] brightness-105 contrast-105"
         />
       </div>
+
+      {/* Weather Canvas Overlay */}
+      <WeatherOverlay />
+
+      {/* iFruit Mobile Phone Widget */}
+      <MobilePhone />
 
       {/* Bottom Right Quote */}
       <div className="fixed bottom-8 right-6 z-30 hidden md:block text-right pointer-events-none select-none">
