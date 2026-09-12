@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme25Era } from '../context/Theme25EraContext';
 
 interface ViceCityBackdropProps {
@@ -7,15 +7,30 @@ interface ViceCityBackdropProps {
 
 export const ViceCityBackdrop: React.FC<ViceCityBackdropProps> = ({ activeTab }) => {
   const { era, tokens } = useTheme25Era();
+  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 30;
+      const y = (e.clientY / window.innerHeight - 0.5) * 15;
+      setMouseOffset({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
       
-      {/* Full-bleed Illustrated Desk & Cityscape Background Art */}
+      {/* Full-bleed Illustrated Desk & Cityscape Background Art with Parallax Shift */}
       <img
         src="/themes/theme-25/background-desk.jpg"
         alt="Vice City Theme 25 Background Art"
-        className="absolute inset-0 w-full h-full object-cover object-right filter contrast-[1.05] brightness-[0.98] opacity-25 lg:opacity-65 transition-opacity duration-300 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-cover object-right filter contrast-[1.05] brightness-[0.98] opacity-25 lg:opacity-65 transition-transform duration-200 ease-out pointer-events-none scale-105"
+        style={{
+          transform: `translate3d(${mouseOffset.x * 1.5}px, ${mouseOffset.y * 1.2}px, 0)`
+        }}
       />
 
       {/* Sky Base Gradient reacting to Era and Active Tab */}
@@ -156,8 +171,13 @@ export const ViceCityBackdrop: React.FC<ViceCityBackdropProps> = ({ activeTab })
         }}
       />
 
-      {/* CHARACTER OVERLAY ILLUSTRATION (Prajwal DL Vice City Style) */}
-      <div className="fixed bottom-0 right-[1%] xl:right-[3%] z-10 pointer-events-none select-none hidden lg:block overflow-hidden max-h-[82vh] transition-all duration-300">
+      {/* CHARACTER OVERLAY ILLUSTRATION (Prajwal DL Vice City Style with Parallax Depth) */}
+      <div 
+        className="fixed bottom-0 right-[1%] xl:right-[3%] z-10 pointer-events-none select-none hidden lg:block overflow-hidden max-h-[82vh] transition-transform duration-200 ease-out"
+        style={{
+          transform: `translate3d(${mouseOffset.x * -0.6}px, ${mouseOffset.y * -0.3}px, 0)`
+        }}
+      >
         <img
           src="/themes/theme-25/character-prajwal.png"
           alt="Prajwal DL Vice City Character Illustration"

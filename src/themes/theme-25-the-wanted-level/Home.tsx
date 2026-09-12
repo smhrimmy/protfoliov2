@@ -14,6 +14,7 @@ import { Theme25ProjectsView } from './Projects';
 import { ViceCityBackdrop } from './components/ViceCityBackdrop';
 import { HeroStartGameView } from './components/HeroStartGameView';
 import { BootScreen } from './components/BootScreen';
+import { ViceCityMaskIntro } from './components/ViceCityMaskIntro';
 import { WeatherOverlay } from './components/WeatherOverlay';
 import { DustOverlay } from './components/DustOverlay';
 import { MissionToast } from './components/MissionToast';
@@ -180,12 +181,26 @@ const HomeContent: React.FC<ThemePageProps> = ({
     }
   };
 
+  const [showMaskIntro, setShowMaskIntro] = useState<boolean>(false);
+
   if (isBooting) {
-    return <BootScreen onComplete={() => setIsBooting(false)} />;
+    return (
+      <BootScreen 
+        onComplete={() => {
+          setIsBooting(false);
+          setShowMaskIntro(true);
+        }} 
+      />
+    );
   }
 
   return (
     <div className={`min-h-screen bg-[#080911] text-gray-100 font-mono relative overflow-x-hidden selection:bg-pink-500 selection:text-white transition-all duration-700 ${activeCheat}`}>
+      
+      {/* SVG Vice City Text Mask Zoom Intro Animation */}
+      {showMaskIntro && (
+        <ViceCityMaskIntro onComplete={() => setShowMaskIntro(false)} />
+      )}
       
       {/* Interactive Weather Canvas Overlay (Rain / Heat Haze Dust / Fog) */}
       <WeatherOverlay />
