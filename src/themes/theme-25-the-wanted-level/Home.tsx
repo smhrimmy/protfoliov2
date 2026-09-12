@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Terminal, Shield, Target, Award, Briefcase, Calendar, 
   ExternalLink, ArrowUpRight, GitBranch, Mail, Send, 
@@ -26,6 +26,15 @@ export const Home: React.FC<ThemePageProps> = ({
   const [contactSent, setContactSent] = useState(false);
   const [showMobileRadar, setShowMobileRadar] = useState(false);
 
+  const tabList: Array<'heists' | 'dossier' | 'arsenal' | 'intel' | 'crew' | 'dispatch'> = [
+    'heists',
+    'dossier',
+    'arsenal',
+    'intel',
+    'crew',
+    'dispatch'
+  ];
+
   // Tab switching with tactile sound
   const handleTabSwitch = (tab: 'dossier' | 'heists' | 'arsenal' | 'intel' | 'crew' | 'dispatch') => {
     soundFX.playTabShift();
@@ -36,6 +45,35 @@ export const Home: React.FC<ThemePageProps> = ({
     soundFX.playHeistSelect();
     setSelectedHeist(p);
   };
+
+  // Tactile game keyboard shortcuts (Q/E or Left/Right or 1-6)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement;
+      const isInput = activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA');
+      if (isInput || selectedHeist) return;
+
+      if (e.key === 'q' || e.key === 'Q' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const currentIndex = tabList.indexOf(activeTab);
+        const prevIndex = (currentIndex - 1 + tabList.length) % tabList.length;
+        handleTabSwitch(tabList[prevIndex]);
+      } else if (e.key === 'e' || e.key === 'E' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const currentIndex = tabList.indexOf(activeTab);
+        const nextIndex = (currentIndex + 1) % tabList.length;
+        handleTabSwitch(tabList[nextIndex]);
+      } else if (['1', '2', '3', '4', '5', '6'].includes(e.key)) {
+        const num = parseInt(e.key, 10) - 1;
+        if (num >= 0 && num < tabList.length) {
+          handleTabSwitch(tabList[num]);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeTab, selectedHeist]);
 
   return (
     <div className="min-h-screen bg-[#08090f] text-gray-100 font-mono relative overflow-x-hidden selection:bg-[#f59e0b] selection:text-black">
@@ -89,40 +127,69 @@ export const Home: React.FC<ThemePageProps> = ({
             </button>
           </div>
 
-          {/* Tabbed Pause-Menu Ribbon */}
-          <nav aria-label="Pause Menu Tabs" className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none border-b border-white/10">
-            {[
-              { id: 'heists', label: 'HEISTS / WORKS', count: projects.length },
-              { id: 'dossier', label: 'OPERATIVE DOSSIER' },
-              { id: 'arsenal', label: 'TECH ARSENAL' },
-              { id: 'intel', label: 'FIELD INTEL', count: blogPosts.length },
-              { id: 'crew', label: 'SYNDICATE CREW' },
-              { id: 'dispatch', label: 'CONTRACT DISPATCH' },
-            ].map(tab => {
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => handleTabSwitch(tab.id as any)}
-                  onMouseEnter={() => soundFX.playMenuTick()}
-                  className={`px-4 py-2.5 rounded-t-lg font-black text-xs sm:text-sm tracking-wider uppercase transition-all whitespace-nowrap focus:outline-none flex items-center gap-2 ${
-                    isActive 
-                      ? 'bg-[#f59e0b] text-black shadow-[0_0_20px_rgba(245,158,11,0.5)] translate-y-[-2px]' 
-                      : 'bg-black/60 text-gray-400 hover:text-white hover:bg-white/10 border border-transparent'
-                  }`}
-                >
-                  <span>{tab.label}</span>
-                  {tab.count !== undefined && (
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-bold ${
-                      isActive ? 'bg-black text-[#f59e0b]' : 'bg-white/10 text-gray-400'
-                    }`}>
-                      {tab.count}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
+          {/* Tabbed Pause-Menu Ribbon with Tactical Bumper Controls */}
+          <div className="flex items-center gap-2 border-b border-white/10 pb-1">
+            <button 
+              onClick={() => {
+                const currentIndex = tabList.indexOf(activeTab);
+                const prevIndex = (currentIndex - 1 + tabList.length) % tabList.length;
+                handleTabSwitch(tabList[prevIndex]);
+              }}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-2 rounded-t-lg bg-black/60 hover:bg-white/10 text-[11px] font-bold text-gray-400 hover:text-white border border-white/10 transition-colors shrink-0 focus:outline-none"
+              title="Previous Section [Q or Left Arrow]"
+            >
+              <span className="bg-white/15 px-1.5 py-0.5 rounded text-[10px] text-[#f59e0b] font-mono font-black">Q</span>
+              <span className="text-[9px] tracking-wider text-gray-400">LB</span>
+            </button>
+
+            <nav aria-label="Pause Menu Tabs" className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none flex-1">
+              {[
+                { id: 'heists', label: 'HEISTS / WORKS', count: projects.length },
+                { id: 'dossier', label: 'OPERATIVE DOSSIER' },
+                { id: 'arsenal', label: 'TECH ARSENAL' },
+                { id: 'intel', label: 'FIELD INTEL', count: blogPosts.length },
+                { id: 'crew', label: 'SYNDICATE CREW' },
+                { id: 'dispatch', label: 'CONTRACT DISPATCH' },
+              ].map((tab, idx) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabSwitch(tab.id as any)}
+                    onMouseEnter={() => soundFX.playMenuTick()}
+                    className={`px-4 py-2.5 rounded-t-lg font-black text-xs sm:text-sm tracking-wider uppercase transition-all whitespace-nowrap focus:outline-none flex items-center gap-2 ${
+                      isActive 
+                        ? 'bg-[#f59e0b] text-black shadow-[0_0_20px_rgba(245,158,11,0.5)] translate-y-[-2px]' 
+                        : 'bg-black/60 text-gray-400 hover:text-white hover:bg-white/10 border border-transparent'
+                    }`}
+                  >
+                    <span className="hidden xl:inline text-[9px] opacity-60 font-mono">[{idx + 1}]</span>
+                    <span>{tab.label}</span>
+                    {tab.count !== undefined && (
+                      <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-bold ${
+                        isActive ? 'bg-black text-[#f59e0b]' : 'bg-white/10 text-gray-400'
+                      }`}>
+                        {tab.count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </nav>
+
+            <button 
+              onClick={() => {
+                const currentIndex = tabList.indexOf(activeTab);
+                const nextIndex = (currentIndex + 1) % tabList.length;
+                handleTabSwitch(tabList[nextIndex]);
+              }}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-2 rounded-t-lg bg-black/60 hover:bg-white/10 text-[11px] font-bold text-gray-400 hover:text-white border border-white/10 transition-colors shrink-0 focus:outline-none"
+              title="Next Section [E or Right Arrow]"
+            >
+              <span className="text-[9px] tracking-wider text-gray-400">RB</span>
+              <span className="bg-white/15 px-1.5 py-0.5 rounded text-[10px] text-[#f59e0b] font-mono font-black">E</span>
+            </button>
+          </div>
         </div>
 
         {/* ============================================================ */}

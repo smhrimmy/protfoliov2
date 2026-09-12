@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, ExternalLink, GitBranch, Target, DollarSign, Shield, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { Project } from '@/types/portfolio';
 import { soundFX } from './SoundEffects';
@@ -23,9 +23,25 @@ export const HeistDossierModal: React.FC<HeistDossierModalProps> = ({ project, o
     onClose();
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200 font-mono">
-      <div className="relative w-full max-w-3xl bg-[#0c0e17] border-2 border-[#f59e0b]/50 rounded-xl shadow-[0_0_50px_rgba(245,158,11,0.2)] overflow-hidden text-gray-200">
+    <div 
+      onClick={handleClose}
+      className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200 font-mono"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-3xl bg-[#0c0e17] border-2 border-[#f59e0b]/50 rounded-xl shadow-[0_0_50px_rgba(245,158,11,0.2)] overflow-hidden text-gray-200"
+      >
         
         {/* Top Caution Stripe */}
         <div 
