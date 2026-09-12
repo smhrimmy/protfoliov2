@@ -157,11 +157,11 @@ export const ViceCityBackdrop: React.FC<ViceCityBackdropProps> = ({ activeTab })
       />
 
       {/* CHARACTER OVERLAY ILLUSTRATION (Prajwal DL Vice City Style) */}
-      <div className="fixed bottom-0 right-[2%] xl:right-[4%] z-10 pointer-events-none select-none hidden lg:block overflow-hidden max-h-[82vh] transition-all duration-300">
+      <div className="fixed bottom-0 right-[1%] xl:right-[3%] z-10 pointer-events-none select-none hidden lg:block overflow-hidden max-h-[82vh] transition-all duration-300">
         <img
           src="/themes/theme-25/character-prajwal.png"
           alt="Prajwal DL Vice City Character Illustration"
-          className="h-[75vh] xl:h-[82vh] w-auto object-contain object-bottom filter drop-shadow-[0_15px_40px_rgba(0,0,0,0.9)] brightness-105 contrast-105"
+          className="h-[75vh] xl:h-[82vh] w-auto object-contain object-bottom filter drop-shadow-[0_15px_40px_rgba(0,0,0,0.95)] brightness-110 contrast-105 mix-blend-screen opacity-95"
         />
       </div>
 
