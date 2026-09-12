@@ -107,14 +107,14 @@ const HomeContent: React.FC<ThemePageProps> = ({
   }, []);
 
   const menuItems: Array<{ id: ActiveTab; label: string; count?: number }> = [
-    { id: 'start', label: 'START GAME' },
     { id: 'dossier', label: 'ABOUT ME' },
-    { id: 'skills', label: 'SKILLS' },
+    { id: 'skills', label: 'SKILLS TREE' },
     { id: 'projects', label: 'PROJECTS', count: projects.length },
-    { id: 'experience', label: 'EXPERIENCE', count: experience.length },
+    { id: 'experience', label: 'EXPERIENCE LOG', count: experience.length },
+    { id: 'contact', label: 'CONTACT SAFE' },
+    { id: 'start', label: 'START GAME' },
     { id: 'achievements', label: 'ACHIEVEMENTS', count: blogPosts.length },
-    { id: 'academy', label: 'ACADEMY' },
-    { id: 'contact', label: 'CONTACT' }
+    { id: 'academy', label: 'ACADEMY' }
   ];
 
   const handleTabSwitch = (tab: ActiveTab) => {
@@ -361,7 +361,7 @@ const HomeContent: React.FC<ThemePageProps> = ({
                 <button
                   onClick={() => onNavigate('/admin')}
                   onMouseEnter={() => soundFX.playMenuTick()}
-                  className="w-full text-left px-3.5 py-2.5 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 border border-white/5 hover:border-amber-500/40 focus:outline-none pt-2 mt-2 border-t cursor-pointer"
+                  className="w-full text-left px-3.5 py-2 rounded-xl font-black text-xs tracking-wider uppercase transition-all duration-200 flex items-center justify-between text-gray-400 hover:text-amber-400 hover:bg-amber-500/10 border border-white/5 hover:border-amber-500/40 focus:outline-none pt-2 mt-2 border-t cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     <LogOut className="w-3.5 h-3.5 text-amber-400" /> EXIT GAME (ADMIN OS)
@@ -369,6 +369,14 @@ const HomeContent: React.FC<ThemePageProps> = ({
                   <span className="text-[9px] text-gray-500 font-mono">/admin</span>
                 </button>
               </nav>
+
+              {/* CURRENT OBJECTIVE CALLOUT (As shown in Vercel screenshot) */}
+              <div className="pt-3 border-t border-white/10 space-y-0.5 font-mono">
+                <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider block">CURRENT OBJECTIVE:</span>
+                <span className="text-[10px] sm:text-[11px] text-[#00ffff] font-bold block uppercase tracking-wide drop-shadow-[0_0_8px_rgba(0,255,255,0.8)]">
+                  {getObjectiveForTab()}
+                </span>
+              </div>
             </div>
 
             {/* Tactical Key Controller Tips */}

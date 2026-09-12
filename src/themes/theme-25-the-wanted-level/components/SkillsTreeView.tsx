@@ -11,12 +11,12 @@ export const SkillsTreeView: React.FC<SkillsTreeViewProps> = ({ skillCategories 
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
 
   const defaultSkills = [
-    { name: 'Full-Stack Dev', level: 95, icon: Rocket, category: 'Core Mastery' },
-    { name: 'UI/UX & Design Systems', level: 90, icon: Layout, category: 'Frontend' },
-    { name: 'AI Implementation & LLMs', level: 88, icon: Brain, category: 'AI / ML' },
-    { name: 'Backend Systems & Microservices', level: 92, icon: Cpu, category: 'Backend' },
-    { name: 'Cloud, Docker & DevOps', level: 85, icon: Cloud, category: 'Infra' },
-    { name: 'Performance & Web Vitals', level: 94, icon: Zap, category: 'Optimization' },
+    { name: 'REACT / NEXT.JS', level: 95, icon: Rocket, category: 'Frontend' },
+    { name: 'TYPESCRIPT', level: 90, icon: Layout, category: 'Core' },
+    { name: 'UI/UX DESIGN', level: 85, icon: Brain, category: 'Design' },
+    { name: 'NODE.JS / EXPRESS', level: 80, icon: Cpu, category: 'Backend' },
+    { name: 'AI INTEGRATION', level: 75, icon: Terminal, category: 'AI / ML' },
+    { name: 'CLOUD ARCHITECTURE', level: 70, icon: Cloud, category: 'Infra' },
   ];
 
   const handleSkillClick = (name: string) => {
@@ -29,35 +29,20 @@ export const SkillsTreeView: React.FC<SkillsTreeViewProps> = ({ skillCategories 
       {/* View Header with Telemetry Stats */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-pink-500/20 text-pink-400 text-[10px] font-bold tracking-widest border border-pink-500/30">
-              TACTICAL TALENT TREE
-            </span>
-            <span className="text-[10px] text-cyan-400 font-bold flex items-center gap-1">
-              <Zap className="w-3 h-3 fill-cyan-400" /> MAX LEVEL REACHED
-            </span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-white uppercase font-sans tracking-tight pt-1">
+          <h2 className="text-3xl sm:text-5xl font-black text-[#00ffff] uppercase font-sans tracking-widest drop-shadow-[0_0_15px_rgba(0,255,255,0.8)] pt-1">
             SKILLS TREE
           </h2>
-          <p className="text-xs text-gray-400">
-            Field-tested competencies across fullstack engineering, reactive design systems, and cloud infrastructure.
-          </p>
         </div>
 
         {/* Top Right Mini HUD: Skills Points, Power Up, Mastery */}
-        <div className="flex items-center gap-3 bg-black/80 p-3 rounded-xl border border-white/10 backdrop-blur-md self-start lg:self-auto">
-          <div className="space-y-0.5 border-r border-white/10 pr-3">
+        <div className="flex items-center gap-4 bg-black/80 p-3 rounded-xl border border-purple-500/30 backdrop-blur-md self-start lg:self-auto">
+          <div className="space-y-0.5 border-r border-white/10 pr-4">
             <span className="text-[9px] text-gray-400 uppercase block font-bold">Skills Points</span>
-            <span className="text-base font-black text-emerald-400 font-sans tracking-tight">3,450 XP</span>
-          </div>
-          <div className="space-y-0.5 border-r border-white/10 pr-3">
-            <span className="text-[9px] text-gray-400 uppercase block font-bold">Power Up</span>
-            <span className="text-base font-black text-pink-400 font-sans tracking-tight">MAX OVERDRIVE</span>
+            <span className="text-sm font-black text-pink-400 font-sans tracking-tight">MAX</span>
           </div>
           <div className="space-y-0.5">
             <span className="text-[9px] text-gray-400 uppercase block font-bold">Mastery</span>
-            <span className="text-base font-black text-[#f59e0b] font-sans tracking-tight">98.4%</span>
+            <span className="text-sm font-black text-purple-400 font-sans tracking-tight">LEGENDARY</span>
           </div>
         </div>
       </div>
