@@ -94,6 +94,10 @@ import { Home as T22Home } from './theme-22-animated-mascot/Home';
 import { config as t23Config } from './theme-23-handtracked-lowpoly/theme.config';
 import { Home as T23Home } from './theme-23-handtracked-lowpoly/Home';
 
+// Theme 24 (The Journal - Writing Ledger & Minimal Dev Portfolio)
+import { config as t24Config } from './theme-24-the-journal/theme.config';
+import { Home as T24Home } from './theme-24-the-journal/Home';
+
 export interface ThemeBundle {
   config: ThemeConfig;
   Home: React.ComponentType<ThemePageProps>;
@@ -122,7 +126,8 @@ export const themeRegistry: Record<string, ThemeBundle> = {
   'theme-20-layered-paper-collage': { config: t20Config, Home: T20Home },
   'theme-21-secret-reveal-ai': { config: t21Config, Home: T21Home },
   'theme-22-animated-mascot': { config: t22Config, Home: T22Home },
-  'theme-23-handtracked-lowpoly': { config: t23Config, Home: T23Home }
+  'theme-23-handtracked-lowpoly': { config: t23Config, Home: T23Home },
+  'theme-24-the-journal': { config: t24Config, Home: T24Home }
 };
 
 // ============================================================================

@@ -552,5 +552,29 @@ export const THEME_MANIFESTS: ThemeManifest[] = [
       textMuted: '#808098',
       borderColor: '#7952ff30'
     }
+  },
+  {
+    id: 'theme-24-the-journal',
+    number: '24',
+    name: 'The Journal',
+    category: 'Minimalist',
+    concept: 'Content-first personal writing ledger and developer portfolio inspired by midhunnk.in: clean white paper, quiet margins, italic display wordmark, plain-text nav, and async blog filtering.',
+    capabilities: ['High Contrast'],
+    performance: 'Light',
+    layoutArchitecture: 'journal-writing-ledger',
+    navigationPattern: 'minimal-plaintext-header-nav',
+    gridSystem: 'quiet-margins-article-flow',
+    typographyPairing: 'Playfair Display / Serif + Technical Monospace',
+    signatureInteraction: 'Instant tag-based category filtering, async post loading with bounce indicator, and social excerpt cross-post preview',
+    motionModel: 'Whisper-quiet opacity transitions and delicate underline reveals',
+    uses3D: false,
+    defaultTokens: {
+      bgPrimary: '#ffffff',
+      bgSecondary: '#fafafa',
+      accent: '#111111',
+      textPrimary: '#111111',
+      textMuted: '#666666',
+      borderColor: '#e5e5e3'
+    }
   }
 ];

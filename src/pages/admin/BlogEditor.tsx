@@ -94,6 +94,12 @@ export const BlogEditor: React.FC<BlogEditorProps> = ({ postId, onNavigate }) =>
 
     setTimeout(() => {
       mockStorage.savePost(post);
+      if (post.status === 'published') {
+        const queuedDraft = contentPipelineService.checkAndQueuePostSyndication(post);
+        if (queuedDraft) {
+          console.log('[Creator Pipeline] Auto-queued for LinkedIn syndication via The Journal:', queuedDraft.id);
+        }
+      }
       setSavedStatus('Saved');
       if (isNew) {
         onNavigate('/admin/blog');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Send, Sparkles, Check, X, Clock, AlertCircle, Play, 
-  ExternalLink, Edit, RefreshCw, Layers, ShieldCheck
+  ExternalLink, Edit, RefreshCw, Layers, ShieldCheck, BookOpen, Tag
 } from 'lucide-react';
 import { mockStorage } from '@/data/mockStorage';
 import { AutomationRule, SocialDraft, AutomationLog } from '@/types/automation';
@@ -39,6 +39,23 @@ export const AutomationsPage: React.FC = () => {
     }
   };
 
+  const handleTriggerJournalCrossPost = () => {
+    const posts = mockStorage.getPosts();
+    const journalPost = posts.find(p => 
+      p.tags.some(t => ['career', 'dev notes', 'architecture', 'engineering'].includes(t.toLowerCase()))
+    ) || posts[0];
+
+    if (journalPost) {
+      const targetPost = {
+        ...journalPost,
+        status: 'published' as const,
+        tags: Array.from(new Set([...journalPost.tags, 'Career', 'Dev Notes']))
+      };
+      const draft = contentPipelineService.generateSocialDraft(targetPost, 'post', 'linkedin');
+      setSelectedDraft(draft);
+    }
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-8 text-[#222222] font-sans pb-28">
       {/* Header */}
@@ -56,12 +73,21 @@ export const AutomationsPage: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={handleTriggerTestDraft}
-          className="px-4 py-2.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-2 shadow-sm transition-all"
-        >
-          <Sparkles className="w-4 h-4" /> Generate Test LinkedIn Draft
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={handleTriggerJournalCrossPost}
+            className="px-4 py-2.5 bg-[#1a1a1a] hover:bg-black text-white rounded-full text-xs font-semibold flex items-center gap-2 shadow-sm transition-all"
+            title="Auto-pulls excerpt as LinkedIn copy & links back to The Journal"
+          >
+            <BookOpen className="w-4 h-4 text-amber-400" /> Simulate "The Journal" Cross-Post
+          </button>
+          <button
+            onClick={handleTriggerTestDraft}
+            className="px-4 py-2.5 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-full text-xs font-semibold flex items-center gap-2 shadow-sm transition-all"
+          >
+            <Sparkles className="w-4 h-4" /> Standard Test Draft
+          </button>
+        </div>
       </div>
 
       {/* Telegram-style Approval Queue */}
@@ -89,12 +115,28 @@ export const AutomationsPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {drafts.filter(d => d.status === 'pending_approval').map(draft => (
               <div key={draft.id} className="bg-black/[0.02] p-4 rounded-xl border border-black/8 space-y-3">
-                <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-blue-700 uppercase font-bold">{draft.platform}</span>
+                <div className="flex flex-wrap items-center justify-between gap-1 text-xs font-mono">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-blue-700 uppercase font-bold">{draft.platform}</span>
+                    {draft.renderThemeTarget && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-stone-100 text-stone-700 border border-stone-300 font-sans font-medium">
+                        📖 {draft.renderThemeTarget === 'theme-24-the-journal' ? 'The Journal' : draft.renderThemeTarget}
+                      </span>
+                    )}
+                    {draft.syndicationTriggerTag && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono">
+                        🏷️ {draft.syndicationTriggerTag}
+                      </span>
+                    )}
+                  </div>
                   <span className="text-amber-700 text-[10px] font-bold">AWAITING APPROVAL</span>
                 </div>
                 <p className="text-xs font-bold text-[#1a1a1a]">{draft.hookHeadline}</p>
-                <p className="text-[11px] text-[#44444c] line-clamp-2 leading-relaxed">{draft.summary}</p>
+                <p className="text-[11px] text-[#44444c] line-clamp-3 leading-relaxed whitespace-pre-line">{draft.summary}</p>
+                <div className="flex items-center justify-between text-[10px] text-[#777780] font-mono pt-1">
+                  <span className="truncate max-w-[200px]">Link: {draft.canonicalUrl}</span>
+                  <span>Target: {draft.renderThemeTarget === 'theme-24-the-journal' ? 'The Journal' : (draft.renderThemeTarget || 'Default')}</span>
+                </div>
                 <button
                   onClick={() => setSelectedDraft(draft)}
                   className="w-full py-2 bg-[#ad314d] hover:bg-[#8e253d] text-white rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition-all shadow-xs"

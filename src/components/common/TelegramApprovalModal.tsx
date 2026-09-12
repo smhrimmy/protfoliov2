@@ -66,8 +66,20 @@ export const TelegramApprovalModal: React.FC<TelegramApprovalModalProps> = ({ dr
 
         {/* Telegram Card preview */}
         <div className="bg-[#0b111e] border border-white/5 rounded-xl p-4 mb-4 space-y-3 font-sans">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-blue-400 font-semibold">TARGET: {draft.platform.toUpperCase()}</span>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-mono text-blue-400 font-semibold">TARGET: {draft.platform.toUpperCase()}</span>
+              {draft.renderThemeTarget && (
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-gray-300">
+                  📖 {draft.renderThemeTarget === 'theme-24-the-journal' ? 'The Journal' : draft.renderThemeTarget}
+                </span>
+              )}
+              {draft.syndicationTriggerTag && (
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+                  🏷️ {draft.syndicationTriggerTag}
+                </span>
+              )}
+            </div>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">NEEDS APPROVAL</span>
           </div>
 

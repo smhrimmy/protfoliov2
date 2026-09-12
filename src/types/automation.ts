@@ -25,6 +25,8 @@ export interface SocialDraft {
   hashtags: string[];
   mediaUrl?: string;
   status: 'pending_approval' | 'approved' | 'rejected' | 'published';
+  renderThemeTarget?: string;
+  syndicationTriggerTag?: string;
   createdAt: string;
 }
 
