@@ -68,52 +68,52 @@ export const GameHUD: React.FC<GameHUDProps> = ({
       <div className="max-w-7xl mx-auto flex items-start justify-between gap-3 pointer-events-none">
         
         {/* LEFT HUD: Health, Armor, Weapon Arsenal */}
-        <div className="space-y-1 bg-black/85 p-2 sm:p-2.5 rounded-lg border border-white/10 backdrop-blur-md shadow-xl max-w-[55%] sm:max-w-none pointer-events-auto">
+        <div className="space-y-0.5 sm:space-y-1 bg-black/85 p-1.5 sm:p-2.5 rounded-lg border border-white/10 backdrop-blur-md shadow-xl max-w-[50%] sm:max-w-none pointer-events-auto">
           {/* Operative Callout */}
-          <div className="flex items-center justify-between text-[9px] sm:text-[11px] font-bold text-white/90 gap-2 sm:gap-4">
-            <span className="tracking-wider text-[#f59e0b] truncate">OP: PRAJWAL DL</span>
-            <span className="text-emerald-400 text-[8px] sm:text-[10px] font-mono flex items-center gap-1 shrink-0">
+          <div className="flex items-center justify-between text-[8px] sm:text-[11px] font-bold text-white/90 gap-1.5 sm:gap-4">
+            <span className="tracking-wider text-[#f59e0b] truncate">OP: PRAJWAL</span>
+            <span className="text-emerald-400 text-[7px] sm:text-[10px] font-mono flex items-center gap-1 shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="hidden xs:inline">STATUS: </span>ARMED
             </span>
           </div>
 
           {/* Health, Armor & Stamina Status Bars */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 lg:gap-3">
             {/* Health (Green) */}
-            <div className="flex items-center gap-1">
-              <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-500 fill-emerald-500 shrink-0" />
-              <div className="w-12 sm:w-24 h-2 sm:h-2.5 bg-gray-900 rounded-xs overflow-hidden border border-emerald-500/40">
+            <div className="flex items-center gap-0.5 sm:gap-1">
+              <Heart className="w-2.5 h-2.5 sm:w-3 lg:w-3.5 sm:h-3 lg:h-3.5 text-emerald-500 fill-emerald-500 shrink-0" />
+              <div className="w-8 xs:w-12 sm:w-16 lg:w-24 h-1.5 sm:h-2 lg:h-2.5 bg-gray-900 rounded-xs overflow-hidden border border-emerald-500/40">
                 <div className="h-full bg-emerald-500 w-full animate-pulse shadow-[0_0_8px_#10b981]" />
               </div>
-              <span className="text-[9px] sm:text-[10px] text-emerald-400 font-bold hidden sm:inline">100%</span>
+              <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-emerald-400 font-bold hidden sm:inline">100%</span>
             </div>
 
             {/* Armor (Blue - TypeScript 76.5%) */}
-            <div className="flex items-center gap-1">
-              <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-400 fill-sky-400 shrink-0" />
-              <div className="w-12 sm:w-24 h-2 sm:h-2.5 bg-gray-900 rounded-xs overflow-hidden border border-sky-400/40">
+            <div className="flex items-center gap-0.5 sm:gap-1">
+              <Shield className="w-2.5 h-2.5 sm:w-3 lg:w-3.5 sm:h-3 lg:h-3.5 text-sky-400 fill-sky-400 shrink-0" />
+              <div className="w-8 xs:w-12 sm:w-16 lg:w-24 h-1.5 sm:h-2 lg:h-2.5 bg-gray-900 rounded-xs overflow-hidden border border-sky-400/40">
                 <div className="h-full bg-sky-400 w-[77%] shadow-[0_0_8px_#38bdf8]" />
               </div>
-              <span className="text-[9px] sm:text-[10px] text-sky-400 font-bold hidden sm:inline">77%</span>
+              <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-sky-400 font-bold hidden sm:inline">77%</span>
             </div>
 
             {/* Stamina / Energy Pill */}
-            <div className="hidden md:flex items-center gap-1 bg-pink-500/10 px-1.5 py-0.5 rounded border border-pink-500/30 text-pink-400 text-[9px] font-bold">
+            <div className="hidden lg:flex items-center gap-1 bg-pink-500/10 px-1.5 py-0.5 rounded border border-pink-500/30 text-pink-400 text-[9px] font-bold">
               <Zap className="w-2.5 h-2.5 fill-pink-400" />
               <span>100</span>
             </div>
           </div>
 
           {/* Tactical Weapon / Stack Slot */}
-          <div className="flex items-center justify-between pt-0.5 sm:pt-1 border-t border-white/10 text-[8px] sm:text-[10px] text-gray-400">
-            <span className="text-gray-300 font-bold hidden sm:inline">EQUIPPED:</span>
+          <div className="hidden sm:flex items-center justify-between pt-0.5 sm:pt-1 border-t border-white/10 text-[8px] sm:text-[9px] lg:text-[10px] text-gray-400">
+            <span className="text-gray-300 font-bold">EQUIPPED:</span>
             <span className="text-amber-400 font-mono tracking-wider truncate">{activeArsenal}</span>
           </div>
         </div>
 
         {/* CENTER HUD: 98.4 FM Radio Capsule & Telemetry Ticker */}
-        <div className="hidden md:flex flex-col items-center gap-1 shrink-0 pt-0.5 pointer-events-auto">
+        <div className="hidden lg:flex flex-col items-center gap-1 shrink-0 pt-0.5 pointer-events-auto">
           {/* Radio Station Tuner Capsule */}
           <button 
             onClick={handleRadioClick}
@@ -143,9 +143,9 @@ export const GameHUD: React.FC<GameHUDProps> = ({
         </div>
 
         {/* RIGHT HUD: Cash Counter, Wanted Stars & Time */}
-        <div className="flex flex-col items-end space-y-1 shrink-0 pointer-events-auto">
+        <div className="flex flex-col items-end space-y-0.5 sm:space-y-1 shrink-0 pointer-events-auto">
           {/* Stylized Cash Counter Odometer */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {onBackToMenu && (
               <button
                 onClick={onBackToMenu}
@@ -159,21 +159,21 @@ export const GameHUD: React.FC<GameHUDProps> = ({
 
             <div 
               onClick={() => soundFX.playCashChime()}
-              className="cursor-pointer group flex items-baseline gap-1 bg-black/85 px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-lg border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.2)] backdrop-blur-md hover:border-emerald-400 transition-colors"
+              className="cursor-pointer group flex items-baseline gap-1 bg-black/85 px-2 sm:px-3 lg:px-4 py-0.5 sm:py-1 lg:py-1.5 rounded-lg border border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.2)] backdrop-blur-md hover:border-emerald-400 transition-colors"
               title="Verified GitHub Telemetry Repos Capitalized"
             >
-              <span className="text-base sm:text-2xl font-black text-emerald-400 tracking-tighter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              <span className="text-xs sm:text-base lg:text-2xl font-black text-emerald-400 tracking-tighter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 $
               </span>
-              <span className="text-lg sm:text-3xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-sans">
+              <span className="text-sm sm:text-xl lg:text-3xl font-black text-white tracking-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-sans">
                 {cashAmount}
               </span>
             </div>
           </div>
 
           {/* Wanted Level Stars (Interactive 1-5 Stars) */}
-          <div className="flex items-center gap-0.5 sm:gap-1 bg-black/80 px-2 sm:px-3 py-0.5 sm:py-1 rounded-md border border-white/10 backdrop-blur-md">
-            <span className="text-[8px] sm:text-[10px] text-gray-400 font-bold mr-0.5 sm:mr-1">HEAT:</span>
+          <div className="flex items-center gap-0.5 sm:gap-1 bg-black/80 px-1.5 sm:px-2.5 lg:px-3 py-0.5 sm:py-1 rounded-md border border-white/10 backdrop-blur-md">
+            <span className="text-[7px] sm:text-[9px] lg:text-[10px] text-gray-400 font-bold mr-0.5 sm:mr-1">HEAT:</span>
             {[1, 2, 3, 4, 5].map((starNum) => {
               const isFilled = starNum <= wantedLevel;
               return (
@@ -185,21 +185,21 @@ export const GameHUD: React.FC<GameHUDProps> = ({
                   }`}
                   title={`Wanted Level ${starNum} Stars`}
                 >
-                  <Star className={`w-3.5 h-3.5 sm:w-5 sm:h-5 ${isFilled ? 'fill-[#f59e0b] animate-[pulse_1s_ease-in-out_infinite]' : 'fill-transparent'}`} />
+                  <Star className={`w-2.5 h-2.5 sm:w-3.5 lg:w-5 sm:h-3.5 lg:h-5 ${isFilled ? 'fill-[#f59e0b] animate-[pulse_1s_ease-in-out_infinite]' : 'fill-transparent'}`} />
                 </button>
               );
             })}
           </div>
 
           {/* Current Objective Banner */}
-          <div className="hidden sm:flex items-center gap-1.5 text-[8px] sm:text-[9px] text-gray-300 bg-black/80 px-2.5 py-0.5 rounded border border-pink-500/30 text-right">
+          <div className="hidden lg:flex items-center gap-1.5 text-[8px] sm:text-[9px] text-gray-300 bg-black/80 px-2.5 py-0.5 rounded border border-pink-500/30 text-right">
             <span className="text-pink-400 font-bold tracking-wider">OBJ:</span>
             <span className="truncate max-w-[200px] text-white font-mono">{currentObjective}</span>
           </div>
 
           {/* Time & Audio FX Toggle Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[8px] sm:text-[10px] text-gray-400 bg-black/70 px-2 sm:px-2.5 py-0.5 rounded border border-white/5">
-            <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-400" />
+          <div className="flex items-center gap-1 sm:gap-2 text-[7px] sm:text-[10px] text-gray-400 bg-black/70 px-1.5 sm:px-2.5 py-0.5 rounded border border-white/5">
+            <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-400 hidden xs:inline" />
             <span className="hidden xs:inline">{timeStr}</span>
             <span className="hidden xs:inline text-white/20">|</span>
             <button
@@ -207,7 +207,7 @@ export const GameHUD: React.FC<GameHUDProps> = ({
               className="text-gray-400 hover:text-white transition-colors flex items-center gap-1 focus:outline-none"
               title={isMuted ? 'Unmute Game SFX' : 'Mute Game SFX'}
             >
-              {isMuted ? <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-rose-400" /> : <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" />}
+              {isMuted ? <VolumeX className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-rose-400" /> : <Volume2 className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-emerald-400" />}
               <span>{isMuted ? 'MUTED' : 'SFX'}</span>
             </button>
           </div>

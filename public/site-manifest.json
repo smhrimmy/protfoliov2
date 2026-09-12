@@ -1,0 +1,147 @@
+{
+  "name": "PDL Portfolio OS",
+  "version": "2.5.0",
+  "author": {
+    "name": "Prajwal DL",
+    "role": "Web Advisor & Full Stack Developer",
+    "company": "Unifycx",
+    "location": "Bengaluru, India",
+    "email": "contact@praxel.space",
+    "github": "https://github.com/smhrimmy"
+  },
+  "features": {
+    "themesCount": 25,
+    "projectsCount": 8,
+    "adminConsolePages": 27,
+    "hasWebAudioSFX": true,
+    "hasResponsiveHUD": true,
+    "activeTheme": "theme-25-the-wanted-level"
+  },
+  "routes": {
+    "public": [
+      "/",
+      "/projects",
+      "/about",
+      "/skills",
+      "/experience",
+      "/resume",
+      "/resume/print",
+      "/blog",
+      "/contact",
+      "/search",
+      "/rss.xml",
+      "/llms.txt",
+      "/site-manifest.json"
+    ],
+    "admin": [
+      "/admin",
+      "/admin/dashboard",
+      "/admin/projects",
+      "/admin/blog",
+      "/admin/visual-editor",
+      "/admin/themes",
+      "/admin/automations",
+      "/admin/analytics",
+      "/admin/seo",
+      "/admin/settings"
+    ]
+  },
+  "projects": [
+    {
+      "id": "proj-1",
+      "title": "SupportOS — AI-Native Customer Support OS",
+      "summary": "Multi-tenant support intelligence platform with automated classification, vector triage, and sentiment-aware escalation routing.",
+      "technologies": ["React", "TypeScript", "TensorFlow", "Node.js", "REST APIs"],
+      "liveUrl": "https://frontend-beta-five-hfzyr9ap4o.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/supportos",
+      "completionPercentage": 85,
+      "linesOfCode": 21500,
+      "clientSatisfaction": 5,
+      "objective_label": "VICE CITY PORT"
+    },
+    {
+      "id": "proj-2",
+      "title": "OptiTalent HRMS",
+      "summary": "Enterprise human resource management system featuring biometric attendance integration, automated payroll pipeline, department analytics, and role-based access control.",
+      "technologies": ["TypeScript", "React", "Tailwind CSS", "Node.js", "PostgreSQL"],
+      "liveUrl": "https://optitalent-hrms.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/optitalent-hrms",
+      "completionPercentage": 92,
+      "linesOfCode": 18400,
+      "clientSatisfaction": 5,
+      "objective_label": "DOWNTOWN MAINFRAME"
+    },
+    {
+      "id": "proj-3",
+      "title": "DevFlow Kanban",
+      "summary": "Real-time collaborative engineering project tracker with optimistic updates, sprint burn-down analytics, drag-and-drop workflows, and automated GitHub issue synchronization.",
+      "technologies": ["React", "TypeScript", "Tailwind CSS", "Supabase"],
+      "liveUrl": "https://devflow-kanban.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/devflow-kanban",
+      "completionPercentage": 88,
+      "linesOfCode": 14200,
+      "clientSatisfaction": 5,
+      "objective_label": "STARFISH ISLAND BANK"
+    },
+    {
+      "id": "proj-4",
+      "title": "OmniPulse Analytics",
+      "summary": "High-throughput telemetry dashboard tracking Core Web Vitals (LCP, INP, CLS), distributed API latencies, server error rates, and user session replay streams.",
+      "technologies": ["Next.js", "TypeScript", "ClickHouse", "Tailwind CSS"],
+      "liveUrl": "https://omnipulse-analytics.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/omnipulse-analytics",
+      "completionPercentage": 95,
+      "linesOfCode": 26000,
+      "clientSatisfaction": 5,
+      "objective_label": "OCEAN DRIVE TOWER"
+    },
+    {
+      "id": "proj-5",
+      "title": "CloudShield WAF Engine",
+      "summary": "Distributed Web Application Firewall rule management dashboard with edge rate limiting, geo-blocking policies, and instant DDoS threat mitigation telemetry.",
+      "technologies": ["React", "TypeScript", "Go", "Redis", "Tailwind CSS"],
+      "liveUrl": "https://cloudshield-waf.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/cloudshield-waf",
+      "completionPercentage": 90,
+      "linesOfCode": 22800,
+      "clientSatisfaction": 5,
+      "objective_label": "ESCOBAR AIRPORT RADAR"
+    },
+    {
+      "id": "proj-6",
+      "title": "NextGen Commerce Engine",
+      "summary": "Headless e-commerce storefront with sub-second catalog navigation, predictive algorithmic search, multi-currency checkout, and real-time inventory webhooks.",
+      "technologies": ["React", "TypeScript", "GraphQL", "Stripe", "Node.js"],
+      "liveUrl": "https://nextgen-commerce.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/nextgen-commerce",
+      "completionPercentage": 87,
+      "linesOfCode": 19600,
+      "clientSatisfaction": 5,
+      "objective_label": "NORTH POINT MALL"
+    },
+    {
+      "id": "proj-7",
+      "title": "VectorVault AI Knowledge Base",
+      "summary": "Semantic document retrieval platform utilizing embeddings, hybrid full-text vector reranking, and citation-grounded conversational agent assistance.",
+      "technologies": ["React", "Python", "FastAPI", "Pinecone", "TypeScript"],
+      "liveUrl": "https://vectorvault-ai.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/vectorvault-ai",
+      "completionPercentage": 91,
+      "linesOfCode": 16500,
+      "clientSatisfaction": 5,
+      "objective_label": "WASHINGTON BEACH VAULT"
+    },
+    {
+      "id": "proj-8",
+      "title": "HyperSync Realtime Engine",
+      "summary": "Bidirectional WebSocket synchronization cluster powering multiplayer cursor collaboration, live shared whiteboards, and conflict-free replicated state (CRDTs).",
+      "technologies": ["TypeScript", "Node.js", "WebSockets", "Canvas API", "Redis"],
+      "liveUrl": "https://hypersync-engine.vercel.app",
+      "githubUrl": "https://github.com/smhrimmy/hypersync-engine",
+      "completionPercentage": 94,
+      "linesOfCode": 24100,
+      "clientSatisfaction": 5,
+      "objective_label": "LITTLE HAITI REPEATER"
+    }
+  ]
+}

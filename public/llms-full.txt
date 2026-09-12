@@ -1,0 +1,125 @@
+# PDL Portfolio OS (v2.5) — Comprehensive LLM Machine Specification
+> Full documentation, data models, routes, themes, and engineering architecture for Prajwal DL.
+
+## SECTION 1: CANDIDATE & ARCHITECT PROFILE
+- Name: Prajwal DL
+- Title: Web Advisor & Full Stack Developer
+- Organization: Unifycx (Oct 2024 – Present)
+- Previous: Full Stack Developer Freelance (Jun 2022 – Sep 2024)
+- Education: Bachelor of Engineering (Computer Science), Visvesvaraya Technological University (VTU)
+- Core Competencies:
+  * Frontend: React 19, TypeScript, Tailwind CSS, Next.js, WebGL, Canvas API
+  * Backend & Cloud: Node.js, Python, PostgreSQL, Supabase, Redis, AWS, Vercel
+  * Operations: DNS Migration, SSL Handshakes, Core Web Vitals (LCP, INP, CLS), Enterprise Web Advisory
+- Contact: contact@praxel.space | https://github.com/smhrimmy | https://linkedin.com/in/prajwaldl
+
+## SECTION 2: THEME 25 ("THE WANTED LEVEL") FULL SPECIFICATION
+Theme 25 is an open-world crime game pause-menu interface inspired by 80s neon synthwave and Vice City / Leonida aesthetic.
+- Features:
+  1. Persistent Heads-Up Display (GameHUD):
+     - Left Operative Widget: Health bar (100%), Armor bar (77%), Energy badge (100), Active arsenal slot ('TYPESCRIPT // REACT 19').
+     - Center Radio Widget: Interactive radio capsule cycling between 98.4 WAVE FM, 105.7 FLASH FM, 101.1 FEVER FM, and 94.5 EMOTION FM with audio tuning sound effect and equalizer animation.
+     - Right Cash & Stars Widget: Dynamic cash odometer displaying $36,000,000 for 36 capitalized GitHub repositories, 1 to 5 interactive wanted heat stars with police siren sound effects, and ESC menu trigger.
+     - Bottom-Right Quote: Display serif script quote '"Code is my weapon. Creativity is my world." — Prajwal'.
+     - Bottom Marquee: 'VICE CITY INSPIRED • BUILD DIFFERENT • STAY LEGENDARY • PORTFOLIO COMPILATION V2.5'.
+  2. Projects Showcase Page (`/projects` or `#projects`):
+     - Top Left: 'PROJECTS:' uppercase bold sans with 'Case Studies' in italic pink script directly beneath.
+     - Navigation:
+       * Desktop: Left vertical column with 9 items, active item rendered as filled pink-purple gradient pill with animated chevron '>'.
+       * Mobile: Sleek horizontal scrollable rail with instant 1-tap switching between sections.
+     - Three Stacked Info Cards:
+       * Card 1: Cyan border box with Project ID, Verified Deployment badge, title, tech stack badge icons, Completion %, Lines of Code, and 5-star rating.
+       * Card 2: Pink border box with numbered feature bullets.
+       * Card 3: 2x3 thumbnail gallery matrix and full-width pink pill button 'VIEW LIVE DEMO ›' wired to production URLs.
+     - Tactical Radar:
+       * Vector street grid with location pin and pink dashed route line.
+       * 360-degree radar sweep beam.
+       * Dynamic 'CURRENT OBJECTIVE' label matching per-project target locus.
+     - Background: Full-bleed illustrated character working on architectural model with holographic tablet and neon cityscape outside, cleanly faded into #070912 void. Responsive with ambient opacity on mobile.
+
+## SECTION 3: COMPLETE PROJECTS MANIFEST (8 PROJECTS)
+1. SupportOS — AI-Native Customer Support OS
+   - URL: https://frontend-beta-five-hfzyr9ap4o.vercel.app
+   - Stack: React, TypeScript, TensorFlow, Node.js, REST APIs
+   - Completion: 85% | LOC: 21,500 | Satisfaction: 5/5
+   - Features: Personalized Recommendations, Adaptive UI, Performance Stats
+   - Objective: VICE CITY PORT
+
+2. OptiTalent HRMS
+   - URL: https://optitalent-hrms.vercel.app
+   - Stack: TypeScript, React, Tailwind CSS, Node.js, PostgreSQL
+   - Completion: 92% | LOC: 18,400 | Satisfaction: 5/5
+   - Features: Automated Attendance Tracking, Department Analytics, Role-Based Security
+   - Objective: DOWNTOWN MAINFRAME
+
+3. DevFlow Kanban
+   - URL: https://devflow-kanban.vercel.app
+   - Stack: React, TypeScript, Tailwind CSS, Supabase
+   - Completion: 88% | LOC: 14,200 | Satisfaction: 5/5
+   - Features: Optimistic State Updates, Realtime WebSockets, Sprint Burndown Charts
+   - Objective: STARFISH ISLAND BANK
+
+4. OmniPulse Analytics
+   - URL: https://omnipulse-analytics.vercel.app
+   - Stack: Next.js, TypeScript, ClickHouse, Tailwind CSS
+   - Completion: 95% | LOC: 26,000 | Satisfaction: 5/5
+   - Features: Core Web Vitals Tracking, Session Replay Pipeline, Anomaly Alerting
+   - Objective: OCEAN DRIVE TOWER
+
+5. CloudShield WAF Engine
+   - URL: https://cloudshield-waf.vercel.app
+   - Stack: React, TypeScript, Go, Redis, Tailwind CSS
+   - Completion: 90% | LOC: 22,800 | Satisfaction: 5/5
+   - Features: Edge Rate Limiting, Geo-Fencing Rules, Threat Mitigation Telemetry
+   - Objective: ESCOBAR AIRPORT RADAR
+
+6. NextGen Commerce Engine
+   - URL: https://nextgen-commerce.vercel.app
+   - Stack: React, TypeScript, GraphQL, Stripe, Node.js
+   - Completion: 87% | LOC: 19,600 | Satisfaction: 5/5
+   - Features: Sub-Second Product Filters, Multi-Currency Cart, Webhook Synchronizer
+   - Objective: NORTH POINT MALL
+
+7. VectorVault AI Knowledge Base
+   - URL: https://vectorvault-ai.vercel.app
+   - Stack: React, Python, FastAPI, Pinecone, TypeScript
+   - Completion: 91% | LOC: 16,500 | Satisfaction: 5/5
+   - Features: Hybrid Semantic Search, Citation Verification, Multi-Format Ingestion
+   - Objective: WASHINGTON BEACH VAULT
+
+8. HyperSync Realtime Engine
+   - URL: https://hypersync-engine.vercel.app
+   - Stack: TypeScript, Node.js, WebSockets, Canvas API, Redis
+   - Completion: 94% | LOC: 24,100 | Satisfaction: 5/5
+   - Features: Multiplayer Presence, CRDT Conflict Resolution, High-Throughput Relays
+   - Objective: LITTLE HAITI REPEATER
+
+## SECTION 4: THE 25 ARCHITECTURAL WORLDS (THEMES)
+1. theme-01-minimal-editorial (Developer Portfolio)
+2. theme-02-brutalist (Minimal Designer)
+3. theme-03-cyberpunk-hud (UX/UI Designer Ava Chen)
+4. theme-04-terminal-cli (3D Artist & Motion)
+5. theme-05-galaxy-cosmos-3d (Creative Technologist 3D)
+6. theme-06-bento-showcase (Full Stack Bento Grid)
+7. theme-07-noir-aurora (Northern Lights Glassmorphism)
+8. theme-08-bauhaus-modernist (Geometric Constructivism)
+9. theme-09-retro-desktop-os (90s Draggable Windows OS)
+10. theme-10-horizontal-scrolly (Panoramic Scrollytelling)
+11. theme-11-kinetic-physics-3d (3D Typography Physics)
+12. theme-12-blueprint-drafting (Cyanotype Architectural Grids)
+13. theme-13-swiss-typographic (International Baseline System)
+14. theme-14-split-screen (Dual Independent Columns)
+15. theme-15-neumorphic-soft (Tactile Clay Emboss/Deboss)
+16. theme-16-holographic-matrix (Digital Rain Cascade)
+17. theme-17-newspaper-broadside (Classic Broadsheet Editorial)
+18. theme-18-spatial-canvas (3D Spatial Graph Nodes)
+19. theme-19-prajwal-luxury (Obsidian & Bullion Gold)
+20. theme-20-monochrome-stark (Stark Binary Editorial)
+21. theme-21-cyber-deck (Neon Cyberpunk Terminal)
+22. theme-22-animated-mascot (Vector Mascot with Cursor Tracking)
+23. theme-23-handtracked-lowpoly (3D Portrait with Camera Hand Tracking)
+24. theme-24-the-journal (Clean Paper Writing Ledger)
+25. theme-25-the-wanted-level (Open-World Crime Game HUD Pause Menu)
+
+## SECTION 5: ADMIN OPERATING SYSTEM (27 SECTIONS)
+- Dashboard, Visual Site Editor, Theme Selector, Projects CMS, Blog Markdown Studio, Media Asset Library, Automations (LinkedIn Draft Approval & Social Pipeline), Design System Studio, SEO Suite, Site Analytics, GitHub Hub, AI Workspace, Recruiter Mode, System Health, and Settings.

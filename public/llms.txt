@@ -1,33 +1,112 @@
-# PDL Portfolio OS (v2) - Machine Discovery & LLM Interface
-> A production-grade frontend-first portfolio management operating system for Prajwal DL.
+# PDL Portfolio OS (v2.5) — Machine Discovery & LLM Interface
+> A production-grade frontend-first portfolio operating system for Prajwal DL (Web Advisor & Full Stack Developer).
+
+## Core Identity
+- **Owner**: Prajwal DL
+- **Title**: Web Advisor & Full Stack Developer
+- **Organization**: Unifycx (Enterprise Cloud & Web Infrastructure)
+- **Specialization**: React 19, TypeScript, Frontend Architecture, DNS Migration, Performance Optimization
+- **Location**: Bengaluru, India
+- **Email**: contact@praxel.space
+- **GitHub**: https://github.com/smhrimmy
+- **Repository**: https://github.com/smhrimmy/protfoliov2
 
 ## System Architecture
 - **Framework**: React 19, TypeScript 5+, Vite 8, Tailwind CSS 3
-- **Graphics**: Three.js WebGL spatial engines with 2D fallbacks
-- **State Management**: Reactive in-memory / local storage publisher with instant UI synchronization
-- **Routing**: Client-side hash/path router supporting deep linking
+- **Graphics & 3D**: Three.js WebGL spatial engines, custom shaders, Canvas 2D fallback
+- **State Management**: Reactive in-memory / local storage publisher (`mockStorage`) with instant UI synchronization
+- **Routing**: Client-side path and hash routing with deep linking support across all themes
+- **Audio Engine**: Web Audio API procedural sound synthesizer (menu ticks, cash chimes, wanted siren, radio static)
 
 ## Public Routes
-- `/`: Isolated Theme Home page (renders currently active theme from the 19 distinct worlds)
-- `/projects`: Production systems catalog with search, tech stack filtering, and case study modal triggers
-- `/projects/:id`: Comprehensive project case study detailing Problem, Architecture, Technologies, and Metrics
-- `/blog`: Editorial essays and technical publications
-- `/blog/:slug`: Full article view with reading progress bar, table of contents, and interactive comments
-- `/about`: Professional engineering biography and architectural tenets
-- `/experience`: Chronological career timeline and achievements
-- `/skills`: Categorized skill radar with mastery indicators
-- `/resume`: Interactive recruiter resume with PDF print route (`/resume/print`)
-- `/contact`: Direct communication portal and availability status
-- `/search`: Global full-text search across projects, essays, and skills
-- `/rss.xml`: Content syndication feed preview
+- `/`: Main Portfolio Home page (renders the active theme out of 25 distinct architectural worlds)
+- `/projects`: Dedicated Production Systems Catalog with search, stack filtering, and live demo triggers
+- `/projects/:id`: Comprehensive Project Case Study detailing Problem, Architecture, Technologies, and Metrics
+- `/about`: Professional engineering biography, technical tenets, and credentials
+- `/experience`: Chronological career timeline and enterprise milestones
+- `/skills`: Interactive skill radar with categorized technologies and mastery levels
+- `/resume`: Interactive recruiter resume with printable PDF view at `/resume/print`
+- `/blog`: Technical publications, architectural essays, and engineering insights
+- `/blog/:slug`: Full article view with reading progress bar, table of contents, and discussion
+- `/contact`: Direct communication portal and safehouse dispatch briefing
+- `/search`: Global full-text search index across projects, essays, and skills
+- `/rss.xml`: Content syndication XML feed preview
+- `/llms.txt`: Machine discovery index for AI agents (Claude, GPT, Perplexity)
+- `/llms-full.txt`: Full exhaustive documentation and content dump
+- `/site-manifest.json`: Structured machine-readable JSON data manifest
 
-## 19 Structurally Distinct Themes
-1. `theme-01-minimal-editorial`: Magazine-style asymmetric grid with side hover preview rail
-2. `theme-02-brutalist`: High-contrast black/amber monospace brutalism with ticker marquee
-3. `theme-03-cyberpunk-hud`: Sci-fi holographic heads-up display with neon overlays
-4. `theme-04-terminal-cli`: Interactive MS-DOS/bash terminal interface with runnable commands
-5. `theme-05-galaxy-cosmos-3d`: Three.js WebGL 3D particle cosmos background with orbit controls
-6. `theme-06-bento-showcase`: Apple-style modular bento grid with live metric cards
+## Production Projects Catalog (All Live & Verified)
+1. **SupportOS — AI-Native Customer Support OS**
+   - **Summary**: Multi-tenant support intelligence platform with automated ticket classification, vector triage, sentiment-aware escalation routing, and real-time telemetry.
+   - **Tech Stack**: React, TypeScript, TensorFlow, Node.js, REST APIs
+   - **Completion**: 85% | **Lines of Code**: 21,500 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: VICE CITY PORT
+   - **Live Demo**: https://frontend-beta-five-hfzyr9ap4o.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/supportos
+
+2. **OptiTalent HRMS**
+   - **Summary**: Enterprise human resource management system featuring biometric attendance integration, automated payroll pipeline, department analytics, and role-based access control.
+   - **Tech Stack**: TypeScript, React, Tailwind CSS, Node.js, PostgreSQL
+   - **Completion**: 92% | **Lines of Code**: 18,400 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: DOWNTOWN MAINFRAME
+   - **Live Demo**: https://optitalent-hrms.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/optitalent-hrms
+
+3. **DevFlow Kanban**
+   - **Summary**: Real-time collaborative engineering project tracker with optimistic updates, sprint burn-down analytics, drag-and-drop workflows, and automated GitHub issue synchronization.
+   - **Tech Stack**: React, TypeScript, Tailwind CSS, Supabase
+   - **Completion**: 88% | **Lines of Code**: 14,200 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: STARFISH ISLAND BANK
+   - **Live Demo**: https://devflow-kanban.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/devflow-kanban
+
+4. **OmniPulse Analytics**
+   - **Summary**: High-throughput telemetry dashboard tracking Core Web Vitals (LCP, INP, CLS), distributed API latencies, server error rates, and user session replay streams.
+   - **Tech Stack**: Next.js, TypeScript, ClickHouse, Tailwind CSS
+   - **Completion**: 95% | **Lines of Code**: 26,000 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: OCEAN DRIVE TOWER
+   - **Live Demo**: https://omnipulse-analytics.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/omnipulse-analytics
+
+5. **CloudShield WAF Engine**
+   - **Summary**: Distributed Web Application Firewall rule management dashboard with edge rate limiting, geo-blocking policies, and instant DDoS threat mitigation telemetry.
+   - **Tech Stack**: React, TypeScript, Go, Redis, Tailwind CSS
+   - **Completion**: 90% | **Lines of Code**: 22,800 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: ESCOBAR AIRPORT RADAR
+   - **Live Demo**: https://cloudshield-waf.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/cloudshield-waf
+
+6. **NextGen Commerce Engine**
+   - **Summary**: Headless e-commerce storefront with sub-second catalog navigation, predictive algorithmic search, multi-currency checkout, and real-time inventory webhooks.
+   - **Tech Stack**: React, TypeScript, GraphQL, Stripe, Node.js
+   - **Completion**: 87% | **Lines of Code**: 19,600 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: NORTH POINT MALL
+   - **Live Demo**: https://nextgen-commerce.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/nextgen-commerce
+
+7. **VectorVault AI Knowledge Base**
+   - **Summary**: Semantic document retrieval platform utilizing embeddings, hybrid full-text vector reranking, and citation-grounded conversational agent assistance.
+   - **Tech Stack**: React, Python, FastAPI, Pinecone, TypeScript
+   - **Completion**: 91% | **Lines of Code**: 16,500 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: WASHINGTON BEACH VAULT
+   - **Live Demo**: https://vectorvault-ai.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/vectorvault-ai
+
+8. **HyperSync Realtime Engine**
+   - **Summary**: Bidirectional WebSocket synchronization cluster powering multiplayer cursor collaboration, live shared whiteboards, and conflict-free replicated state (CRDTs).
+   - **Tech Stack**: TypeScript, Node.js, WebSockets, Canvas API, Redis
+   - **Completion**: 94% | **Lines of Code**: 24,100 | **Client Satisfaction**: 5.0 / 5.0
+   - **Objective / Locus**: LITTLE HAITI REPEATER
+   - **Live Demo**: https://hypersync-engine.vercel.app
+   - **GitHub**: https://github.com/smhrimmy/hypersync-engine
+
+## All 25 Structurally Distinct Themes
+1. `theme-01-minimal-editorial`: Developer Portfolio (Claude Code inspired, monospace terminal accents)
+2. `theme-02-brutalist`: Minimal Designer (high contrast #0a0a0a, large 2-column orderly thumbnails)
+3. `theme-03-cyberpunk-hud`: UX/UI Designer (Ava Chen design-system-aware with 4-step methodology)
+4. `theme-04-terminal-cli`: 3D Artist & Motion (interactive render pass switcher: wireframe/clay/lit)
+5. `theme-05-galaxy-cosmos-3d`: Creative Technologist (interactive Three.js particle cosmos with orbit controls)
+6. `theme-06-bento-showcase`: Full Stack Engineer (Apple-style modular bento grid with live metrics)
 7. `theme-07-noir-aurora`: Dark ambient northern lights aurora glows with fluid glassmorphism
 8. `theme-08-bauhaus-modernist`: Geometric constructivist shapes (circles, triangles, bold primary colors)
 9. `theme-09-retro-desktop-os`: 90s desktop operating system with draggable windows, start menu, and taskbar
@@ -41,12 +120,34 @@
 17. `theme-17-newspaper-broadside`: Classic broadsheet newspaper layout with multi-column serif text
 18. `theme-18-spatial-canvas`: Three.js interactive 3D spatial node graph with rotatable camera
 19. `theme-19-prajwal-luxury`: Obsidian black and bullion gold haute couture typography
+20. `theme-20-monochrome-stark`: Stark black-and-white editorial layout with high visual discipline
+21. `theme-21-cyber-deck`: Neon cyberpunk console with real-time ASCII telemetry feeds
+22. `theme-22-animated-mascot`: Character-anchored sections with cursor-tracking mascot and physics
+23. `theme-23-handtracked-lowpoly`: Three.js low-poly 3D portrait mesh with client-side camera hand tracking
+24. `theme-24-the-journal`: Content-first developer writing ledger inspired by midhunnk.in (clean paper, quiet margins)
+25. `theme-25-the-wanted-level`: Open-world crime game pause-menu UI with persistent HUD, cash odometer ($36M), 1–5 wanted stars with siren SFX, Wave FM tuner, tactical GPS radar minimap, and 3-card case study dossiers.
+
+## Theme 25: "The Wanted Level" Specification
+- **Metaphor**: Open-world crime game pause menu (Vice City / Leonida aesthetic).
+- **Persistent Heads-Up Display (GameHUD)**:
+  - Top-Left Operative Pill: Health (100%), Armor (77%), Energy (100), Active Arsenal (`TYPESCRIPT // REACT 19`).
+  - Top-Center Radio: Interactive tuner (`98.4 WAVE FM`, `105.7 FLASH FM`, `101.1 FEVER FM`, `94.5 EMOTION FM`).
+  - Top-Right Cluster: Live Clock, Rolling Cash Counter ($36,000,000 based on 36 repos), Interactive Wanted Heat Stars (1–5 stars with police siren SFX), and ESC Menu button.
+  - Bottom Ticker: `VICE CITY INSPIRED • BUILD DIFFERENT • STAY LEGENDARY`.
+  - Bottom-Right Quote: *"Code is my weapon. Creativity is my world." — Prajwal*.
+- **Projects Showcase Layout**:
+  - Left Nav Column: `START GAME`, `ABOUT ME`, `SKILLS`, `PROJECTS`, `EXPERIENCE`, `ACHIEVEMENTS`, `ACADEMY`, `CONTACT`, `EXIT GAME`. Active `PROJECTS` is a solid filled pink-purple gradient pill with chevron.
+  - Page Title: `PROJECTS:` uppercase bold sans + `Case Studies` in italic pink script.
+  - Three Stacked Info Cards:
+    - Card 1: Cyan border box with Project title, Tech Stack badges, Completion %, LOC, and 5-star rating.
+    - Card 2: Pink border box with Features numbered list.
+    - Card 3: 2x3 thumbnail gallery matrix + full-width `VIEW LIVE DEMO ›` CTA pill in solid pink.
+  - Tactical Minimap: Vector street grid with location pin, dashed route vector line, 360° sweeping beam, and dynamic `CURRENT OBJECTIVE` header.
+  - Illustrated Artwork: Full-bleed right-side illustrated character working at desk on holographic blueprint with neon ocean drive skyline outside.
 
 ## Admin Operating System (`/admin`)
 - `/admin/dashboard`: Executive control center with health radar, publishing lifecycle, and quick actions
-- `/admin/visual-editor`: Professional 3-column visual site builder with multi-viewport responsive preview
-- `/admin/settings`: Grouped settings architecture with 16 dedicated category sections
-- `/admin/design-system`: Real-time token studio for colors, typography, radius, shadows, and live component previews
+- `/admin/visual-editor`: Professional visual site builder with multi-viewport responsive preview
 - `/admin/themes`: Full-screen theme switcher & visual gallery
 - `/admin/projects`: Project CMS with cover manager and tech stack selector
 - `/admin/blog`: Markdown blog editor with live preview and reading time calculation
@@ -58,5 +159,5 @@
 - `/admin/backup`: One-click JSON data export, migration, and restore engine
 
 ## Automated Agent & Testing Compatibility
-- All interactive controls contain explicit `data-testid` and `aria-label` attributes for automated browser testing.
-- No blocking paywalls, registration gates, or CAPTCHA obstructions exist in the evaluation flow.
+- All interactive controls contain explicit `aria-label` and semantic tags for automated browser testing.
+- No paywalls, CAPTCHAs, or authentication gates exist for public evaluation.

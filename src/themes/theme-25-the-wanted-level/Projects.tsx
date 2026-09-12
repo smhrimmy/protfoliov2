@@ -214,8 +214,11 @@ export const Theme25ProjectsView: React.FC<ProjectsPageProps> = ({
         <img
           src="/themes/theme-25/showcase-bg.jpg"
           alt="Vice City Illustrated Project Showcase"
-          className="w-full h-full object-cover object-right filter contrast-[1.05] brightness-[0.98]"
+          className="w-full h-full object-cover object-right filter contrast-[1.05] brightness-[0.98] opacity-25 lg:opacity-100 transition-opacity duration-300"
         />
+
+        {/* Soft mobile gradient mask to guarantee perfect text contrast on small viewports */}
+        <div className="block lg:hidden absolute inset-0 bg-gradient-to-b from-[#070912]/85 via-[#070912]/65 to-[#070912]/95" />
 
         {/* Ambient Neon Atmosphere Glow */}
         <div 
@@ -249,30 +252,54 @@ export const Theme25ProjectsView: React.FC<ProjectsPageProps> = ({
       {/* ============================================================ */}
       {/* MAIN STAGE: LEFT NAV COLUMN + 3 STACKED INFO CARDS           */}
       {/* ============================================================ */}
-      <main className="relative z-10 pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto">
-        <div className="flex flex-col lg:flex-row gap-6 xl:gap-8 items-start">
+      <main className="relative z-10 pt-16 sm:pt-24 pb-28 sm:pb-24 px-3 sm:px-6 lg:px-8 max-w-[1600px] mx-auto">
+        <div className="flex flex-col lg:flex-row gap-5 xl:gap-8 items-start">
           
           {/* ============================================================ */}
           {/* COLUMN 1: TITLE BLOCK + LEFT NAV + BOTTOM-LEFT MINIMAP       */}
           {/* ============================================================ */}
-          <aside className="w-full lg:w-56 xl:w-60 shrink-0 flex flex-col justify-between space-y-6">
+          <aside className="w-full lg:w-56 xl:w-60 shrink-0 flex flex-col justify-between space-y-4 lg:space-y-6">
             
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {/* PAGE TITLE BLOCK (Top-left, above nav) */}
               <div className="space-y-0 select-none">
-                <h1 className="text-3xl sm:text-4xl xl:text-5xl font-black text-white uppercase tracking-tight font-sans leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+                <h1 className="text-2xl sm:text-4xl xl:text-5xl font-black text-white uppercase tracking-tight font-sans leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                   PROJECTS:
                 </h1>
                 <span 
-                  className="text-2xl sm:text-3xl xl:text-4xl italic block drop-shadow-[0_0_15px_rgba(244,114,182,0.9)] bg-gradient-to-r from-pink-400 via-pink-300 to-purple-400 bg-clip-text text-transparent -mt-1"
+                  className="text-xl sm:text-3xl xl:text-4xl italic block drop-shadow-[0_0_15px_rgba(244,114,182,0.9)] bg-gradient-to-r from-pink-400 via-pink-300 to-purple-400 bg-clip-text text-transparent -mt-0.5 sm:-mt-1"
                   style={{ fontFamily: 'Brush Script MT, cursive, serif' }}
                 >
                   Case Studies
                 </span>
               </div>
 
-              {/* LEFT NAV COLUMN */}
-              <nav aria-label="Theme 25 Navigation" className="space-y-1 pt-1">
+              {/* MOBILE HORIZONTAL NAV RAIL (< lg screens) */}
+              <nav aria-label="Theme 25 Mobile Navigation" className="block lg:hidden pt-0.5">
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar -mx-1 px-1">
+                  {menuItems.map((item) => {
+                    const isActive = item.id === 'projects';
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => handleNavClick(item.id)}
+                        onMouseEnter={() => soundFX.playMenuTick()}
+                        className={`whitespace-nowrap px-3 py-1.5 rounded-full font-bold text-[10px] tracking-wider uppercase transition-all shrink-0 flex items-center gap-1 focus:outline-none ${
+                          isActive
+                            ? 'bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 text-white border border-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.5)]'
+                            : 'text-white/80 hover:text-white bg-black/70 border border-white/10'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {isActive && <ChevronRight className="w-3 h-3 text-white" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </nav>
+
+              {/* DESKTOP VERTICAL NAV COLUMN (>= lg screens) */}
+              <nav aria-label="Theme 25 Navigation" className="hidden lg:block space-y-1 pt-1">
                 {menuItems.map((item) => {
                   const isActive = item.id === 'projects';
                   return (
@@ -356,7 +383,7 @@ export const Theme25ProjectsView: React.FC<ProjectsPageProps> = ({
           {/* ============================================================ */}
           {/* COLUMN 2: THREE STACKED INFO CARDS (~340px wide)             */}
           {/* ============================================================ */}
-          <div className="w-full sm:max-w-md lg:w-[340px] xl:w-[360px] shrink-0 space-y-3.5">
+          <div className="w-full max-w-xl lg:w-[340px] xl:w-[360px] shrink-0 space-y-3.5 mx-auto lg:mx-0">
             
             {/* Project Switcher Bar: Browse Project 01-08 */}
             <div className="flex items-center justify-between bg-black/85 px-3 py-1.5 rounded-xl border border-white/10 backdrop-blur-md">

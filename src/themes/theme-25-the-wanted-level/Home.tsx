@@ -156,8 +156,8 @@ export const Home: React.FC<ThemePageProps> = ({
       />
 
       {/* Main 2-Column Vice City Pause Menu Layout */}
-      <main className="relative z-10 pt-28 pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+      <main className="relative z-10 pt-16 sm:pt-28 pb-28 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-5 lg:gap-8 items-start">
           
           {/* ============================================================ */}
           {/* LEFT RAIL: VERTICAL PAUSE MENU (From Screenshot 1, 2, 3)     */}
@@ -165,24 +165,62 @@ export const Home: React.FC<ThemePageProps> = ({
           <aside className="w-full lg:w-72 shrink-0 space-y-4">
             
             {/* Brand Masthead: PRAJWAL BUILDS / Portfolio */}
-            <div className="bg-[#0c0e17]/90 border border-white/10 rounded-2xl p-5 shadow-2xl backdrop-blur-md space-y-3">
-              <div className="border-b border-white/10 pb-3">
-                <h1 className="text-2xl font-black text-white uppercase tracking-tight font-sans">
-                  PRAJWAL BUILDS
-                </h1>
-                <span 
-                  className="text-xl text-pink-400 font-serif italic block drop-shadow-[0_0_12px_rgba(244,114,182,0.8)]"
-                  style={{ fontFamily: 'Brush Script MT, cursive, serif' }}
+            <div className="bg-[#0c0e17]/90 border border-white/10 rounded-2xl p-3.5 sm:p-5 shadow-2xl backdrop-blur-md space-y-3">
+              <div className="border-b border-white/10 pb-2.5 sm:pb-3 flex items-center justify-between lg:block">
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight font-sans">
+                    PRAJWAL BUILDS
+                  </h1>
+                  <span 
+                    className="text-base sm:text-xl text-pink-400 font-serif italic block drop-shadow-[0_0_12px_rgba(244,114,182,0.8)] -mt-0.5"
+                    style={{ fontFamily: 'Brush Script MT, cursive, serif' }}
+                  >
+                    Portfolio
+                  </span>
+                  <p className="text-[9px] sm:text-[10px] text-cyan-400 font-mono pt-0.5 hidden xs:block">
+                    FULLSTACK SYSTEMS ARCHITECT
+                  </p>
+                </div>
+                <button
+                  onClick={() => onNavigate('/admin')}
+                  className="lg:hidden text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-lg flex items-center gap-1"
                 >
-                  Portfolio
-                </span>
-                <p className="text-[10px] text-cyan-400 font-mono pt-1">
-                  FULLSTACK SYSTEMS ARCHITECT
-                </p>
+                  <LogOut className="w-3 h-3" />
+                  <span>ADMIN</span>
+                </button>
               </div>
 
-              {/* Vertical Menu Buttons */}
-              <nav aria-label="Game Pause Navigation" className="space-y-1.5">
+              {/* Mobile Horizontal Nav Rail (< lg) */}
+              <nav aria-label="Game Mobile Navigation" className="block lg:hidden pt-0.5">
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none no-scrollbar -mx-1 px-1">
+                  {menuItems.map((item) => {
+                    const isActive = activeTab === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => handleTabSwitch(item.id)}
+                        onMouseEnter={() => soundFX.playMenuTick()}
+                        className={`whitespace-nowrap px-3 py-1.5 rounded-full font-bold text-[10px] tracking-wider uppercase transition-all shrink-0 flex items-center gap-1 focus:outline-none ${
+                          isActive
+                            ? 'bg-gradient-to-r from-pink-500 via-pink-600 to-purple-600 text-white border border-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.5)]'
+                            : 'text-white/80 hover:text-white bg-black/70 border border-white/10'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                        {item.count !== undefined && (
+                          <span className={`text-[8px] px-1 py-0.2 rounded font-mono ${isActive ? 'bg-white/20 text-white' : 'bg-white/10 text-gray-400'}`}>
+                            {item.count}
+                          </span>
+                        )}
+                        {isActive && <ChevronRight className="w-3 h-3 text-white" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </nav>
+
+              {/* Desktop Vertical Menu Buttons (>= lg) */}
+              <nav aria-label="Game Pause Navigation" className="hidden lg:block space-y-1.5">
                 {menuItems.map((item, idx) => {
                   const isActive = activeTab === item.id;
                   return (
