@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Shield, Heart, Clock, Star, Zap, Radio, ChevronDown, Check } from 'lucide-react';
 import { soundFX } from './SoundEffects';
 import { useTheme25Era } from '../context/Theme25EraContext';
-import { Theme25Era, ERA_CONFIGS } from '../types/eras';
+import { Theme25Era, ERA_CONFIGS, GTA_EDITIONS } from '../types/eras';
 
 interface GameHUDProps {
   wantedLevel: number;
@@ -312,53 +312,59 @@ export const GameHUD: React.FC<GameHUDProps> = ({
         <div className="relative">
           <button
             onClick={() => setEraMenuOpen(!eraMenuOpen)}
-            className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border transition-all hover:scale-105 focus:outline-none"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full border transition-all hover:scale-105 focus:outline-none shadow-lg cursor-pointer"
             style={{
-              backgroundColor: `${tokens.accentColor}20`,
+              backgroundColor: `${tokens.accentColor}25`,
               borderColor: tokens.borderColor,
-              color: tokens.accentColor
+              color: '#ffffff',
+              boxShadow: `0 0 12px ${tokens.accentGlow}`
             }}
-            title="Switch Theme 25 Era (Neon Retro / Sun-Belt / Modern Chrome)"
+            title="Switch GTA Edition (Vice City / San Andreas / GTA IV / GTA V / GTA VI)"
           >
-            <span className="font-bold">THEME 25: {tokens.name.toUpperCase()}</span>
+            <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: tokens.accentColor }} />
+            <span className="font-bold text-[10px] sm:text-xs">GTA EDITION: {tokens.name.toUpperCase()}</span>
             <ChevronDown className={`w-3 h-3 transition-transform ${eraMenuOpen ? 'rotate-180' : ''}`} />
           </button>
 
-          {/* Era Popover Menu */}
+          {/* GTA Edition Popover Menu */}
           {eraMenuOpen && (
             <div 
-              className="absolute bottom-full right-0 mb-2 w-56 bg-[#0c0e17]/98 border rounded-xl p-1.5 shadow-2xl backdrop-blur-xl space-y-1 font-mono text-xs z-50 animate-in fade-in slide-in-from-bottom-2 duration-150"
+              className="absolute bottom-full right-0 mb-2 w-72 bg-[#080b14]/98 border-2 rounded-xl p-2 shadow-2xl backdrop-blur-2xl space-y-1.5 font-mono text-xs z-50 animate-in fade-in slide-in-from-bottom-2 duration-150"
               style={{ borderColor: tokens.borderColor }}
             >
-              <div className="px-2.5 py-1 text-[9px] text-gray-400 font-bold border-b border-white/10 uppercase tracking-wider">
-                Select Visitor Era
+              <div className="px-2.5 py-1 text-[9px] text-gray-400 font-bold border-b border-white/10 uppercase tracking-wider flex items-center justify-between">
+                <span>SELECT GTA GAME EDITION</span>
+                <span className="text-pink-400 font-bold">5 ERAS</span>
               </div>
-              {(Object.keys(ERA_CONFIGS) as Theme25Era[]).map((eraKey) => {
-                const cfg = ERA_CONFIGS[eraKey];
-                const isActive = era === eraKey;
+              {GTA_EDITIONS.map((edition) => {
+                const cfg = ERA_CONFIGS[edition.id];
+                const isActive = era === edition.id || (era === 'neon-retro' && edition.id === 'gta-vice-city') || (era === 'sun-belt' && edition.id === 'gta-san-andreas') || (era === 'modern-chrome' && edition.id === 'gta-vi');
                 return (
                   <button
-                    key={eraKey}
-                    onClick={() => handleEraSelect(eraKey)}
-                    className={`w-full text-left px-2.5 py-2 rounded-lg flex items-center justify-between transition-colors ${
+                    key={edition.id}
+                    onClick={() => handleEraSelect(edition.id)}
+                    className={`w-full text-left px-3 py-2 rounded-lg flex items-center justify-between transition-all cursor-pointer ${
                       isActive 
-                        ? 'bg-white/15 text-white font-bold' 
-                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                        ? 'bg-white/20 text-white font-bold border border-white/20 shadow-md' 
+                        : 'text-gray-300 hover:text-white hover:bg-white/10'
                     }`}
                   >
-                    <div>
-                      <div className="flex items-center gap-1.5">
+                    <div className="space-y-0.5 max-w-[85%]">
+                      <div className="flex items-center gap-2">
                         <span 
-                          className="w-2 h-2 rounded-full" 
-                          style={{ backgroundColor: cfg.accentColor }} 
+                          className="w-2.5 h-2.5 rounded-full shrink-0 shadow-[0_0_8px_currentColor]" 
+                          style={{ backgroundColor: cfg.accentColor, color: cfg.accentColor }} 
                         />
-                        <span>{cfg.name}</span>
+                        <span className="font-bold text-xs">{edition.name}</span>
+                        <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded text-gray-300 font-mono">
+                          {edition.releaseYear}
+                        </span>
                       </div>
-                      <span className="text-[8px] text-gray-400 block pl-3.5">
-                        {cfg.tagline}
+                      <span className="text-[9px] text-gray-400 block pl-4 truncate">
+                        {edition.tagline}
                       </span>
                     </div>
-                    {isActive && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                    {isActive && <Check className="w-4 h-4 text-emerald-400 shrink-0" />}
                   </button>
                 );
               })}
