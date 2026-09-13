@@ -506,7 +506,7 @@ const Theme25ProjectsContent: React.FC<ProjectsPageProps> = ({
               <MotionCard
                 themeId="25"
                 index={0}
-                className="border-2 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md space-y-2.5"
+                className="border-2 rounded-2xl p-4 sm:p-5 shadow-2xl backdrop-blur-md space-y-2.5 lightswind-shine lightswind-card"
                 style={{
                   backgroundColor: tokens.cardBg,
                   borderColor: tokens.highlightColor,

@@ -386,3 +386,58 @@
   }
 }
 
+/* Lightswind UI Library Inspired Enhancements (3D Perspective & Glassmorphism) */
+.lightswind-perspective {
+  perspective: 1000px;
+}
+
+.lightswind-card {
+  position: relative;
+  border-radius: 1rem;
+  background: rgba(13, 17, 28, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.lightswind-card:hover {
+  transform: translateY(-4px) scale(1.015);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.lightswind-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.lightswind-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transition: left 0.6s ease;
+  pointer-events-none: none;
+}
+
+.lightswind-shine:hover::after {
+  left: 150%;
+}
+
+/* Responsive Touch Target Optimization */
+@media (max-width: 640px) {
+  button, a {
+    min-height: 40px;
+  }
+}
+
+

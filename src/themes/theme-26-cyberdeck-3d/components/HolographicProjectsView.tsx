@@ -45,12 +45,12 @@ export const HolographicProjectsView: React.FC<HolographicProjectsViewProps> = (
       </div>
 
       {/* 3D Interactive Floating Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lightswind-perspective">
         {projects.map((project) => (
           <div
             key={project.id}
             onClick={() => handleOpenModal(project)}
-            className="group cursor-pointer border rounded-2xl p-5 space-y-4 backdrop-blur-xl transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 shadow-2xl relative overflow-hidden flex flex-col justify-between"
+            className="group cursor-pointer border rounded-2xl p-5 space-y-4 backdrop-blur-xl transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 shadow-2xl relative overflow-hidden flex flex-col justify-between lightswind-shine lightswind-card"
             style={{
               backgroundColor: tokens.cardBg,
               borderColor: tokens.hudBorderColor
