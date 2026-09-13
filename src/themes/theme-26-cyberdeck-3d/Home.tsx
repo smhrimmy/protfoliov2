@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
 import { Cyberdeck3DScene } from './components/Cyberdeck3DScene';
 import './theme26.css';
@@ -19,7 +19,35 @@ export const Home: React.FC<ThemePageProps> = ({
   const [formMessage, setFormMessage] = useState('');
   const [contactStatus, setContactStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  // Handle hash changes or tab switches
+  // Sync section visibility with activeTab for smooth automatic 3D camera transitions on scroll
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -20% 0px',
+      threshold: 0.3
+    };
+
+    const handleIntersect: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.id.replace('-section', '');
+          setActiveTab(sectionId);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+    const sections = ['home-section', 'about-section', 'work-section', 'contact-section'];
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Handle manual navigation from menu
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     setMenuOpen(false);
@@ -72,7 +100,7 @@ export const Home: React.FC<ThemePageProps> = ({
 
   return (
     <div className="t26-container min-h-screen relative text-[#091434] bg-[#F5EFE6] selection:bg-[#FF923E] selection:text-white">
-      {/* 1. 3D Spatial Canvas Background */}
+      {/* 1. 3D Spatial Canvas Background (Persistent & Smooth) */}
       <Cyberdeck3DScene activeTab={activeTab} />
 
       {/* 2. Top Header Controls Overlay */}
@@ -317,7 +345,7 @@ export const Home: React.FC<ThemePageProps> = ({
             </div>
 
             {/* Project Card Display */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 max-w-xl mx-auto relative">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 max-w-xl mx-auto relative transition-all duration-300">
               <div className="w-full h-64 sm:h-72 rounded-2xl overflow-hidden mb-6 bg-gray-100">
                 <img 
                   src={currentProj.coverImage || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80'} 
