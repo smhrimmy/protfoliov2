@@ -10,11 +10,13 @@ import {
   MapPin,
   Send,
   Sparkles,
-  Terminal,
   User,
   BookOpen,
   Radio,
-  FileText
+  FileText,
+  Building2,
+  FolderKanban,
+  Library
 } from 'lucide-react';
 
 const GithubIcon = ({ className = 'w-4 h-4' }: { className?: string }) => (
@@ -50,7 +52,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
 }) => {
   const buildingInfo = BUILDINGS.find((b) => b.id === activeBuilding);
 
-  // Form state for Signal Tower contact broadcast
+  // Form state for Signal Tower radio transmission
   const [formName, setFormName] = useState('');
   const [formEmail, setFormEmail] = useState('');
   const [formMessage, setFormMessage] = useState('');
@@ -60,56 +62,70 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
     e.preventDefault();
     if (!formName || !formEmail || !formMessage) return;
 
-    setSentStatus('Transmitting signal...');
+    setSentStatus('Transmitting signal frequency...');
     setTimeout(() => {
-      setSentStatus('Transmission Received! Signal logged to district radio inbox.');
+      setSentStatus('Transmission Received! Message logged to signal station.');
       setFormName('');
       setFormEmail('');
       setFormMessage('');
-    }, 1200);
+    }, 1000);
+  };
+
+  const getMaterialClass = () => {
+    switch (activeBuilding) {
+      case 'studio':
+        return 'material-panel-studio';
+      case 'gallery':
+        return 'material-panel-gallery';
+      case 'archive':
+        return 'material-panel-archive';
+      case 'office':
+        return 'material-panel-office';
+      case 'signal':
+        return 'material-panel-signal';
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-6 md:p-10 bg-black/60 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-6xl max-h-[90vh] district-glass rounded-2xl border border-[#ffb703]/30 shadow-2xl flex flex-col overflow-hidden text-slate-100">
+    <div className="fixed inset-0 z-40 flex items-center justify-center p-3 sm:p-6 md:p-10 bg-black/70 backdrop-blur-lg animate-fade-in">
+      <div className={`relative w-full max-w-6xl max-h-[92vh] ${getMaterialClass()} rounded-2xl shadow-2xl flex flex-col overflow-hidden text-slate-100 transition-all duration-500`}>
         
-        {/* Header Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#ffb703]/20 bg-[#161b26]/90">
+        {/* Header Bar with Back to District Button */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#F5A65B]/20 bg-[#161C3D]/90">
           <div className="flex items-center gap-4">
             <button
               onClick={onBackToDistrict}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#ffb703]/10 hover:bg-[#ffb703]/20 border border-[#ffb703]/40 text-[#ffb703] transition-all text-sm font-semibold district-mono"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F5A65B]/15 hover:bg-[#F5A65B]/30 border border-[#F5A65B]/40 text-[#F5A65B] transition-all text-xs sm:text-sm font-bold font-mono shadow-md"
             >
               <ArrowLeft className="w-4 h-4" />
-              Return to District Wide Shot
+              ← Back to district
             </button>
 
             <div>
-              <h2 className="district-heading text-xl sm:text-2xl font-bold text-[#ffb703]">
+              <h2 className="district-heading text-lg sm:text-2xl font-bold text-[#F5A65B]">
                 {buildingInfo?.name}
               </h2>
-              <p className="text-xs text-slate-400 font-mono">
-                ROOM INTERIOR: {buildingInfo?.subtitle}
+              <p className="text-[11px] text-[#8B8FD9] font-mono">
+                {buildingInfo?.subtitle}
               </p>
             </div>
           </div>
 
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            INTERIOR ROOM ACTIVE
+            ROOM INTERIOR ACTIVE
           </div>
         </div>
 
-        {/* Room Main Content Area */}
+        {/* Room Content Container */}
         <div className="flex-1 overflow-y-auto p-6 district-scrollbar">
           
-          {/* STUDIO INTERIOR (ABOUT & BIO) */}
+          {/* 1. THE STUDIO (STOREFRONT: ABOUT & BIO) */}
           {activeBuilding === 'studio' && (
             <div className="space-y-8">
-              {/* Profile Top Card */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-2xl bg-slate-900/70 border border-[#F5A65B]/30">
                 <div className="flex flex-col items-center text-center space-y-4 md:border-r md:border-slate-800 md:pr-6">
-                  <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-[#ffb703] shadow-lg">
+                  <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-[#F5A65B] shadow-xl">
                     {identity.avatarUrl ? (
                       <img
                         src={identity.avatarUrl}
@@ -117,7 +133,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-500">
+                      <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-400">
                         <User className="w-12 h-12" />
                       </div>
                     )}
@@ -127,8 +143,8 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                     <h3 className="district-heading text-2xl font-bold text-white">
                       {identity.name}
                     </h3>
-                    <p className="text-sm text-[#ffb703] font-medium mt-0.5">{identity.role}</p>
-                    <p className="text-xs text-slate-400 flex items-center justify-center gap-1 mt-1">
+                    <p className="text-sm text-[#F5A65B] font-medium mt-0.5">{identity.role}</p>
+                    <p className="text-xs text-[#8B8FD9] flex items-center justify-center gap-1 mt-1 font-mono">
                       <MapPin className="w-3.5 h-3.5" />
                       {identity.location}
                     </p>
@@ -139,7 +155,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                       href={identity.resumeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#ffb703] text-slate-950 font-bold text-xs hover:bg-[#ffc83b] transition-all"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F5A65B] text-slate-950 font-bold text-xs hover:bg-[#ffb76b] transition-all shadow-md"
                     >
                       <FileText className="w-4 h-4" />
                       Download Resume
@@ -147,47 +163,45 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                   )}
                 </div>
 
-                {/* Bio & Philosophy */}
                 <div className="md:col-span-2 space-y-4 flex flex-col justify-center">
                   <div className="space-y-2">
-                    <h4 className="text-sm font-semibold text-[#ffb703] uppercase tracking-wider font-mono">
-                      Architect Bio
+                    <h4 className="text-xs font-semibold text-[#F5A65B] uppercase tracking-wider font-mono">
+                      Architect & Developer Bio
                     </h4>
-                    <p className="text-slate-300 leading-relaxed text-sm">{identity.bio}</p>
+                    <p className="text-slate-200 leading-relaxed text-sm">{identity.bio}</p>
                   </div>
 
-                  {/* Identity Stats Grid */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-800">
-                    <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-center">
-                      <div className="text-xl font-bold text-[#ffb703]">
+                    <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 text-center">
+                      <div className="text-xl font-bold text-[#F5A65B]">
                         {identity.stats.projectsShipped}
                       </div>
                       <div className="text-[10px] text-slate-400 uppercase font-mono mt-0.5">
-                        Projects Shipped
+                        Shipped
                       </div>
                     </div>
-                    <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-center">
+                    <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 text-center">
                       <div className="text-xl font-bold text-emerald-400">
                         {identity.stats.yearsBuilding}
                       </div>
                       <div className="text-[10px] text-slate-400 uppercase font-mono mt-0.5">
-                        Years Building
+                        Years Exp
                       </div>
                     </div>
-                    <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-center">
+                    <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 text-center">
                       <div className="text-xl font-bold text-blue-400">
                         {identity.stats.revenueInfluenced}
                       </div>
                       <div className="text-[10px] text-slate-400 uppercase font-mono mt-0.5">
-                        Impact / Value
+                        Impact
                       </div>
                     </div>
-                    <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-center">
-                      <div className="text-xl font-bold text-purple-400">
+                    <div className="p-3 rounded-xl bg-slate-800/60 border border-slate-700/60 text-center">
+                      <div className="text-xl font-bold text-[#8B8FD9]">
                         {identity.stats.happyClients}
                       </div>
                       <div className="text-[10px] text-slate-400 uppercase font-mono mt-0.5">
-                        Clients / Teams
+                        Clients
                       </div>
                     </div>
                   </div>
@@ -196,30 +210,30 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
 
               {/* Skills Matrix */}
               <div className="space-y-4">
-                <h4 className="district-heading text-lg font-bold text-[#ffb703] flex items-center gap-2">
+                <h4 className="district-heading text-lg font-bold text-[#F5A65B] flex items-center gap-2">
                   <Sparkles className="w-5 h-5" />
-                  Engineering & Design Capabilities
+                  Technical Capabilities & Stack
                 </h4>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {skillCategories.map((cat) => (
                     <div
                       key={cat.id}
-                      className="p-5 rounded-xl bg-slate-900/60 border border-slate-800 space-y-3"
+                      className="p-5 rounded-2xl bg-slate-900/70 border border-slate-800 space-y-3"
                     >
-                      <h5 className="font-semibold text-white text-sm font-mono border-b border-slate-800 pb-2">
+                      <h5 className="font-semibold text-white text-xs font-mono border-b border-slate-800 pb-2 uppercase tracking-wider text-[#8B8FD9]">
                         {cat.category}
                       </h5>
-                      <div className="space-y-2">
+                      <div className="space-y-2.5">
                         {cat.skills.map((s) => (
                           <div key={s.name} className="space-y-1">
                             <div className="flex justify-between text-xs font-mono">
-                              <span className="text-slate-300">{s.name}</span>
-                              <span className="text-[#ffb703]">{s.level}%</span>
+                              <span className="text-slate-200">{s.name}</span>
+                              <span className="text-[#F5A65B]">{s.level}%</span>
                             </div>
                             <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-[#ffb703] to-amber-500 rounded-full"
+                                className="h-full bg-gradient-to-r from-[#F5A65B] to-amber-400 rounded-full"
                                 style={{ width: `${s.level}%` }}
                               />
                             </div>
@@ -233,12 +247,12 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
             </div>
           )}
 
-          {/* GALLERY INTERIOR (PROJECTS SHOWCASE) */}
+          {/* 2. THE GALLERY (GLASS-FRONTED GRID: PROJECTS) */}
           {activeBuilding === 'gallery' && (
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                <p className="text-sm text-slate-300 font-mono">
-                  Showing {projects.length} curated product architectural models
+              <div className="flex items-center justify-between border-b border-blue-500/20 pb-4">
+                <p className="text-xs text-[#8B8FD9] font-mono">
+                  Displaying {projects.length} featured engineering systems
                 </p>
               </div>
 
@@ -246,7 +260,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                 {projects.map((proj) => (
                   <div
                     key={proj.id}
-                    className="group rounded-xl bg-slate-900/70 border border-slate-800 overflow-hidden hover:border-[#ffb703]/50 transition-all flex flex-col"
+                    className="group rounded-2xl bg-slate-900/80 border border-blue-500/20 overflow-hidden hover:border-blue-400/60 transition-all flex flex-col shadow-xl"
                   >
                     {proj.coverImage && (
                       <div className="relative h-48 w-full overflow-hidden bg-slate-950">
@@ -257,7 +271,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
                         <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center">
-                          <span className="px-2.5 py-1 rounded bg-[#ffb703]/90 text-slate-950 text-xs font-bold font-mono">
+                          <span className="px-2.5 py-1 rounded bg-blue-500 text-white text-xs font-bold font-mono">
                             {proj.role}
                           </span>
                           <span className="text-xs text-slate-300 font-mono bg-slate-900/80 px-2 py-0.5 rounded">
@@ -269,7 +283,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
 
                     <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                       <div className="space-y-2">
-                        <h4 className="district-heading text-xl font-bold text-white group-hover:text-[#ffb703] transition-colors">
+                        <h4 className="district-heading text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
                           {proj.title}
                         </h4>
                         <p className="text-xs text-slate-300 line-clamp-3 leading-relaxed">
@@ -277,26 +291,24 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                         </p>
                       </div>
 
-                      {/* Tech Badges */}
                       <div className="flex flex-wrap gap-1.5 pt-2">
                         {proj.technologies.map((t) => (
                           <span
                             key={t}
-                            className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[10px] text-slate-300 font-mono"
+                            className="px-2 py-0.5 rounded bg-blue-950/60 border border-blue-800/50 text-[10px] text-blue-200 font-mono"
                           >
                             {t}
                           </span>
                         ))}
                       </div>
 
-                      {/* Action Links */}
                       <div className="flex items-center gap-3 pt-3 border-t border-slate-800/80">
                         {proj.liveUrl && (
                           <a
                             href={proj.liveUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 text-xs font-bold text-[#ffb703] hover:underline font-mono"
+                            className="flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:underline font-mono"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
                             Live Demo
@@ -321,12 +333,12 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
             </div>
           )}
 
-          {/* ARCHIVE INTERIOR (BLOG & WRITINGS) */}
+          {/* 3. THE ARCHIVE (STACKED PAPER/CARD VAULT: BLOG) */}
           {activeBuilding === 'archive' && (
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                <p className="text-sm text-slate-300 font-mono">
-                  District Technical Library & Publication Vault ({blogPosts.length} posts)
+              <div className="flex items-center justify-between border-b border-[#8B8FD9]/20 pb-4">
+                <p className="text-xs text-[#8B8FD9] font-mono">
+                  District Technical Writings ({blogPosts.length} publication dossiers)
                 </p>
               </div>
 
@@ -334,18 +346,18 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                 {blogPosts.map((post) => (
                   <div
                     key={post.id}
-                    className="p-6 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-[#ffb703]/50 transition-all space-y-3"
+                    className="p-6 rounded-2xl bg-slate-900/80 border border-[#8B8FD9]/30 hover:border-[#8B8FD9]/70 transition-all space-y-3 shadow-lg"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-mono">
+                      <span className="px-2.5 py-0.5 rounded-full bg-purple-500/15 border border-purple-500/40 text-purple-300 text-xs font-mono">
                         {post.category}
                       </span>
-                      <span className="text-xs text-slate-400 font-mono">
+                      <span className="text-xs text-[#8B8FD9] font-mono">
                         {post.publishedAt || 'Published'} • {post.readingTimeMinutes} min read
                       </span>
                     </div>
 
-                    <h4 className="district-heading text-xl font-bold text-white hover:text-[#ffb703] transition-colors cursor-pointer">
+                    <h4 className="district-heading text-xl font-bold text-white hover:text-[#8B8FD9] transition-colors cursor-pointer">
                       {post.title}
                     </h4>
 
@@ -355,7 +367,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-[11px] text-slate-400 font-mono bg-slate-800/60 px-2 py-0.5 rounded"
+                          className="text-[11px] text-[#8B8FD9] font-mono bg-purple-950/40 px-2 py-0.5 rounded border border-purple-900/40"
                         >
                           #{tag}
                         </span>
@@ -367,37 +379,36 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
             </div>
           )}
 
-          {/* OFFICE TOWER INTERIOR (EXPERIENCE TIMELINE) */}
+          {/* 4. THE OFFICE TOWER (SKYSCRAPER CAREER LEDGER: EXPERIENCE) */}
           {activeBuilding === 'office' && (
             <div className="space-y-8">
-              <div className="border-b border-slate-800 pb-4">
-                <h4 className="district-heading text-lg font-bold text-[#ffb703]">
-                  Floor-by-Floor Career Progression
+              <div className="border-b border-[#F5A65B]/20 pb-4">
+                <h4 className="district-heading text-lg font-bold text-[#F5A65B]">
+                  Floor-by-Floor Professional Career Timeline
                 </h4>
-                <p className="text-xs text-slate-400 font-mono mt-1">
-                  Chronological breakdown from foundational training to current engineering leadership
+                <p className="text-xs text-[#8B8FD9] font-mono mt-1">
+                  Chronological progression from initial diploma to full engineering leadership
                 </p>
               </div>
 
-              <div className="relative border-l-2 border-[#ffb703]/40 ml-4 pl-6 space-y-8">
+              <div className="relative border-l-2 border-[#F5A65B]/40 ml-4 pl-6 space-y-8">
                 {experience.map((exp, idx) => (
                   <div key={exp.id || idx} className="relative group">
-                    {/* Timeline Node Dot */}
-                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-[#161b26] border-2 border-[#ffb703] group-hover:bg-[#ffb703] transition-colors" />
+                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-[#0E1330] border-2 border-[#F5A65B] group-hover:bg-[#F5A65B] transition-colors" />
 
-                    <div className="p-6 rounded-xl bg-slate-900/70 border border-slate-800 space-y-3">
+                    <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 shadow-xl">
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
                         <div>
                           <h4 className="district-heading text-lg font-bold text-white">
                             {exp.role}
                           </h4>
-                          <p className="text-sm font-semibold text-[#ffb703]">{exp.company}</p>
+                          <p className="text-sm font-semibold text-[#F5A65B]">{exp.company}</p>
                         </div>
                         <div className="text-right">
-                          <span className="px-3 py-1 rounded bg-slate-800 text-slate-300 text-xs font-mono border border-slate-700">
+                          <span className="px-3 py-1 rounded bg-slate-800 text-slate-200 text-xs font-mono border border-slate-700">
                             {exp.startDate} – {exp.endDate}
                           </span>
-                          <p className="text-xs text-slate-400 mt-1 font-mono">{exp.location}</p>
+                          <p className="text-xs text-[#8B8FD9] mt-1 font-mono">{exp.location}</p>
                         </div>
                       </div>
 
@@ -407,7 +418,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                         <ul className="space-y-1.5 pt-2">
                           {exp.achievements.map((ach, i) => (
                             <li key={i} className="text-xs text-slate-300 flex items-start gap-2">
-                              <span className="text-[#ffb703] mt-0.5">•</span>
+                              <span className="text-[#F5A65B] mt-0.5">•</span>
                               <span>{ach}</span>
                             </li>
                           ))}
@@ -431,19 +442,18 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
             </div>
           )}
 
-          {/* SIGNAL TOWER INTERIOR (CONTACT STATION) */}
+          {/* 5. THE SIGNAL TOWER (RADIO TRANSMITTER STATION: CONTACT) */}
           {activeBuilding === 'signal' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Left Column: Transmission Form */}
-              <div className="p-6 rounded-xl bg-slate-900/70 border border-slate-800 space-y-4">
+              <div className="p-6 rounded-2xl bg-slate-900/80 border border-red-500/30 space-y-4 shadow-xl">
                 <div className="flex items-center gap-3 border-b border-slate-800 pb-3">
                   <Radio className="w-5 h-5 text-red-500 animate-pulse" />
                   <div>
                     <h4 className="district-heading text-lg font-bold text-white">
-                      Radio Broadcast Console
+                      Radio Signal Transmitter
                     </h4>
-                    <p className="text-xs text-slate-400 font-mono">
-                      Direct signal dispatch to identity inbox
+                    <p className="text-xs text-[#8B8FD9] font-mono">
+                      Direct signal dispatch console
                     </p>
                   </div>
                 </div>
@@ -451,7 +461,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                 <form onSubmit={handleBroadcast} className="space-y-4">
                   <div>
                     <label className="block text-xs font-mono text-slate-300 uppercase mb-1">
-                      Caller Identity / Name
+                      Sender Name / Call Sign
                     </label>
                     <input
                       type="text"
@@ -459,13 +469,13 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                       value={formName}
                       onChange={(e) => setFormName(e.target.value)}
                       placeholder="e.g. Alex Vance"
-                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-[#ffb703]"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-[#F5A65B]"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-mono text-slate-300 uppercase mb-1">
-                      Return Email Address
+                      Return Frequency / Email
                     </label>
                     <input
                       type="email"
@@ -473,7 +483,7 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                       value={formEmail}
                       onChange={(e) => setFormEmail(e.target.value)}
                       placeholder="e.g. alex@company.com"
-                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-[#ffb703]"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-[#F5A65B]"
                     />
                   </div>
 
@@ -487,40 +497,39 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                       value={formMessage}
                       onChange={(e) => setFormMessage(e.target.value)}
                       placeholder="Enter your message details..."
-                      className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-[#ffb703] resize-none"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-[#F5A65B] resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-[#ffb703] text-slate-950 font-bold text-sm hover:bg-[#ffc83b] transition-all shadow-lg"
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#F5A65B] text-slate-950 font-bold text-sm hover:bg-[#ffb76b] transition-all shadow-lg"
                   >
                     <Send className="w-4 h-4" />
-                    Transmit Signal
+                    Transmit Message
                   </button>
 
                   {sentStatus && (
-                    <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 text-xs font-mono text-center">
+                    <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 text-xs font-mono text-center">
                       {sentStatus}
                     </div>
                   )}
                 </form>
               </div>
 
-              {/* Right Column: Direct Channels & Links */}
               <div className="space-y-4 flex flex-col justify-between">
-                <div className="p-6 rounded-xl bg-slate-900/70 border border-slate-800 space-y-4">
+                <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4 shadow-xl">
                   <h4 className="district-heading text-lg font-bold text-white border-b border-slate-800 pb-3">
-                    Direct Frequencies & Social Terminals
+                    Direct Contact Channels
                   </h4>
 
                   <div className="space-y-3">
                     {identity.socialLinks.email && (
                       <a
                         href={`mailto:${identity.socialLinks.email}`}
-                        className="flex items-center gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 hover:border-[#ffb703] hover:text-[#ffb703] transition-all"
+                        className="flex items-center gap-3 p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-200 hover:border-[#F5A65B] hover:text-[#F5A65B] transition-all"
                       >
-                        <Mail className="w-5 h-5 text-[#ffb703]" />
+                        <Mail className="w-5 h-5 text-[#F5A65B]" />
                         <div>
                           <div className="text-xs text-slate-400 font-mono uppercase">Direct Email</div>
                           <div className="text-sm font-semibold">{identity.socialLinks.email}</div>
@@ -533,11 +542,11 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                         href={identity.socialLinks.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 hover:border-[#ffb703] hover:text-[#ffb703] transition-all"
+                        className="flex items-center gap-3 p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-200 hover:border-[#F5A65B] hover:text-[#F5A65B] transition-all"
                       >
-                        <GithubIcon className="w-5 h-5 text-[#ffb703]" />
+                        <GithubIcon className="w-5 h-5 text-[#F5A65B]" />
                         <div>
-                          <div className="text-xs text-slate-400 font-mono uppercase">GitHub Repository</div>
+                          <div className="text-xs text-slate-400 font-mono uppercase">GitHub Profile</div>
                           <div className="text-sm font-semibold">{identity.socialLinks.github}</div>
                         </div>
                       </a>
@@ -548,11 +557,11 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                         href={identity.socialLinks.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-3 rounded-lg bg-slate-950 border border-slate-800 text-slate-200 hover:border-[#ffb703] hover:text-[#ffb703] transition-all"
+                        className="flex items-center gap-3 p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-200 hover:border-[#F5A65B] hover:text-[#F5A65B] transition-all"
                       >
-                        <LinkedinIcon className="w-5 h-5 text-[#ffb703]" />
+                        <LinkedinIcon className="w-5 h-5 text-[#F5A65B]" />
                         <div>
-                          <div className="text-xs text-slate-400 font-mono uppercase">LinkedIn Network</div>
+                          <div className="text-xs text-slate-400 font-mono uppercase">LinkedIn Profile</div>
                           <div className="text-sm font-semibold">{identity.socialLinks.linkedin}</div>
                         </div>
                       </a>
@@ -560,8 +569,8 @@ export const InteriorDetailView: React.FC<InteriorDetailViewProps> = ({
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#ffb703]/10 border border-[#ffb703]/30 text-[#ffb703] text-xs font-mono text-center">
-                  Beacon Light is actively rotating atop the Signal Tower at 60 FPS.
+                <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono text-center">
+                  Signal Spire Beacon is pulsing on an active loop.
                 </div>
               </div>
             </div>

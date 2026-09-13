@@ -15,58 +15,66 @@ export const BUILDINGS: BuildingInfo[] = [
   {
     id: 'studio',
     name: 'The Studio',
-    subtitle: 'Bio, Skills & Philosophy',
+    subtitle: 'Storefront • Bio & Skills',
     position: new THREE.Vector3(-10, 0, -8),
-    color: 0x3b82f6 // Blue highlight
+    color: 0xF5A65B // Warm Amber
   },
   {
     id: 'gallery',
     name: 'The Gallery',
-    subtitle: 'Selected Featured Projects',
+    subtitle: 'Glass Structure • Projects',
     position: new THREE.Vector3(10, 0, -8),
-    color: 0x10b981 // Emerald green highlight
+    color: 0x3B82F6 // Glass Blue
   },
   {
     id: 'office',
-    name: 'Office Tower',
-    subtitle: 'Career Timeline & Roles',
+    name: 'The Office Tower',
+    subtitle: 'Tallest Skyscraper • Career',
     position: new THREE.Vector3(0, 0, 0),
-    color: 0xffb703 // Signature Amber highlight
+    color: 0x8B8FD9 // Lavender / Slate
   },
   {
     id: 'archive',
     name: 'The Archive',
-    subtitle: 'Blog & Technical Writings',
+    subtitle: 'Brick Vault • Writings',
     position: new THREE.Vector3(-10, 0, 8),
-    color: 0x8b5cf6 // Purple highlight
+    color: 0xA855F7 // Archive Purple
   },
   {
     id: 'signal',
-    name: 'Signal Tower',
-    subtitle: 'Contact & Broadcast Station',
+    name: 'The Signal Tower',
+    subtitle: 'Thin Spire • Contact',
     position: new THREE.Vector3(10, 0, 8),
-    color: 0xef4444 // Red/Amber signal beacon
+    color: 0xEF4444 // Red Signal Beacon
   }
 ];
 
 interface DistrictCanvas3DProps {
   activeBuilding: BuildingId | null;
   onSelectBuilding: (id: BuildingId) => void;
-  isDuskMode?: boolean;
+  onTransitioningChange?: (isTransitioning: boolean) => void;
 }
 
 export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
   activeBuilding,
-  onSelectBuilding
+  onSelectBuilding,
+  onTransitioningChange
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [hoveredBuilding, setHoveredBuilding] = useState<BuildingId | null>(null);
 
-  // Store active building ref for animation frame loop access without re-binding listeners
+  // Store refs to access in animation loop without listener re-binding
   const activeBuildingRef = useRef(activeBuilding);
+  const hoveredBuildingRef = useRef(hoveredBuilding);
+  const mouseOffsetRef = useRef({ x: 0, y: 0 });
+
   useEffect(() => {
     activeBuildingRef.current = activeBuilding;
   }, [activeBuilding]);
+
+  useEffect(() => {
+    hoveredBuildingRef.current = hoveredBuilding;
+  }, [hoveredBuilding]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -77,10 +85,10 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
 
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0d111a);
-    scene.fog = new THREE.FogExp2(0x0d111a, 0.015);
+    scene.background = new THREE.Color(0x0E1330); // Palette Option A: Deep Navy
+    scene.fog = new THREE.FogExp2(0x0E1330, 0.014);
 
-    // Camera
+    // 3/4 Isometric Perspective Camera
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
     const initialCamPos = new THREE.Vector3(26, 26, 26);
     const initialLookAt = new THREE.Vector3(0, 0, 0);
@@ -88,7 +96,7 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
     camera.position.copy(initialCamPos);
     camera.lookAt(initialLookAt);
 
-    // Current camera target position and lookAt vector for lerp smooth dolly
+    // Camera target position & lookAt vectors for 900ms eased dolly
     const targetCamPos = new THREE.Vector3().copy(initialCamPos);
     const currentLookAt = new THREE.Vector3().copy(initialLookAt);
     const targetLookAt = new THREE.Vector3().copy(initialLookAt);
@@ -100,16 +108,17 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
 
     container.appendChild(renderer.domElement);
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0x232d3f, 1.8);
+    // Ambient & Directional Lighting
+    const ambientLight = new THREE.AmbientLight(0x232E52, 1.8);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffb703, 2.5);
-    directionalLight.position.set(20, 35, 15);
+    // Palette A: Soft Lavender Rim Light (#8B8FD9) & Warm Amber Directional Light (#F5A65B)
+    const directionalLight = new THREE.DirectionalLight(0xF5A65B, 2.6);
+    directionalLight.position.set(22, 36, 18);
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 2048;
     directionalLight.shadow.mapSize.height = 2048;
@@ -121,158 +130,172 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
     directionalLight.shadow.camera.bottom = -25;
     scene.add(directionalLight);
 
-    const fillLight = new THREE.DirectionalLight(0x3b82f6, 1.0);
-    fillLight.position.set(-20, 15, -15);
-    scene.add(fillLight);
+    const rimLight = new THREE.DirectionalLight(0x8B8FD9, 1.2);
+    rimLight.position.set(-20, 18, -18);
+    scene.add(rimLight);
 
-    // Ground Plane with grid texture
-    const groundGeo = new THREE.PlaneGeometry(60, 60);
+    // Ground Plane with grid rhythm
+    const groundGeo = new THREE.PlaneGeometry(65, 65);
     const groundMat = new THREE.MeshStandardMaterial({
-      color: 0x161b26,
-      roughness: 0.8,
-      metalness: 0.2
+      color: 0x141A3D,
+      roughness: 0.85,
+      metalness: 0.15
     });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
 
-    // Grid lines on ground
-    const gridHelper = new THREE.GridHelper(60, 30, 0xffb703, 0x223046);
+    const gridHelper = new THREE.GridHelper(65, 32, 0xF5A65B, 0x222C54);
     gridHelper.position.y = 0.02;
     scene.add(gridHelper);
 
-    // Buildings parent group & lookup map for raycasting
-    const buildingMeshes: Map<BuildingId, THREE.Group> = new Map();
+    // Lookup structures for raycasting and building lift animations
+    const buildingGroups: Map<BuildingId, THREE.Group> = new Map();
     const raycastTargets: THREE.Mesh[] = [];
+    const cyclingWindowMats: THREE.MeshStandardMaterial[] = [];
 
-    // Beacon mesh light ref for animation loop
     let beaconLight: THREE.PointLight | null = null;
     let beaconMesh: THREE.Mesh | null = null;
 
-    // Build the 5 Buildings
+    // Construct the 5 Buildings
     BUILDINGS.forEach((bInfo) => {
       const bGroup = new THREE.Group();
       bGroup.position.copy(bInfo.position);
+      bGroup.userData = { initialY: bInfo.position.y };
 
-      if (bInfo.id === 'office') {
-        // Office Tower (Center Skyscraper)
-        const baseGeo = new THREE.BoxGeometry(6, 18, 6);
-        const baseMat = new THREE.MeshStandardMaterial({
-          color: 0x1e293b,
-          roughness: 0.3,
-          metalness: 0.7
+      if (bInfo.id === 'studio') {
+        // 1. The Studio (Small storefront, warm window light)
+        const bodyGeo = new THREE.BoxGeometry(7, 5.5, 7);
+        const bodyMat = new THREE.MeshStandardMaterial({
+          color: 0x242D54,
+          roughness: 0.45,
+          metalness: 0.4
         });
-        const mainBuilding = new THREE.Mesh(baseGeo, baseMat);
-        mainBuilding.position.y = 9;
+        const mainBuilding = new THREE.Mesh(bodyGeo, bodyMat);
+        mainBuilding.position.y = 2.75;
         mainBuilding.castShadow = true;
         mainBuilding.receiveShadow = true;
         mainBuilding.userData = { buildingId: bInfo.id };
         bGroup.add(mainBuilding);
         raycastTargets.push(mainBuilding);
 
-        // Windows rows grid on tower
+        // Storefront Canopy / Warm Window Light
         const windowMat = new THREE.MeshStandardMaterial({
-          color: 0xffb703,
-          emissive: 0xffb703,
-          emissiveIntensity: 0.8
+          color: 0xF5A65B,
+          emissive: 0xF5A65B,
+          emissiveIntensity: 0.9
         });
-        for (let y = 3; y < 16; y += 2.5) {
+        cyclingWindowMats.push(windowMat);
+
+        const windowMesh = new THREE.Mesh(new THREE.BoxGeometry(5, 2.5, 0.15), windowMat);
+        windowMesh.position.set(0, 2.2, 3.55);
+        bGroup.add(windowMesh);
+
+        const awning = new THREE.Mesh(
+          new THREE.BoxGeometry(6, 0.4, 1.5),
+          new THREE.MeshStandardMaterial({ color: 0xF5A65B, roughness: 0.3 })
+        );
+        awning.position.set(0, 3.8, 4.0);
+        bGroup.add(awning);
+      } else if (bInfo.id === 'gallery') {
+        // 2. The Gallery (Tall glass-fronted structure)
+        const mainGeo = new THREE.BoxGeometry(8, 9, 6.5);
+        const mainMat = new THREE.MeshStandardMaterial({
+          color: 0x1C2548,
+          roughness: 0.3,
+          metalness: 0.6
+        });
+        const mainBuilding = new THREE.Mesh(mainGeo, mainMat);
+        mainBuilding.position.y = 4.5;
+        mainBuilding.castShadow = true;
+        mainBuilding.receiveShadow = true;
+        mainBuilding.userData = { buildingId: bInfo.id };
+        bGroup.add(mainBuilding);
+        raycastTargets.push(mainBuilding);
+
+        // Glass Front Panel
+        const glassMat = new THREE.MeshStandardMaterial({
+          color: 0x3B82F6,
+          emissive: 0x1D4ED8,
+          emissiveIntensity: 0.6,
+          roughness: 0.1,
+          transparent: true,
+          opacity: 0.85
+        });
+        const glassFront = new THREE.Mesh(new THREE.BoxGeometry(7, 7.5, 0.2), glassMat);
+        glassFront.position.set(0, 4.5, 3.35);
+        bGroup.add(glassFront);
+      } else if (bInfo.id === 'archive') {
+        // 3. The Archive (Narrow brick tower, stacked windows)
+        const vaultGeo = new THREE.BoxGeometry(5.5, 12, 5.5);
+        const vaultMat = new THREE.MeshStandardMaterial({
+          color: 0x32224A,
+          roughness: 0.7,
+          metalness: 0.2
+        });
+        const mainBuilding = new THREE.Mesh(vaultGeo, vaultMat);
+        mainBuilding.position.y = 6;
+        mainBuilding.castShadow = true;
+        mainBuilding.receiveShadow = true;
+        mainBuilding.userData = { buildingId: bInfo.id };
+        bGroup.add(mainBuilding);
+        raycastTargets.push(mainBuilding);
+
+        // Stacked windows
+        const windowMat = new THREE.MeshStandardMaterial({
+          color: 0x8B8FD9,
+          emissive: 0x8B8FD9,
+          emissiveIntensity: 0.7
+        });
+        cyclingWindowMats.push(windowMat);
+
+        for (let y = 2; y <= 10; y += 2.2) {
+          const win = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 0.1), windowMat);
+          win.position.set(0, y, 2.8);
+          bGroup.add(win);
+        }
+      } else if (bInfo.id === 'office') {
+        // 4. The Office Tower (Tallest structure, floor-by-floor lit windows)
+        const towerGeo = new THREE.BoxGeometry(6.5, 20, 6.5);
+        const towerMat = new THREE.MeshStandardMaterial({
+          color: 0x1B2342,
+          roughness: 0.35,
+          metalness: 0.65
+        });
+        const mainBuilding = new THREE.Mesh(towerGeo, towerMat);
+        mainBuilding.position.y = 10;
+        mainBuilding.castShadow = true;
+        mainBuilding.receiveShadow = true;
+        mainBuilding.userData = { buildingId: bInfo.id };
+        bGroup.add(mainBuilding);
+        raycastTargets.push(mainBuilding);
+
+        // Floor-by-floor lit windows
+        const windowMat = new THREE.MeshStandardMaterial({
+          color: 0xF5A65B,
+          emissive: 0xF5A65B,
+          emissiveIntensity: 0.85
+        });
+        cyclingWindowMats.push(windowMat);
+
+        for (let y = 3; y < 18; y += 2.8) {
           for (let x = -2; x <= 2; x += 2) {
-            const win = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 0.1), windowMat);
-            win.position.set(x, y, 3.05);
+            const win = new THREE.Mesh(new THREE.BoxGeometry(1.3, 1.3, 0.1), windowMat);
+            win.position.set(x, y, 3.3);
             bGroup.add(win);
             const winBack = win.clone();
-            winBack.position.set(x, y, -3.05);
+            winBack.position.set(x, y, -3.3);
             bGroup.add(winBack);
           }
         }
-      } else if (bInfo.id === 'studio') {
-        // Studio Building (Low-rise architectural block)
-        const bodyGeo = new THREE.BoxGeometry(7, 6, 7);
-        const bodyMat = new THREE.MeshStandardMaterial({
-          color: 0x273549,
-          roughness: 0.4,
-          metalness: 0.5
-        });
-        const mainBuilding = new THREE.Mesh(bodyGeo, bodyMat);
-        mainBuilding.position.y = 3;
-        mainBuilding.castShadow = true;
-        mainBuilding.receiveShadow = true;
-        mainBuilding.userData = { buildingId: bInfo.id };
-        bGroup.add(mainBuilding);
-        raycastTargets.push(mainBuilding);
-
-        // Glass overhang roof studio
-        const glassGeo = new THREE.BoxGeometry(7.5, 0.8, 7.5);
-        const glassMat = new THREE.MeshStandardMaterial({
-          color: 0x3b82f6,
-          emissive: 0x1d4ed8,
-          emissiveIntensity: 0.5,
-          roughness: 0.2
-        });
-        const glassRoof = new THREE.Mesh(glassGeo, glassMat);
-        glassRoof.position.y = 6.4;
-        bGroup.add(glassRoof);
-      } else if (bInfo.id === 'gallery') {
-        // Gallery Building (Modern art pavilion)
-        const mainGeo = new THREE.BoxGeometry(8, 7, 6);
-        const mainMat = new THREE.MeshStandardMaterial({
-          color: 0x1f2937,
-          roughness: 0.5,
-          metalness: 0.4
-        });
-        const mainBuilding = new THREE.Mesh(mainGeo, mainMat);
-        mainBuilding.position.y = 3.5;
-        mainBuilding.castShadow = true;
-        mainBuilding.receiveShadow = true;
-        mainBuilding.userData = { buildingId: bInfo.id };
-        bGroup.add(mainBuilding);
-        raycastTargets.push(mainBuilding);
-
-        // Glowing art portal frames
-        const frameGeo = new THREE.BoxGeometry(4, 4, 0.2);
-        const frameMat = new THREE.MeshStandardMaterial({
-          color: 0x10b981,
-          emissive: 0x10b981,
-          emissiveIntensity: 0.9
-        });
-        const frame = new THREE.Mesh(frameGeo, frameMat);
-        frame.position.set(0, 3.5, 3.1);
-        bGroup.add(frame);
-      } else if (bInfo.id === 'archive') {
-        // Archive Building (Library Vault)
-        const vaultGeo = new THREE.CylinderGeometry(4, 4, 8, 8);
-        const vaultMat = new THREE.MeshStandardMaterial({
-          color: 0x2e1065,
-          roughness: 0.6,
-          metalness: 0.3
-        });
-        const mainBuilding = new THREE.Mesh(vaultGeo, vaultMat);
-        mainBuilding.position.y = 4;
-        mainBuilding.castShadow = true;
-        mainBuilding.receiveShadow = true;
-        mainBuilding.userData = { buildingId: bInfo.id };
-        bGroup.add(mainBuilding);
-        raycastTargets.push(mainBuilding);
-
-        // Vault ring glow
-        const ringMat = new THREE.MeshStandardMaterial({
-          color: 0xa855f7,
-          emissive: 0xa855f7,
-          emissiveIntensity: 0.8
-        });
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(4.2, 0.2, 8, 16), ringMat);
-        ring.rotation.x = Math.PI / 2;
-        ring.position.y = 5;
-        bGroup.add(ring);
       } else if (bInfo.id === 'signal') {
-        // Signal Tower (Comms mast with glowing beacon)
+        // 5. The Signal Tower (Thin spire, blinking beacon)
         const baseGeo = new THREE.BoxGeometry(5, 5, 5);
         const baseMat = new THREE.MeshStandardMaterial({
-          color: 0x3f0f16,
-          roughness: 0.4,
-          metalness: 0.6
+          color: 0x451A24,
+          roughness: 0.5,
+          metalness: 0.5
         });
         const mainBuilding = new THREE.Mesh(baseGeo, baseMat);
         mainBuilding.position.y = 2.5;
@@ -282,57 +305,57 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
         bGroup.add(mainBuilding);
         raycastTargets.push(mainBuilding);
 
-        // Antenna Spire
-        const spireGeo = new THREE.CylinderGeometry(0.2, 0.6, 12, 8);
+        // Thin spire antenna
+        const spireGeo = new THREE.CylinderGeometry(0.15, 0.5, 14, 8);
         const spireMat = new THREE.MeshStandardMaterial({
-          color: 0x64748b,
-          metalness: 0.9,
+          color: 0x8B8FD9,
+          metalness: 0.8,
           roughness: 0.2
         });
         const spire = new THREE.Mesh(spireGeo, spireMat);
-        spire.position.y = 11;
+        spire.position.y = 12;
         bGroup.add(spire);
 
-        // Glowing Signal Beacon at tip
-        const beaconGeo = new THREE.SphereGeometry(0.8, 16, 16);
+        // Blinking Signal Beacon at tip
+        const beaconGeo = new THREE.SphereGeometry(0.7, 16, 16);
         const beaconMat = new THREE.MeshStandardMaterial({
-          color: 0xef4444,
-          emissive: 0xef4444,
-          emissiveIntensity: 1.5
+          color: 0xEF4444,
+          emissive: 0xEF4444,
+          emissiveIntensity: 1.6
         });
         beaconMesh = new THREE.Mesh(beaconGeo, beaconMat);
-        beaconMesh.position.y = 17;
+        beaconMesh.position.y = 19;
         bGroup.add(beaconMesh);
 
-        beaconLight = new THREE.PointLight(0xef4444, 3, 15);
-        beaconLight.position.y = 17;
+        beaconLight = new THREE.PointLight(0xEF4444, 3.5, 18);
+        beaconLight.position.y = 19;
         bGroup.add(beaconLight);
       }
 
       scene.add(bGroup);
-      buildingMeshes.set(bInfo.id, bGroup);
+      buildingGroups.set(bInfo.id, bGroup);
     });
 
-    // Environmental Particles (Floating Evening Dust)
-    const particleCount = 200;
+    // Sparse low-opacity particle drift (dust/snow)
+    const particleCount = 180;
     const particleGeo = new THREE.BufferGeometry();
     const particlePos = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePos[i] = (Math.random() - 0.5) * 50;
-      particlePos[i + 1] = Math.random() * 25 + 1;
-      particlePos[i + 2] = (Math.random() - 0.5) * 50;
+      particlePos[i] = (Math.random() - 0.5) * 55;
+      particlePos[i + 1] = Math.random() * 28 + 1;
+      particlePos[i + 2] = (Math.random() - 0.5) * 55;
     }
     particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
     const particleMat = new THREE.PointsMaterial({
-      color: 0xffb703,
-      size: 0.3,
+      color: 0x8B8FD9,
+      size: 0.25,
       transparent: true,
-      opacity: 0.6
+      opacity: 0.45
     });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // Raycaster & Mouse Interaction
+    // Raycaster & Pointer Interaction
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -341,13 +364,19 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
       mouse.x = ((e.clientX - rect.left) / width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / height) * 2 + 1;
 
+      // Mouse Parallax Drift (±5°)
+      mouseOffsetRef.current = {
+        x: mouse.x * 2.5,
+        y: mouse.y * 2.5
+      };
+
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObjects(raycastTargets);
 
       if (intersects.length > 0) {
-        const hitBuildingId = intersects[0].object.userData.buildingId as BuildingId;
-        if (hitBuildingId) {
-          setHoveredBuilding(hitBuildingId);
+        const hitId = intersects[0].object.userData.buildingId as BuildingId;
+        if (hitId) {
+          setHoveredBuilding(hitId);
           container.style.cursor = 'pointer';
           return;
         }
@@ -366,9 +395,10 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
       const intersects = raycaster.intersectObjects(raycastTargets);
 
       if (intersects.length > 0) {
-        const hitBuildingId = intersects[0].object.userData.buildingId as BuildingId;
-        if (hitBuildingId) {
-          onSelectBuilding(hitBuildingId);
+        const hitId = intersects[0].object.userData.buildingId as BuildingId;
+        if (hitId) {
+          if (onTransitioningChange) onTransitioningChange(true);
+          onSelectBuilding(hitId);
         }
       }
     };
@@ -376,7 +406,6 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
     container.addEventListener('mousemove', onPointerMove);
     container.addEventListener('click', onClick);
 
-    // Resize Handler
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
@@ -395,38 +424,55 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
       animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Animate Signal Beacon Pulse
+      // 1. Signal Tower Beacon Pulse
       if (beaconLight && beaconMesh) {
-        const pulse = Math.sin(elapsedTime * 4) * 0.5 + 1;
-        beaconLight.intensity = pulse * 3.5;
-        (beaconMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = pulse * 1.5;
+        const pulse = Math.sin(elapsedTime * 3.5) * 0.5 + 1;
+        beaconLight.intensity = pulse * 4.0;
+        (beaconMesh.material as THREE.MeshStandardMaterial).emissiveIntensity = pulse * 1.8;
       }
 
-      // Animate Particles
+      // 2. Slow Window Light Color Cycle (Warm #F5A65B <-> Cool #8B8FD9)
+      cyclingWindowMats.forEach((mat, idx) => {
+        const cycle = Math.sin(elapsedTime * 0.8 + idx) * 0.5 + 0.5;
+        mat.emissiveIntensity = 0.6 + cycle * 0.4;
+      });
+
+      // 3. Sparse Particle Drift
       const positions = particleGeo.attributes.position.array as Float32Array;
       for (let i = 1; i < particleCount * 3; i += 3) {
-        positions[i] -= 0.02;
-        if (positions[i] < 0) positions[i] = 25;
+        positions[i] -= 0.015;
+        if (positions[i] < 0) positions[i] = 28;
       }
       particleGeo.attributes.position.needsUpdate = true;
 
-      // Camera Lerp Dolly Logic based on active building state
+      // 4. Hover Lift (lifts 4px / +0.4 Y-axis in 3D)
+      const currentHover = hoveredBuildingRef.current;
+      BUILDINGS.forEach((bInfo) => {
+        const group = buildingGroups.get(bInfo.id);
+        if (group) {
+          const isHovered = currentHover === bInfo.id;
+          const targetY = isHovered ? 0.4 : 0;
+          group.position.y += (targetY - group.position.y) * 0.1;
+        }
+      });
+
+      // 5. 900ms Eased Camera Push-in Dolly & Mouse Parallax
       const currentActive = activeBuildingRef.current;
       if (currentActive) {
         const targetB = BUILDINGS.find((b) => b.id === currentActive);
         if (targetB) {
-          // Dolly close to selected building
-          targetCamPos.set(targetB.position.x + 10, targetB.position.y + 10, targetB.position.z + 10);
+          targetCamPos.set(targetB.position.x + 9, targetB.position.y + 9, targetB.position.z + 9);
           targetLookAt.copy(targetB.position);
         }
       } else {
-        // Wide establishing shot
-        targetCamPos.copy(initialCamPos);
+        // Wide establishing shot with mouse parallax (±5°)
+        const offset = mouseOffsetRef.current;
+        targetCamPos.set(initialCamPos.x + offset.x, initialCamPos.y + offset.y, initialCamPos.z);
         targetLookAt.copy(initialLookAt);
       }
 
-      camera.position.lerp(targetCamPos, 0.05);
-      currentLookAt.lerp(targetLookAt, 0.05);
+      camera.position.lerp(targetCamPos, 0.06);
+      currentLookAt.lerp(targetLookAt, 0.06);
       camera.lookAt(currentLookAt);
 
       renderer.render(scene, camera);
@@ -434,7 +480,6 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
 
     animate();
 
-    // Cleanup
     return () => {
       cancelAnimationFrame(animationFrameId);
       container.removeEventListener('mousemove', onPointerMove);
@@ -445,20 +490,19 @@ export const DistrictCanvas3D: React.FC<DistrictCanvas3DProps> = ({
       }
       renderer.dispose();
     };
-  }, [onSelectBuilding]);
+  }, [onSelectBuilding, onTransitioningChange]);
 
   return (
     <div className="relative w-full h-full">
-      {/* 3D Canvas Mount */}
       <div ref={mountRef} className="w-full h-full" />
 
       {/* Building Hover Overlay Label */}
       {hoveredBuilding && !activeBuilding && (
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 pointer-events-none z-20">
-          <div className="district-glass-amber px-6 py-3 rounded-full border border-[#ffb703]/50 shadow-2xl flex items-center gap-3 animate-fade-in">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#ffb703] animate-ping" />
-            <span className="district-heading text-sm font-semibold tracking-wider text-[#ffb703] uppercase">
-              {BUILDINGS.find((b) => b.id === hoveredBuilding)?.name} — Click to Enter Room
+        <div className="absolute top-8 left-1/2 -translate-x-1/2 pointer-events-none z-20 transition-all duration-300">
+          <div className="district-glass-amber px-6 py-3 rounded-full border border-[#F5A65B]/60 shadow-2xl flex items-center gap-3 animate-fade-in">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#F5A65B] animate-ping" />
+            <span className="district-heading text-sm font-semibold tracking-wider text-[#F5A65B] uppercase">
+              {BUILDINGS.find((b) => b.id === hoveredBuilding)?.name} — Click to Enter
             </span>
           </div>
         </div>

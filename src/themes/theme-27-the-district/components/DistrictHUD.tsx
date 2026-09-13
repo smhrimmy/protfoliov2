@@ -24,85 +24,81 @@ export const DistrictHUD: React.FC<DistrictHUDProps> = ({
   const getIcon = (id: BuildingId) => {
     switch (id) {
       case 'studio':
-        return <User className="w-4 h-4" />;
+        return <User className="w-3.5 h-3.5" />;
       case 'gallery':
-        return <FolderKanban className="w-4 h-4" />;
+        return <FolderKanban className="w-3.5 h-3.5" />;
       case 'office':
-        return <Building2 className="w-4 h-4" />;
+        return <Building2 className="w-3.5 h-3.5" />;
       case 'archive':
-        return <Library className="w-4 h-4" />;
+        return <Library className="w-3.5 h-3.5" />;
       case 'signal':
-        return <Radio className="w-4 h-4" />;
+        return <Radio className="w-3.5 h-3.5" />;
     }
   };
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-30 flex flex-col justify-between p-4 sm:p-6">
-      {/* Top Wayfinding HUD Bar */}
+    <div className="absolute inset-0 pointer-events-none z-30 flex flex-col justify-between p-4 sm:p-6 overflow-hidden">
+      
+      {/* Top Header Badge */}
       <div className="flex items-center justify-between w-full">
-        {/* District Identity Badge */}
-        <div className="pointer-events-auto flex items-center gap-3 px-4 py-2.5 rounded-xl district-glass border border-[#ffb703]/30 shadow-lg">
-          <div className="w-3 h-3 rounded-full bg-[#ffb703] animate-pulse" />
+        <div className="pointer-events-auto flex items-center gap-3 px-4 py-2.5 rounded-2xl district-glass border border-[#F5A65B]/30 shadow-xl">
+          <div className="w-3 h-3 rounded-full bg-[#F5A65B] animate-pulse" />
           <div>
             <h1 className="district-heading text-sm sm:text-base font-bold text-white tracking-wide">
               {identityName}'s District
             </h1>
-            <p className="text-[10px] text-slate-400 font-mono">
-              THE DISTRICT METAPHOR • 3D ISOMETRIC CITY
+            <p className="text-[10px] text-[#8B8FD9] font-mono">
+              3/4 ISOMETRIC WALKABLE CITY METAPHOR
             </p>
           </div>
         </div>
 
-        {/* Radar Minimap Compass */}
-        <div className="pointer-events-auto hidden md:flex items-center gap-3 px-4 py-2.5 rounded-xl district-glass border border-[#ffb703]/30 shadow-lg">
-          <div className="relative w-8 h-8 rounded-full border border-[#ffb703]/40 flex items-center justify-center bg-slate-950/80">
-            <Compass className="w-5 h-5 text-[#ffb703] animate-radar" />
-          </div>
-          <div className="text-right">
-            <div className="text-xs font-mono font-bold text-white">N 45° E 12°</div>
-            <div className="text-[10px] text-slate-400 font-mono uppercase">
-              {activeBuilding ? `ROOM: ${activeBuilding}` : 'ESTABLISHING SHOT'}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom District Navigation Dock */}
-      <div className="pointer-events-auto mx-auto max-w-2xl w-full">
-        <div className="p-2 rounded-2xl district-glass border border-[#ffb703]/40 shadow-2xl flex items-center justify-between gap-1 sm:gap-2">
-          
-          {/* Reset Camera Button */}
+        {/* Wide Shot Reset Button (Top Right) */}
+        {activeBuilding && (
           <button
             onClick={() => onSelectBuilding(null)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold font-mono transition-all ${
-              activeBuilding === null
-                ? 'bg-[#ffb703] text-slate-950 shadow-md'
-                : 'text-slate-300 hover:bg-slate-800/80'
-            }`}
-            title="Reset to wide establishing shot"
+            className="pointer-events-auto flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#F5A65B] text-slate-950 font-bold text-xs font-mono shadow-xl hover:bg-[#ffb76b] transition-all"
           >
             <ZoomOut className="w-4 h-4" />
-            <span className="hidden sm:inline">Wide Shot</span>
+            ← Back to wide district shot
           </button>
+        )}
+      </div>
 
-          <div className="h-6 w-px bg-slate-800" />
+      {/* FIXED BOTTOM-RIGHT COMPASS & DIRECT JUMP MAP WIDGET */}
+      <div className="pointer-events-auto self-end flex flex-col items-end gap-2 max-w-xs w-full">
+        <div className="district-glass p-3 sm:p-4 rounded-2xl border border-[#F5A65B]/40 shadow-2xl space-y-3 w-full backdrop-blur-xl">
+          
+          {/* Compass Radar Header */}
+          <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+            <div className="flex items-center gap-2">
+              <Compass className="w-4 h-4 text-[#F5A65B] animate-radar" />
+              <span className="text-xs font-bold font-mono text-white">DISTRICT MAP</span>
+            </div>
+            <span className="text-[10px] font-mono text-[#8B8FD9]">
+              {activeBuilding ? activeBuilding.toUpperCase() : 'ESTABLISHING'}
+            </span>
+          </div>
 
-          {/* Building Selector Buttons */}
-          <div className="flex items-center gap-1 flex-1 justify-around">
+          {/* Quick Direct Jump Building Buttons */}
+          <div className="space-y-1.5">
             {BUILDINGS.map((b) => {
               const isActive = activeBuilding === b.id;
               return (
                 <button
                   key={b.id}
                   onClick={() => onSelectBuilding(b.id)}
-                  className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl text-xs font-medium font-mono transition-all ${
+                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-mono transition-all ${
                     isActive
-                      ? 'bg-[#ffb703]/20 border border-[#ffb703] text-[#ffb703] shadow-md'
+                      ? 'bg-[#F5A65B] text-slate-950 font-bold shadow-md'
                       : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
                   }`}
                 >
-                  {getIcon(b.id)}
-                  <span className="hidden md:inline">{b.name}</span>
+                  <div className="flex items-center gap-2">
+                    {getIcon(b.id)}
+                    <span>{b.name}</span>
+                  </div>
+                  <span className="text-[10px] opacity-70">Jump →</span>
                 </button>
               );
             })}
@@ -110,6 +106,7 @@ export const DistrictHUD: React.FC<DistrictHUDProps> = ({
 
         </div>
       </div>
+
     </div>
   );
 };
