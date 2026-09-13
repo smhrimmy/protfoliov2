@@ -44,7 +44,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
   const filtered = items.filter(item => item.label.toLowerCase().includes(query.toLowerCase()) || item.category.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center pt-24 p-4 animate-in fade-in duration-100">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center pt-24 p-4 animate-in fade-in duration-100"
+    >
       <div className="bg-white/95 border border-black/10 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden text-[#1a1a1a]">
         <div className="flex items-center px-4 py-3 border-b border-black/8">
           <Search className="w-5 h-5 text-[#ad314d] mr-3" />
@@ -56,7 +61,13 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose,
             onChange={e => setQuery(e.target.value)}
             className="w-full bg-transparent text-sm focus:outline-none placeholder-gray-400 text-[#1a1a1a]"
           />
-          <kbd className="text-[10px] font-mono bg-black/5 px-2 py-1 rounded text-gray-500">ESC</kbd>
+          <button
+            onClick={onClose}
+            className="text-[10px] font-mono bg-black/5 hover:bg-black/10 px-2 py-1 rounded text-gray-500 hover:text-gray-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ad314d]"
+            title="Close command palette"
+          >
+            ESC ✕
+          </button>
         </div>
 
         <div className="max-h-80 overflow-y-auto p-2">

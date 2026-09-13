@@ -147,6 +147,9 @@ export function AppContent() {
 
   // 1. Admin Routes (/admin/*)
   if (currentRoute.startsWith('/admin')) {
+    if (!mockStorage.isAdminAuthenticated()) {
+      return <UnauthorizedPage onNavigate={navigate} />;
+    }
     let adminContent: React.ReactNode;
 
     if (currentRoute === '/admin' || currentRoute === '/admin/dashboard') {

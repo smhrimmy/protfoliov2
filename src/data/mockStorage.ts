@@ -692,6 +692,16 @@ class MockStorageService {
     localStorage.setItem(STORAGE_KEYS.AUTOMATION_LOGS, JSON.stringify(logs.slice(0, 50)));
     this.notify();
   }
+
+  isAdminAuthenticated(): boolean {
+    const auth = localStorage.getItem('pdl_admin_authenticated');
+    return auth !== 'false';
+  }
+
+  setAdminAuthenticated(authenticated: boolean) {
+    localStorage.setItem('pdl_admin_authenticated', authenticated ? 'true' : 'false');
+    this.notify();
+  }
 }
 
 export const mockStorage = new MockStorageService();
