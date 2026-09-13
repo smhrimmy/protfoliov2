@@ -3,6 +3,10 @@ import { mockStorage } from '@/data/mockStorage';
 import { THEME_MANIFESTS } from '@/data/initialThemes';
 import { resolveThemePage, getThemeConfig } from '@/themes/registry';
 
+// Error Boundary & Feedback
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { ToastContainer } from '@/components/common/ToastContainer';
+
 // Loaders
 import { AppBootLoader } from '@/components/loaders/AppBootLoader';
 import { ThemeSwitchLoader } from '@/components/loaders/ThemeSwitchLoader';
@@ -45,7 +49,7 @@ import {
 import { SettingsPage } from '@/pages/admin/SettingsPage';
 
 // Special & Public Pages
-import { SharedPreviewPage, PasswordProtectedPage, NotFoundPage } from '@/pages/public/SpecialPages';
+import { SharedPreviewPage, PasswordProtectedPage, NotFoundPage, UnauthorizedPage } from '@/pages/public/SpecialPages';
 import { 
   PublicAboutPage, 
   PublicProjectsListPage, 
@@ -69,7 +73,7 @@ import { Theme25ProjectsView } from '@/themes/theme-25-the-wanted-level/Projects
 // Icons
 import { Palette, ChevronUp, ChevronDown, ExternalLink, Sparkles, Check } from 'lucide-react';
 
-export function App() {
+export function AppContent() {
   const [booting, setBooting] = useState(true);
   const [switchingThemeId, setSwitchingThemeId] = useState<string | null>(null);
   const [currentRoute, setCurrentRoute] = useState(window.location.pathname || '/');
@@ -390,6 +394,15 @@ export function App() {
 
   // Fallback 404
   return <NotFoundPage onNavigate={navigate} />;
+}
+
+export function App() {
+  return (
+    <ErrorBoundary>
+      <AppContent />
+      <ToastContainer />
+    </ErrorBoundary>
+  );
 }
 
 export default App;

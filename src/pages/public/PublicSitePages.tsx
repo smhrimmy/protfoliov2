@@ -8,6 +8,7 @@ import {
 import { mockStorage } from '@/data/mockStorage';
 import { Project, BlogPost, Experience, SkillCategory, Education, Certification, Testimonial, CustomPage } from '@/types/portfolio';
 import { MotionGrid, MotionCard, MotionHeading } from '@/animations';
+import { EmptyState } from '@/components/common/EmptyState';
 
 interface PublicPageProps {
   onNavigate: (route: string) => void;
@@ -261,60 +262,72 @@ export const PublicProjectsListPage: React.FC<PublicPageProps> = ({ onNavigate }
           </div>
         </div>
 
-        {/* Projects Grid with Animate-Once Motion Contract */}
-        <MotionGrid className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredProjects.map((p, idx) => (
-            <MotionCard
-              key={p.id}
-              index={idx}
-              as="article"
-              onClick={() => onNavigate(`/projects/${p.slug || p.id}`)}
-              className="group cursor-pointer rounded-xl bg-[#0e121a] border border-white/[0.08] overflow-hidden hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between shadow-lg"
-            >
-              <div>
-                <div className="relative h-52 overflow-hidden bg-black/40">
-                  <img
-                    src={p.coverImage}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                  />
-                  <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#0a0c10]/80 backdrop-blur-md text-[10px] font-mono text-gray-300 rounded border border-white/10">
-                    {p.date?.slice(0, 4) || '2024'}
-                  </span>
-                </div>
-
-                <div className="p-6 space-y-3">
-                  <div className="flex items-center justify-between text-xs font-mono">
-                    <span className="text-emerald-400 uppercase">{p.role}</span>
-                    <span className="text-gray-500">{p.client || 'Enterprise'}</span>
+        {/* Projects Grid or Empty State */}
+        {filteredProjects.length === 0 ? (
+          <EmptyState
+            title="No Matching Projects Found"
+            description={`No projects matched the search filter "${searchQuery || filter}". Try selecting "All Systems" or searching a different technical keyword.`}
+            secondaryActionLabel="Clear Active Filters"
+            onSecondaryAction={() => {
+              setFilter('all');
+              setSearchQuery('');
+            }}
+          />
+        ) : (
+          <MotionGrid className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredProjects.map((p, idx) => (
+              <MotionCard
+                key={p.id}
+                index={idx}
+                as="article"
+                onClick={() => onNavigate(`/projects/${p.slug || p.id}`)}
+                className="group cursor-pointer rounded-2xl bg-[#0e121a] border border-white/[0.08] overflow-hidden hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+              >
+                <div>
+                  <div className="relative h-52 overflow-hidden bg-black/40">
+                    <img
+                      src={p.coverImage}
+                      alt={p.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                    />
+                    <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#0a0c10]/80 backdrop-blur-md text-[10px] font-mono text-gray-300 rounded-lg border border-white/10">
+                      {p.date?.slice(0, 4) || '2024'}
+                    </span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
-                    {p.title}
-                  </h3>
-                  <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">
-                    {p.summary}
-                  </p>
-                </div>
-              </div>
+                  <div className="p-6 space-y-3">
+                    <div className="flex items-center justify-between text-xs font-mono">
+                      <span className="text-emerald-400 font-semibold">{p.role}</span>
+                      <span className="text-gray-400">{p.client || 'Enterprise'}</span>
+                    </div>
 
-              <div className="p-6 pt-0 space-y-4">
-                <div className="flex flex-wrap gap-1.5">
-                  {p.technologies.slice(0, 4).map((t, tIdx) => (
-                    <span key={tIdx} className="text-[10px] font-mono bg-white/[0.04] text-gray-400 px-2 py-0.5 rounded border border-white/[0.06]">
-                      {t}
-                    </span>
-                  ))}
+                    <h3 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="text-xs text-gray-300 leading-relaxed line-clamp-2">
+                      {p.summary}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-emerald-400 font-semibold group-hover:text-emerald-300">
-                  <span>View Case Study</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <div className="p-6 pt-0 space-y-4">
+                  <div className="flex flex-wrap gap-1.5">
+                    {p.technologies.slice(0, 4).map((t, tIdx) => (
+                      <span key={tIdx} className="text-[10px] font-mono bg-white/[0.04] text-gray-300 px-2 py-0.5 rounded-md border border-white/[0.06]">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-emerald-400 font-semibold group-hover:text-emerald-300">
+                    <span>View Case Study</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </div>
                 </div>
-              </div>
-            </MotionCard>
-          ))}
-        </MotionGrid>
+              </MotionCard>
+            ))}
+          </MotionGrid>
+        )}
       </div>
     </PublicLayout>
   );
@@ -1330,12 +1343,29 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
   const [sent, setSent] = useState(false);
   const [showQr, setShowQr] = useState(false);
 
+  const validateForm = () => {
+    const errs: { name?: string; email?: string; message?: string } = {};
+    if (!name.trim()) {
+      errs.name = 'Please provide your full name or company title.';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email)) {
+      errs.email = 'Please enter a valid email address (e.g. name@company.com).';
+    }
+    if (!message.trim() || message.trim().length < 10) {
+      errs.message = 'Please enter a message of at least 10 characters detailing your request.';
+    }
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !message.trim()) return;
+    if (!validateForm()) return;
 
     // Simulate sending contact inquiry
     mockStorage.addNotification({
@@ -1351,14 +1381,15 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
     setName('');
     setEmail('');
     setMessage('');
-    setTimeout(() => setSent(false), 4000);
+    setErrors({});
+    setTimeout(() => setSent(false), 5000);
   };
 
   return (
     <PublicLayout onNavigate={onNavigate} activeRoute="/contact">
       <div className="max-w-4xl mx-auto space-y-12">
         <div className="space-y-2">
-          <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">// Contact</span>
+          <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold">// Direct Contact</span>
           <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">Initiate Collaboration</h1>
           <p className="text-xs font-mono text-gray-400 max-w-xl">
             Discuss architectural consulting, staff engineering engagements, or bespoke digital products.
@@ -1372,24 +1403,24 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
               <h3 className="text-xs font-mono uppercase tracking-wider text-gray-400 font-semibold">// Direct Channels</h3>
               <div className="space-y-4 text-xs font-mono">
                 <div>
-                  <span className="text-gray-500 block text-[11px]">EMAIL</span>
-                  <a href={`mailto:${identity.socialLinks.email}`} className="text-white hover:text-emerald-400 transition-colors">
+                  <span className="text-gray-400 block text-[11px] uppercase">EMAIL</span>
+                  <a href={`mailto:${identity.socialLinks.email}`} className="text-white hover:text-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded">
                     {identity.socialLinks.email}
                   </a>
                 </div>
                 <div>
-                  <span className="text-gray-500 block text-[11px]">LOCATION</span>
+                  <span className="text-gray-400 block text-[11px] uppercase">LOCATION</span>
                   <span className="text-white">{identity.location} (IST / UTC+5:30)</span>
                 </div>
                 <div>
-                  <span className="text-gray-500 block text-[11px]">GITHUB</span>
-                  <a href={identity.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">
+                  <span className="text-gray-400 block text-[11px] uppercase">GITHUB</span>
+                  <a href={identity.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded">
                     github.com/smhrimmy
                   </a>
                 </div>
                 <div>
-                  <span className="text-gray-500 block text-[11px]">LINKEDIN</span>
-                  <a href={identity.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">
+                  <span className="text-gray-400 block text-[11px] uppercase">LINKEDIN</span>
+                  <a href={identity.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded">
                     linkedin.com/in/prajwal-dl
                   </a>
                 </div>
@@ -1398,7 +1429,7 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
               <div className="pt-4 border-t border-white/[0.06]">
                 <button
                   onClick={() => setShowQr(true)}
-                  className="w-full py-2.5 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 hover:text-white border border-white/[0.08] rounded-xl text-xs font-mono flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-2.5 bg-white/[0.04] hover:bg-white/[0.08] text-gray-300 hover:text-white border border-white/[0.08] rounded-xl text-xs font-mono flex items-center justify-center gap-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
                 >
                   <QrCode className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Share Contact vCard QR</span>
@@ -1409,54 +1440,68 @@ export const PublicContactPage: React.FC<PublicPageProps> = ({ onNavigate }) => 
 
           {/* Form */}
           <div className="md:col-span-7">
-            <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-5 text-xs font-mono">
+            <form onSubmit={handleSubmit} noValidate className="p-6 sm:p-8 rounded-2xl bg-[#0e121a] border border-white/[0.08] space-y-5 text-xs font-mono shadow-xl">
               <h3 className="text-base font-bold text-white font-sans">Send Direct Message</h3>
 
               {sent && (
-                <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl flex items-center gap-2 font-mono text-xs">
-                  <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Message received. Prajwal will respond within 24 business hours.</span>
+                <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl flex items-center gap-2 font-mono text-xs animate-in fade-in duration-200">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Message dispatched successfully. Prajwal will respond within 24 business hours.</span>
                 </div>
               )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-gray-400 block mb-1.5 text-[11px]">YOUR NAME *</label>
+                  <label className="text-gray-400 block mb-1.5 text-[11px] font-mono">YOUR NAME *</label>
                   <input
                     type="text"
                     required
                     value={name}
-                    onChange={e => setName(e.target.value)}
-                    className="w-full bg-black/40 border border-white/[0.1] rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                    onChange={e => {
+                      setName(e.target.value);
+                      if (errors.name) setErrors(prev => ({ ...prev, name: undefined }));
+                    }}
+                    placeholder="e.g. Alex Vance"
+                    className={`w-full bg-black/40 border ${errors.name ? 'border-red-500/80 bg-red-950/20' : 'border-white/[0.1]'} rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-colors font-mono`}
                   />
+                  {errors.name && <p className="text-[11px] text-red-400 mt-1 font-mono">{errors.name}</p>}
                 </div>
                 <div>
-                  <label className="text-gray-400 block mb-1.5 text-[11px]">WORK EMAIL *</label>
+                  <label className="text-gray-400 block mb-1.5 text-[11px] font-mono">WORK EMAIL *</label>
                   <input
                     type="email"
                     required
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    className="w-full bg-black/40 border border-white/[0.1] rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition-colors"
+                    onChange={e => {
+                      setEmail(e.target.value);
+                      if (errors.email) setErrors(prev => ({ ...prev, email: undefined }));
+                    }}
+                    placeholder="e.g. alex@company.com"
+                    className={`w-full bg-black/40 border ${errors.email ? 'border-red-500/80 bg-red-950/20' : 'border-white/[0.1]'} rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-colors font-mono`}
                   />
+                  {errors.email && <p className="text-[11px] text-red-400 mt-1 font-mono">{errors.email}</p>}
                 </div>
               </div>
 
               <div>
-                <label className="text-gray-400 block mb-1.5 text-[11px]">PROJECT SCOPE / MESSAGE *</label>
+                <label className="text-gray-400 block mb-1.5 text-[11px] font-mono">PROJECT SCOPE / MESSAGE *</label>
                 <textarea
                   rows={5}
                   required
                   value={message}
-                  onChange={e => setMessage(e.target.value)}
-                  placeholder="Outline timelines, technical objectives, or hiring opportunities..."
-                  className="w-full bg-black/40 border border-white/[0.1] rounded-xl p-3.5 text-white focus:outline-none focus:border-emerald-500 transition-colors resize-none leading-relaxed font-sans text-xs"
+                  onChange={e => {
+                    setMessage(e.target.value);
+                    if (errors.message) setErrors(prev => ({ ...prev, message: undefined }));
+                  }}
+                  placeholder="Outline project timelines, technical objectives, or hiring opportunities..."
+                  className={`w-full bg-black/40 border ${errors.message ? 'border-red-500/80 bg-red-950/20' : 'border-white/[0.1]'} rounded-xl p-3.5 text-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/30 transition-colors resize-none leading-relaxed font-sans text-xs`}
                 />
+                {errors.message && <p className="text-[11px] text-red-400 mt-1 font-mono">{errors.message}</p>}
               </div>
 
               <button
                 type="submit"
-                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold flex items-center gap-2 transition-colors font-mono text-xs shadow-lg shadow-emerald-950"
+                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold flex items-center gap-2 transition-colors font-mono text-xs shadow-lg shadow-emerald-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e121a]"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Dispatch Message</span>
