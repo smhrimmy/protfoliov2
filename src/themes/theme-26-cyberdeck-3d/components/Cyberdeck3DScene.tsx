@@ -1,15 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { CyberMode, CYBER_MODES } from '../types/cyberdeck';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 interface Cyberdeck3DSceneProps {
   activeTab: string;
-  mode: CyberMode;
 }
 
-export const Cyberdeck3DScene: React.FC<Cyberdeck3DSceneProps> = ({ activeTab, mode }) => {
+export const Cyberdeck3DScene: React.FC<Cyberdeck3DSceneProps> = ({ activeTab }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const modeTokens = CYBER_MODES[mode] || CYBER_MODES['cyber-neon'];
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -17,216 +15,162 @@ export const Cyberdeck3DScene: React.FC<Cyberdeck3DSceneProps> = ({ activeTab, m
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050614, 0.035);
+    scene.background = new THREE.Color(0xF5EFE6);
+    scene.fog = new THREE.FogExp2(0xF5EFE6, 0.04);
 
     const camera = new THREE.PerspectiveCamera(
-      55,
-      container.clientWidth / container.clientHeight,
+      45,
+      window.innerWidth / window.innerHeight,
       0.1,
       100
     );
-    camera.position.set(0, 3.5, 9);
+    camera.position.set(0, 2.8, 6.5);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
-    // 2. Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    // 2. Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     scene.add(ambientLight);
 
-    const mainLight = new THREE.SpotLight(modeTokens.lightColor, 3.5);
-    mainLight.position.set(0, 8, 4);
-    mainLight.angle = Math.PI / 4;
-    mainLight.penumbra = 0.8;
-    scene.add(mainLight);
+    const dirLight = new THREE.DirectionalLight(0xfffaed, 1.8);
+    dirLight.position.set(5, 10, 7);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    scene.add(dirLight);
 
-    const rimLight = new THREE.PointLight(0xff00ff, 2.5, 12);
-    rimLight.position.set(-4, 3, -2);
-    scene.add(rimLight);
+    const deskSpotLight = new THREE.SpotLight(0xff923e, 2.5);
+    deskSpotLight.position.set(0, 4, 1);
+    deskSpotLight.angle = Math.PI / 3;
+    deskSpotLight.penumbra = 0.5;
+    scene.add(deskSpotLight);
 
-    // 3. Desk & Workstation 3D Meshes
-    const deskGroup = new THREE.Group();
+    // 3. Fallback Procedural Workstation + GLTF Loader
+    const mainGroup = new THREE.Group();
+    scene.add(mainGroup);
 
-    // Desk Surface
-    const deskGeo = new THREE.BoxGeometry(7, 0.25, 3.5);
-    const deskMat = new THREE.MeshStandardMaterial({
-      color: 0x111625,
-      roughness: 0.2,
-      metalness: 0.8
-    });
+    // Build procedural 3D desk & room in case GLTF models are loading
+    const deskGeo = new THREE.BoxGeometry(4.5, 0.15, 2.2);
+    const deskMat = new THREE.MeshStandardMaterial({ color: 0x2b2118, roughness: 0.4 });
     const deskMesh = new THREE.Mesh(deskGeo, deskMat);
-    deskMesh.position.set(0, -0.125, 0);
-    deskGroup.add(deskMesh);
+    deskMesh.position.set(0, 0.75, 0);
+    deskMesh.receiveShadow = true;
+    deskMesh.castShadow = true;
+    mainGroup.add(deskMesh);
 
-    // Desk Glowing Edge Strip
-    const edgeGeo = new THREE.BoxGeometry(7.05, 0.05, 3.55);
-    const edgeMat = new THREE.MeshBasicMaterial({
-      color: modeTokens.wireframeColor,
-      wireframe: true
-    });
-    const edgeMesh = new THREE.Mesh(edgeGeo, edgeMat);
-    edgeMesh.position.set(0, -0.1, 0);
-    deskGroup.add(edgeMesh);
+    // Monitor screen
+    const monitorGeo = new THREE.BoxGeometry(2.4, 1.4, 0.08);
+    const monitorMat = new THREE.MeshStandardMaterial({ color: 0x091434, roughness: 0.2 });
+    const monitor = new THREE.Mesh(monitorGeo, monitorMat);
+    monitor.position.set(0, 1.75, -0.6);
+    mainGroup.add(monitor);
 
-    // Primary Holographic Monitor Screen
-    const monitorFrameGeo = new THREE.BoxGeometry(3.6, 2.2, 0.1);
-    const monitorFrameMat = new THREE.MeshStandardMaterial({ color: 0x070a14, roughness: 0.3 });
-    const monitorFrame = new THREE.Mesh(monitorFrameGeo, monitorFrameMat);
-    monitorFrame.position.set(0, 1.35, -0.8);
+    // Monitor glowing display
+    const displayGeo = new THREE.PlaneGeometry(2.3, 1.3);
+    const displayMat = new THREE.MeshBasicMaterial({ color: 0x34bfff });
+    const display = new THREE.Mesh(displayGeo, displayMat);
+    display.position.set(0, 1.75, -0.55);
+    mainGroup.add(display);
 
-    const screenGeo = new THREE.PlaneGeometry(3.4, 2.0);
-    const screenMat = new THREE.MeshBasicMaterial({
-      color: modeTokens.wireframeColor,
-      wireframe: false,
-      opacity: 0.15,
-      transparent: true
-    });
-    const screenMesh = new THREE.Mesh(screenGeo, screenMat);
-    screenMesh.position.set(0, 1.35, -0.74);
+    // Laptop
+    const laptopGeo = new THREE.BoxGeometry(1.2, 0.05, 0.8);
+    const laptopMat = new THREE.MeshStandardMaterial({ color: 0x1e293b });
+    const laptop = new THREE.Mesh(laptopGeo, laptopMat);
+    laptop.position.set(-0.9, 0.86, 0.4);
+    mainGroup.add(laptop);
 
-    deskGroup.add(monitorFrame);
-    deskGroup.add(screenMesh);
+    // Chair
+    const chairGeo = new THREE.BoxGeometry(0.9, 0.9, 0.1);
+    const chairMat = new THREE.MeshStandardMaterial({ color: 0xff923e });
+    const chair = new THREE.Mesh(chairGeo, chairMat);
+    chair.position.set(0, 1.2, 1.1);
+    mainGroup.add(chair);
 
-    // Cyberdeck Laptop
-    const laptopBaseGeo = new THREE.BoxGeometry(1.6, 0.08, 1.1);
-    const laptopBaseMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.2 });
-    const laptopBase = new THREE.Mesh(laptopBaseGeo, laptopBaseMat);
-    laptopBase.position.set(0, 0.04, 0.6);
-    deskGroup.add(laptopBase);
+    // Attempt to load GLTF models from /theme-26/models/
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load(
+      '/theme-26/models/room/model.glb',
+      (gltf) => {
+        // Replace procedural fallback with actual GLTF room model
+        const model = gltf.scene;
+        model.scale.set(1, 1, 1);
+        model.position.set(0, 0, 0);
+        mainGroup.clear();
+        mainGroup.add(model);
 
-    // Keyboard Glow Plate
-    const kbGeo = new THREE.PlaneGeometry(1.4, 0.7);
-    const kbMat = new THREE.MeshBasicMaterial({
-      color: modeTokens.wireframeColor,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.4
-    });
-    const kbMesh = new THREE.Mesh(kbGeo, kbMat);
-    kbMesh.rotation.x = -Math.PI / 2;
-    kbMesh.position.set(0, 0.09, 0.65);
-    deskGroup.add(kbMesh);
+        // Try loading character model
+        gltfLoader.load('/theme-26/models/character/model.glb', (charGltf) => {
+          const charModel = charGltf.scene;
+          charModel.position.set(0, 0, 0);
+          mainGroup.add(charModel);
+        }, undefined, () => {});
+      },
+      undefined,
+      (err) => {
+        console.warn('Using procedural 3D room fallback:', err);
+      }
+    );
 
-    // Floating Holographic Tech Orbs & Cube Matrix
-    const orbGeo = new THREE.IcosahedronGeometry(0.5, 2);
-    const orbMat = new THREE.MeshBasicMaterial({
-      color: modeTokens.wireframeColor,
-      wireframe: true
-    });
-    const floatingOrb = new THREE.Mesh(orbGeo, orbMat);
-    floatingOrb.position.set(2.2, 1.8, -0.2);
-    deskGroup.add(floatingOrb);
-
-    const cubeGeo = new THREE.BoxGeometry(0.4, 0.4, 0.4);
-    const cubeMat = new THREE.MeshBasicMaterial({
-      color: 0xff00ff,
-      wireframe: true
-    });
-    const floatingCube = new THREE.Mesh(cubeGeo, cubeMat);
-    floatingCube.position.set(-2.2, 1.6, 0.2);
-    deskGroup.add(floatingCube);
-
-    scene.add(deskGroup);
-
-    // 4. Ambient 3D Particle Cloud
-    const particleCount = 200;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 16;
-      particlePositions[i + 1] = Math.random() * 8;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 16;
-    }
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-
-    const particleMat = new THREE.PointsMaterial({
-      size: 0.05,
-      color: modeTokens.wireframeColor,
-      transparent: true,
-      opacity: 0.65
-    });
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
-
-    // 5. Parallax Mouse & Target Camera Positions
+    // 4. Smooth Camera Targets & Mouse Parallax
     let mouseX = 0;
     let mouseY = 0;
-
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 1.5;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 0.8;
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 0.3;
     };
-
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Camera target positions based on activeTab
-    const getTargetCameraPos = () => {
-      switch (activeTab) {
-        case 'dossier':
-          return { x: 0, y: 1.8, z: 4.5, lookY: 1.4 };
-        case 'skills':
-          return { x: 2.2, y: 2.2, z: 5.5, lookY: 1.8 };
-        case 'projects':
-          return { x: 0, y: 3.2, z: 7.2, lookY: 1.0 };
-        case 'experience':
-          return { x: -2.0, y: 2.0, z: 5.2, lookY: 1.5 };
+    const handleResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Camera targets per tab
+    const getTargetConfig = (tab: string) => {
+      switch (tab) {
+        case 'about':
+          return { posX: -1.6, posY: 1.7, posZ: 2.8, lookX: 0, lookY: 1.3, lookZ: 0 };
+        case 'work':
+          return { posX: 0, posY: 1.75, posZ: 2.4, lookX: 0, lookY: 1.6, lookZ: -0.5 };
         case 'contact':
-          return { x: 0, y: 1.2, z: 4.2, lookY: 0.5 };
-        case 'start':
+          return { posX: 1.4, posY: 1.1, posZ: 2.0, lookX: 0, lookY: 0.8, lookZ: 0 };
+        case 'home':
         default:
-          return { x: 0, y: 3.5, z: 9.0, lookY: 1.0 };
+          return { posX: 0, posY: 2.8, posZ: 6.5, lookX: 0, lookY: 1.2, lookZ: 0 };
       }
     };
 
-    // 6. Animation Loop
     let animId: number;
-    const targetPos = getTargetCameraPos();
-    const currentPos = { ...camera.position };
+    const currentLookAt = new THREE.Vector3(0, 1.2, 0);
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
-      // Rotate floating 3D objects
-      floatingOrb.rotation.x += 0.008;
-      floatingOrb.rotation.y += 0.012;
-      floatingCube.rotation.x += 0.01;
-      floatingCube.rotation.z += 0.015;
+      const target = getTargetConfig(activeTab);
 
-      // Animate particle drift
-      const positions = particles.geometry.attributes.position.array as Float32Array;
-      for (let i = 1; i < particleCount * 3; i += 3) {
-        positions[i] -= 0.003;
-        if (positions[i] < 0) positions[i] = 8;
-      }
-      particles.geometry.attributes.position.needsUpdate = true;
+      // Lerp camera position
+      camera.position.x += (target.posX + mouseX - camera.position.x) * 0.05;
+      camera.position.y += (target.posY - mouseY - camera.position.y) * 0.05;
+      camera.position.z += (target.posZ - camera.position.z) * 0.05;
 
-      // Smooth camera transition toward target view
-      const target = getTargetCameraPos();
-      currentPos.x += (target.x + mouseX - currentPos.x) * 0.05;
-      currentPos.y += (target.y - mouseY - currentPos.y) * 0.05;
-      currentPos.z += (target.z - currentPos.z) * 0.05;
+      // Lerp camera lookAt target
+      currentLookAt.x += (target.lookX - currentLookAt.x) * 0.05;
+      currentLookAt.y += (target.lookY - currentLookAt.y) * 0.05;
+      currentLookAt.z += (target.lookZ - currentLookAt.z) * 0.05;
 
-      camera.position.set(currentPos.x, currentPos.y, currentPos.z);
-      camera.lookAt(0, target.lookY, 0);
+      camera.lookAt(currentLookAt);
 
       renderer.render(scene, camera);
     };
 
     animate();
-
-    // 7. Handle Resize
-    const handleResize = () => {
-      if (!containerRef.current) return;
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
 
     return () => {
       cancelAnimationFrame(animId);
@@ -237,12 +181,7 @@ export const Cyberdeck3DScene: React.FC<Cyberdeck3DSceneProps> = ({ activeTab, m
       }
       renderer.dispose();
     };
-  }, [activeTab, mode]);
+  }, [activeTab]);
 
-  return (
-    <div 
-      ref={containerRef} 
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
-    />
-  );
+  return <div ref={containerRef} id="main-canvas" className="fixed inset-0 z-0" />;
 };
