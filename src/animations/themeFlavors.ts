@@ -764,6 +764,36 @@ export const THEME_ANIMATION_FLAVORS: Record<ThemeNumber, ThemeAnimationFlavor> 
     hoverClassName: 'hover:border-pink-500 hover:shadow-[0_0_20px_rgba(236,72,153,0.5)] transition-all duration-300',
     cornerDecoration: 'brackets',
   },
+
+  // --------------------------------------------------------------------------
+  // 26: THE 3D CYBERDECK WORKSPACE
+  // --------------------------------------------------------------------------
+  '26': {
+    number: '26',
+    canonicalId: 'theme-26-cyberdeck-3d',
+    name: '3D CyberDeck Workspace',
+    revealStyle: 'Spatial camera perspective shift with WebGL particle glow',
+    hoverTreatment: '3D holographic card float with neon aura pulse',
+    loadingState: 'Holographic matrix mesh initialization',
+    containerVariants: {
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.12, delayChildren: 0.05 },
+      },
+    },
+    itemVariants: {
+      hidden: { opacity: 0, scale: 0.94, y: 20 },
+      visible: {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+      },
+    },
+    hoverClassName: 'hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(0,255,255,0.4)] transition-all duration-300',
+    cornerDecoration: 'crosshairs',
+  },
 };
 
 // ============================================================================

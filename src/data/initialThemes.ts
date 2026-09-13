@@ -600,5 +600,29 @@ export const THEME_MANIFESTS: ThemeManifest[] = [
       textMuted: '#94a3b8',
       borderColor: 'rgba(245, 158, 11, 0.3)'
     }
+  },
+  {
+    id: 'theme-26-cyberdeck-3d',
+    number: '26',
+    name: '3D CyberDeck Workspace',
+    category: '3D / Spatial',
+    concept: 'Interactive 3D developer workstation with WebGL spatial camera navigation, holographic multi-monitor screens, Web Audio API sound effects, and 4 spatial color modes.',
+    capabilities: ['3D', 'Motion-Rich', 'Pointer-Intensive'],
+    performance: 'Heavy',
+    layoutArchitecture: '3d-workspace-spatial-perspective',
+    navigationPattern: '3d-hotspot-orbital-nav',
+    gridSystem: 'holographic-card-orbit',
+    typographyPairing: 'Monospace Terminal + Spatial HUD',
+    signatureInteraction: 'Interactive WebGL 3D workstation camera orbit, spatial sound FX synthesizer, and holographic card tilt',
+    motionModel: 'Spring camera 3D perspective shift, WebGL particle drift, and holographic float',
+    uses3D: true,
+    defaultTokens: {
+      bgPrimary: '#050614',
+      bgSecondary: '#0c0824',
+      accent: '#00ffff',
+      textPrimary: '#f8fafc',
+      textMuted: '#94a3b8',
+      borderColor: 'rgba(0, 255, 255, 0.4)'
+    }
   }
 ];
