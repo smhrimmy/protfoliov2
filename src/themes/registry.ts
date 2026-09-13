@@ -106,9 +106,9 @@ import { Home as T25Home } from './theme-25-the-wanted-level/Home';
 import { config as t26Config } from './theme-26-cyberdeck-3d/theme.config';
 import { Home as T26Home } from './theme-26-cyberdeck-3d/Home';
 
-// Theme 27 (Persona Studio & Interactive 3D City)
-import { config as t27Config } from './theme-27-persona-studio/theme.config';
-import { Home as T27Home } from './theme-27-persona-studio/Home';
+// Theme 27 (The District Isometric Walkable City)
+import { config as t27Config } from './theme-27-the-district/theme.config';
+import { Home as T27Home } from './theme-27-the-district/Home';
 
 export interface ThemeBundle {
   config: ThemeConfig;
@@ -142,6 +142,7 @@ export const themeRegistry: Record<string, ThemeBundle> = {
   'theme-24-the-journal': { config: t24Config, Home: T24Home },
   'theme-25-the-wanted-level': { config: t25Config, Home: T25Home },
   'theme-26-cyberdeck-3d': { config: t26Config, Home: T26Home },
+  'theme-27-the-district': { config: t27Config, Home: T27Home },
   'theme-27-persona-studio': { config: t27Config, Home: T27Home }
 };
 

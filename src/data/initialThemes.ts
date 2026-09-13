@@ -626,6 +626,30 @@ export const THEME_MANIFESTS: ThemeManifest[] = [
     }
   },
   {
+    id: 'theme-27-the-district',
+    number: '27',
+    name: 'The District (Isometric City)',
+    category: '3D / Spatial',
+    concept: 'A small walkable city district viewed from a fixed isometric WebGL camera angle, where distinct buildings represent Studio (About), Gallery (Projects), Archive (Blog), Office Tower (Experience), and Signal Tower (Contact).',
+    capabilities: ['3D', 'Motion-Rich', 'Pointer-Intensive'],
+    performance: 'Heavy',
+    layoutArchitecture: 'isometric-walkable-city-district',
+    navigationPattern: '3d-building-dolly-interior-transition',
+    gridSystem: 'district-building-quadrants',
+    typographyPairing: 'Bricolage Grotesque + Instrument Sans + Space Mono',
+    signatureInteraction: 'Dolly camera push-in to 3D buildings transitioning into custom interior room view',
+    motionModel: 'Dolly camera push-in, interior room reveal, window glow pulse, and beacon signal drift',
+    uses3D: true,
+    defaultTokens: {
+      bgPrimary: '#0d111a',
+      bgSecondary: '#161b26',
+      accent: '#ffb703',
+      textPrimary: '#f8fafc',
+      textMuted: '#94a3b8',
+      borderColor: 'rgba(255, 183, 3, 0.25)'
+    }
+  },
+  {
     id: 'theme-27-persona-studio',
     number: '27',
     name: 'Persona Studio & Interactive City',

@@ -1,0 +1,89 @@
+/* Theme 27: The District CSS */
+
+:root {
+  --district-bg: #0d111a;
+  --district-bg-secondary: #161b26;
+  --district-accent: #ffb703;
+  --district-accent-glow: rgba(255, 183, 3, 0.4);
+  --district-text: #f8fafc;
+  --district-muted: #94a3b8;
+  --district-border: rgba(255, 183, 3, 0.25);
+  --district-panel-bg: rgba(13, 17, 26, 0.88);
+}
+
+.district-theme {
+  background-color: var(--district-bg);
+  color: var(--district-text);
+  font-family: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+.district-heading {
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.district-mono {
+  font-family: 'Space Mono', monospace;
+}
+
+/* Glass panel */
+.district-glass {
+  background: rgba(22, 27, 38, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 183, 3, 0.2);
+}
+
+.district-glass-amber {
+  background: rgba(255, 183, 3, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 183, 3, 0.35);
+}
+
+/* Radar minimap pulse */
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-radar {
+  animation: radar-sweep 4s linear infinite;
+}
+
+/* Beacon pulse */
+@keyframes beacon-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
+}
+
+.animate-beacon {
+  animation: beacon-pulse 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar for district room views */
+.district-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.district-scrollbar::-webkit-scrollbar-track {
+  background: rgba(13, 17, 26, 0.5);
+}
+
+.district-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 183, 3, 0.3);
+  border-radius: 3px;
+}
+
+.district-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 183, 3, 0.6);
+}
