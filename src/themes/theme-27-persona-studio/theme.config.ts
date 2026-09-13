@@ -1,18 +1,26 @@
-import { ThemeConfig } from '../_contracts/ThemeConfig';
+import { ThemeManifest } from '../../types/theme';
 
-export const config: ThemeConfig = {
+export const config: ThemeManifest = {
   id: 'theme-27-persona-studio',
+  number: '27',
   name: 'Persona Studio & Interactive City',
-  description: 'Gamified 3D isometric city & interactive digital product studio experience inspired by Persona Studio.',
-  category: 'Interactive 3D & Gamified',
-  features: [
-    'Interactive 3D Isometric City Canvas with Three.js',
-    'Dual View Mode (3D Interactive City & Studio Site Mode)',
-    'Dynamic Day & Night Atmosphere Toggle with Windows Lighting',
-    'Interactive Weather System (Sunny, Rain, Heavy Snow)',
-    'Building Hotspots & Interactive Project Case Studies',
-    'Interactive Visitor Whiteboard Drawing Station',
-    'Gamified HUD Telemetry (Live FPS Meter & Compass)'
-  ],
-  supportLevel: 'Tier-1 High Performance'
+  category: '3D / Spatial',
+  concept: 'Gamified 3D isometric city & interactive digital product studio experience inspired by Persona Studio, featuring 3D building hotspots, weather particle engines, day/night cycles, and interactive visitor drawing whiteboard.',
+  capabilities: ['3D', 'Motion-Rich', 'Pointer-Intensive'],
+  performance: 'Heavy',
+  layoutArchitecture: '3d-isometric-city-canvas',
+  navigationPattern: '3d-city-building-raycast-nav',
+  gridSystem: 'floating-city-pill-hud',
+  typographyPairing: 'Bricolage Grotesque + Instrument Sans',
+  signatureInteraction: '3D isometric city building raycasting, day/night weather particle engine, and interactive whiteboard drawing board',
+  motionModel: '3D camera orbit lerp, particle rain/snow drift, and dawn preloader pop',
+  uses3D: true,
+  defaultTokens: {
+    bgPrimary: '#F6F5F2',
+    bgSecondary: '#EDECEA',
+    accent: '#FDCA3D',
+    textPrimary: '#0C0B0A',
+    textMuted: '#7A7670',
+    borderColor: 'rgba(12, 11, 10, 0.09)'
+  }
 };
