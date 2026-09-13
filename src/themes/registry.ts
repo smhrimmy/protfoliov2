@@ -102,6 +102,10 @@ import { Home as T24Home } from './theme-24-the-journal/Home';
 import { config as t25Config } from './theme-25-the-wanted-level/theme.config';
 import { Home as T25Home } from './theme-25-the-wanted-level/Home';
 
+// Theme 26 (The 3D CyberDeck Workspace)
+import { config as t26Config } from './theme-26-cyberdeck-3d/theme.config';
+import { Home as T26Home } from './theme-26-cyberdeck-3d/Home';
+
 export interface ThemeBundle {
   config: ThemeConfig;
   Home: React.ComponentType<ThemePageProps>;
@@ -132,7 +136,8 @@ export const themeRegistry: Record<string, ThemeBundle> = {
   'theme-22-animated-mascot': { config: t22Config, Home: T22Home },
   'theme-23-handtracked-lowpoly': { config: t23Config, Home: T23Home },
   'theme-24-the-journal': { config: t24Config, Home: T24Home },
-  'theme-25-the-wanted-level': { config: t25Config, Home: T25Home }
+  'theme-25-the-wanted-level': { config: t25Config, Home: T25Home },
+  'theme-26-cyberdeck-3d': { config: t26Config, Home: T26Home }
 };
 
 // ============================================================================
