@@ -106,6 +106,10 @@ import { Home as T25Home } from './theme-25-the-wanted-level/Home';
 import { config as t26Config } from './theme-26-cyberdeck-3d/theme.config';
 import { Home as T26Home } from './theme-26-cyberdeck-3d/Home';
 
+// Theme 27 (Persona Studio & Interactive 3D City)
+import { config as t27Config } from './theme-27-persona-studio/theme.config';
+import { Home as T27Home } from './theme-27-persona-studio/Home';
+
 export interface ThemeBundle {
   config: ThemeConfig;
   Home: React.ComponentType<ThemePageProps>;
@@ -137,7 +141,8 @@ export const themeRegistry: Record<string, ThemeBundle> = {
   'theme-23-handtracked-lowpoly': { config: t23Config, Home: T23Home },
   'theme-24-the-journal': { config: t24Config, Home: T24Home },
   'theme-25-the-wanted-level': { config: t25Config, Home: T25Home },
-  'theme-26-cyberdeck-3d': { config: t26Config, Home: T26Home }
+  'theme-26-cyberdeck-3d': { config: t26Config, Home: T26Home },
+  'theme-27-persona-studio': { config: t27Config, Home: T27Home }
 };
 
 // ============================================================================

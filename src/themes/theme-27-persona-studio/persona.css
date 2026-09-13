@@ -1,0 +1,199 @@
+/* Theme 27 Persona Studio & City Stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --font-body: "Instrument Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-mono: "Space Mono", monospace;
+  
+  --site-sand: #F6F5F2;
+  --site-cream: #EDECEA;
+  --site-ink: #0C0B0A;
+  --site-muted: #7A7670;
+  --site-accent: #FDCA3D;
+  --site-accent-strong: #E8B520;
+  --site-stroke: rgba(12, 11, 10, .09);
+  --site-card: rgba(255, 255, 255, .92);
+  --site-shadow: 0 24px 60px rgba(12, 11, 10, .1);
+}
+
+body.night-mode {
+  --site-sand: #10162E;
+  --site-cream: #1B2340;
+  --site-ink: #F6F5F2;
+  --site-muted: #A0A5BD;
+  --site-stroke: rgba(255, 255, 255, .12);
+  --site-card: rgba(24, 32, 60, .92);
+  --site-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+}
+
+.persona-container {
+  font-family: var(--font-body);
+  background-color: var(--site-sand);
+  color: var(--site-ink);
+  min-height: 100vh;
+  position: relative;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Day/Night Weather Header Toggle */
+.persona-header {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.persona-header-left, .persona-header-right {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.persona-pill-btn {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--site-stroke);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--site-ink);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.persona-pill-btn:hover {
+  background: var(--site-accent);
+  color: #0C0B0A;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(253, 202, 61, 0.4);
+}
+
+.persona-pill-btn.active {
+  background: var(--site-accent);
+  color: #0C0B0A;
+  border-color: var(--site-accent-strong);
+}
+
+/* Bottom Floating Navigation Bar */
+.persona-bottom-nav {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--site-stroke);
+  border-radius: 999px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 100;
+}
+
+body.night-mode .persona-bottom-nav {
+  background: rgba(27, 35, 64, 0.9);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.persona-nav-item {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--site-ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.persona-nav-item:hover, .persona-nav-item.active {
+  background: var(--site-accent);
+  color: #0C0B0A;
+  box-shadow: 0 6px 16px rgba(253, 202, 61, 0.35);
+}
+
+/* Interactive Preloader */
+.persona-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(180deg, #10162E, #2C2C55 52%, #5D4278);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.persona-preloader-title {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.persona-preloader-status {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 12px;
+}
+
+/* Modals & Dialog Cards */
+.persona-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: rgba(12, 11, 10, 0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.persona-modal-card {
+  background: var(--site-sand);
+  color: var(--site-ink);
+  border: 4px solid var(--site-ink);
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 680px;
+  width: 100%;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
+  position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+/* FPS Telemetry Meter */
+.fps-telemetry {
+  position: fixed;
+  left: 28px;
+  bottom: 28px;
+  z-index: 100;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--site-accent-strong);
+  pointer-events: none;
+}
