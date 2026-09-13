@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
 import { Folder, Terminal, FileText, Monitor, Settings, ExternalLink, X, Minus, Square } from 'lucide-react';
+import { Rnd } from 'react-rnd';
 
 interface WindowState {
   id: string;
@@ -111,7 +112,6 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
   });
 
   const [maxZ, setMaxZ] = useState(15);
-  const dragRef = useRef<{ id: string; startX: number; startY: number; initX: number; initY: number } | null>(null);
 
   const focusWindow = (id: string) => {
     setActiveWindow(id);
@@ -143,45 +143,6 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
       [id]: { ...prev[id], isOpen: false }
     }));
   };
-
-  const handleMouseDown = (e: React.MouseEvent, id: string) => {
-    focusWindow(id);
-    dragRef.current = {
-      id,
-      startX: e.clientX,
-      startY: e.clientY,
-      initX: windows[id].x,
-      initY: windows[id].y
-    };
-  };
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!dragRef.current) return;
-      const { id, startX, startY, initX, initY } = dragRef.current;
-      const deltaX = e.clientX - startX;
-      const deltaY = e.clientY - startY;
-      setWindows(prev => ({
-        ...prev,
-        [id]: {
-          ...prev[id],
-          x: Math.max(0, initX + deltaX),
-          y: Math.max(0, initY + deltaY)
-        }
-      }));
-    };
-
-    const handleMouseUp = () => {
-      dragRef.current = null;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, []);
 
   const handleCommand = (e: React.FormEvent) => {
     e.preventDefault();
@@ -325,24 +286,32 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
         const winY = isMobile ? Math.min(win.y, 40) : win.y;
 
         return (
-          <div
+          <Rnd
             key={win.id}
-            onMouseDown={() => focusWindow(win.id)}
-            style={{
-              transform: win.isMaximized
-                ? 'translate(0, 0)'
-                : `translate(${winX}px, ${winY}px)`,
-              width: win.isMaximized ? '100vw' : `${winWidth}px`,
-              maxWidth: 'calc(100vw - 16px)',
-              height: win.isMaximized ? 'calc(100vh - 36px)' : `${win.height}px`,
-              zIndex: win.zIndex
+            size={win.isMaximized ? { width: '100vw', height: 'calc(100vh - 36px)' } : { width: winWidth, height: win.height }}
+            position={win.isMaximized ? { x: 0, y: 0 } : { x: winX, y: winY }}
+            onDragStart={() => focusWindow(win.id)}
+            onDragStop={(_e, d) => {
+              setWindows(prev => ({ ...prev, [win.id]: { ...prev[win.id], x: d.x, y: d.y } }));
             }}
-            className="absolute flex flex-col bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-b-2 border-r-2 border-b-black border-r-black shadow-2xl overflow-hidden"
+            onResizeStop={(_e, _dir, ref, _delta, position) => {
+              setWindows(prev => ({
+                ...prev,
+                [win.id]: {
+                  ...prev[win.id],
+                  width: parseInt(ref.style.width, 10),
+                  height: parseInt(ref.style.height, 10),
+                  ...position
+                }
+              }));
+            }}
+            dragHandleClassName="handle-drag"
+            style={{ zIndex: win.zIndex }}
+            className="flex flex-col bg-[#c0c0c0] border-t-2 border-l-2 border-t-white border-l-white border-b-2 border-r-2 border-b-black border-r-black shadow-2xl overflow-hidden"
           >
             {/* Window Titlebar */}
             <div
-              onMouseDown={(e) => handleMouseDown(e, win.id)}
-              className={`flex items-center justify-between px-2 py-1 select-none cursor-move ${
+              className={`handle-drag flex items-center justify-between px-2 py-1 select-none cursor-move ${
                 isActive
                   ? 'bg-gradient-to-r from-[#000080] to-[#1084d0] text-white font-bold'
                   : 'bg-[#808080] text-gray-300 font-semibold'
@@ -506,7 +475,7 @@ export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience,
                 </div>
               )}
             </div>
-          </div>
+          </Rnd>
         );
       })}
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 export type BuildingId = 'studio' | 'gallery' | 'archive' | 'office' | 'signal';
 

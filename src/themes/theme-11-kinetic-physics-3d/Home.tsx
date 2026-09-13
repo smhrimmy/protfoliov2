@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
 import { Project } from '@/types/portfolio';
 import { RefreshCw, Sparkles, X, ExternalLink } from 'lucide-react';
+import { useSpring, animated } from '@react-spring/web';
 
 interface PhysicsBody {
   id: string;

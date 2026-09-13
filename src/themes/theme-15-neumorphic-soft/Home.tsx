@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
 import { Sliders, ExternalLink, Activity, Sparkles } from 'lucide-react';
+import { useSpring, animated } from '@react-spring/web';
 
 export const Home: React.FC<ThemePageProps> = ({ identity, projects, experience, skillCategories, onNavigate, config }) => {
   const [activeTab, setActiveTab] = useState<'systems' | 'bio' | 'stack' | 'contact'>('systems');
