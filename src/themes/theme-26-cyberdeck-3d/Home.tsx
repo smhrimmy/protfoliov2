@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ThemePageProps } from '../_contracts/PageRenderer';
 import { Cyberdeck3DScene } from './components/Cyberdeck3DScene';
 import './theme26.css';
@@ -6,9 +6,7 @@ import './theme26.css';
 export const Home: React.FC<ThemePageProps> = ({
   identity,
   projects,
-  experience,
   skillCategories,
-  onNavigate
 }) => {
   const [activeTab, setActiveTab] = useState<string>('home');
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -66,9 +64,9 @@ export const Home: React.FC<ThemePageProps> = ({
   const currentProj = projects[currentProjectIndex] || {
     id: 'demo',
     title: 'Portfolio V2 Platform',
-    description: 'High-performance interactive 3D theme portfolio system built with React, Three.js, and TypeScript.',
-    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
-    tags: ['React', 'TypeScript', 'Three.js', 'Tailwind'],
+    summary: 'High-performance interactive 3D theme portfolio system built with React, Three.js, and TypeScript.',
+    coverImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
+    technologies: ['React', 'TypeScript', 'Three.js', 'Tailwind'],
     liveUrl: '#'
   };
 
@@ -179,8 +177,8 @@ export const Home: React.FC<ThemePageProps> = ({
                     LinkedIn
                   </a>
                 )}
-                {identity?.contactEmail && (
-                  <a href={`mailto:${identity.contactEmail}`} className="hover:text-[#FF923E]">
+                {identity?.socialLinks?.email && (
+                  <a href={`mailto:${identity.socialLinks.email}`} className="hover:text-[#FF923E]">
                     Email
                   </a>
                 )}
@@ -245,7 +243,7 @@ export const Home: React.FC<ThemePageProps> = ({
                     </div>
                     <div>
                       <div className="text-xs uppercase tracking-wider text-gray-400">Role</div>
-                      <div className="text-xl font-bold text-white">{identity?.title || 'Full-Stack Software Engineer'}</div>
+                      <div className="text-xl font-bold text-white">{identity?.role || 'Full-Stack Software Engineer'}</div>
                     </div>
                     <div>
                       <div className="text-xs uppercase tracking-wider text-gray-400">Location</div>
@@ -322,20 +320,20 @@ export const Home: React.FC<ThemePageProps> = ({
             <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 max-w-xl mx-auto relative">
               <div className="w-full h-64 sm:h-72 rounded-2xl overflow-hidden mb-6 bg-gray-100">
                 <img 
-                  src={currentProj.imageUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80'} 
+                  src={currentProj.coverImage || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80'} 
                   alt={currentProj.title}
                   className="w-full h-full object-cover"
                 />
               </div>
 
               <h3 className="text-2xl font-bold text-[#091434] mb-3">{currentProj.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed mb-6">{currentProj.description}</p>
+              <p className="text-gray-600 text-sm leading-relaxed mb-6">{currentProj.summary}</p>
 
-              {/* Tags */}
+              {/* Technologies */}
               <div className="flex flex-wrap gap-2 mb-8">
-                {currentProj.tags?.map((tag, i) => (
+                {currentProj.technologies?.map((tech: string, i: number) => (
                   <span key={i} className="px-3 py-1 bg-[#091434] text-white text-xs rounded-full font-medium">
-                    {tag}
+                    {tech}
                   </span>
                 ))}
               </div>
@@ -449,8 +447,8 @@ export const Home: React.FC<ThemePageProps> = ({
                           GitHub
                         </a>
                       )}
-                      {identity?.contactEmail && (
-                        <a href={`mailto:${identity.contactEmail}`} className="hover:text-[#FF923E]">
+                      {identity?.socialLinks?.email && (
+                        <a href={`mailto:${identity.socialLinks.email}`} className="hover:text-[#FF923E]">
                           Mail
                         </a>
                       )}
